@@ -1,0 +1,43 @@
+.filter-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.filter-section h3 {
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.filter-group {
+  margin-bottom: 20px;
+}
+
+.filter-group h4 {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.filter-option {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.filter-option input {
+  margin-right: 8px;
+}
+
+.filter-option label {
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.price-display {
+  font-weight: bold;
+  margin-top: 5px;
+  color: #212529;
+}

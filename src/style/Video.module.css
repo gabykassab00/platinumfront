@@ -1,0 +1,222 @@
+.platformSection {
+  background-color: #ffffff;
+  padding: 5rem 2rem;
+}
+
+.platformContainer {
+  display: flex;
+  align-items: flex-start; /* Changed to align items at the top */
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 5rem;
+}
+
+.platformText {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  padding-top: 0.5rem; /* Added to fine-tune alignment */
+}
+
+.platformBadge {
+  display: inline-block;
+  background: #f5f5f5;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 2rem;
+  color: #333333;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.platformTitle {
+  font-size: 2.75rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  color: #111111;
+  line-height: 1.2;
+}
+
+.platformSubtitle {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0 2rem 0;
+  color: #444444;
+  line-height: 1.4;
+}
+
+.platformDescription {
+  color: #555555;
+  font-size: 1.15rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+}
+
+.platformLink {
+  display: inline-flex;
+  align-items: center;
+  color: #0066ff;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 3.5rem;
+  font-size: 1.05rem;
+  transition: color 0.2s ease;
+}
+
+.platformLink:hover {
+  color: #0052cc;
+  text-decoration: underline;
+}
+
+/* Stats Section */
+.statsContainer {
+  display: flex;
+  gap: 1.75rem;
+  margin-top: 2.5rem;
+}
+
+.statBox {
+  border: 1px solid #eeeeee;
+  border-radius: 0.75rem;
+  padding: 1.75rem;
+  min-width: 180px;
+  background: #fafafa;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.statBox:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.statNumber {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #0066ff;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 0.95rem;
+  color: #666666;
+  line-height: 1.4;
+}
+
+/* Video Section - Updated for perfect alignment */
+.platformVisual {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+  position: relative;
+  margin-top: 3.2rem; /* Precisely aligns video with title */
+}
+
+.videoContainer {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  background: #000000;
+}
+
+.heroVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: inherit; /* Fixed from inherit to cover */
+  object-position: center;
+}
+
+/* Video Overlay Effect */
+.videoContainer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .platformContainer {
+    gap: 3rem;
+  }
+  
+  .platformTitle {
+    font-size: 2.25rem;
+  }
+  
+  .platformSubtitle {
+    font-size: 1.3rem;
+  }
+
+  .platformVisual {
+    margin-top: 2.8rem; /* Adjusted for tablet */
+  }
+}
+
+@media (max-width: 768px) {
+  .platformSection {
+    padding: 3rem 1.5rem;
+  }
+  
+  .platformContainer {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .platformText {
+    text-align: center;
+    max-width: 100%;
+    padding-top: 0;
+  }
+
+  .statsContainer {
+    justify-content: center;
+  }
+
+  .platformVisual {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 0; /* Reset for mobile */
+  }
+  
+  .videoContainer {
+    padding-top: 75%; /* More square aspect ratio on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .platformTitle {
+    font-size: 2rem;
+  }
+  
+  .platformSubtitle {
+    font-size: 1.2rem;
+  }
+  
+  .statsContainer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .statBox {
+    width: 100%;
+    min-width: auto;
+  }
+}
