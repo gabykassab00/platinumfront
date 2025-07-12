@@ -1833,6 +1833,245 @@
 
 
 
+// import React from 'react';
+// import { useBasket } from '../context/BasketProvider';
+// import { useNavigate } from 'react-router-dom';
+// import styles from '../style/checkout.module.css';
+
+// const CheckoutPage = () => {
+//   const { basketItems, clearCart } = useBasket();
+//   const navigate = useNavigate();
+//   const subtotal = basketItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+//   const shipping = 3.00;
+//   const total = subtotal + shipping;
+//   const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
+
+//   const handleCompleteOrder = () => {
+//     // Process order logic here
+//     clearCart();
+//     navigate('/order-confirmation');
+//   };
+
+//   if (basketItems.length === 0) {
+//     return (
+//       <div className={styles.emptyCartContainer}>
+//         <div className={styles.emptyCartContent}>
+//           <h2>Your cart is empty</h2>
+//           <p>Looks like you haven't added anything to your cart yet.</p>
+//           <button 
+//             onClick={() => navigate('/')} 
+//             className={styles.continueShoppingButton}
+//           >
+//             Continue Shopping
+//           </button>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className={styles.checkoutContainer}>
+//       <div className={styles.leftColumn}>
+//         <section className={styles.section}>
+//           <h1 className={styles.sectionTitle}>Contact</h1>
+//           <div className={styles.formGroup}>
+//             <input 
+//               type="text" 
+//               placeholder="Email or mobile phone number"
+//               className={styles.textInput}
+//               required
+//             />
+//           </div>
+//           <label className={styles.checkboxLabel}>
+//             <input type="checkbox" className={styles.checkboxInput} />
+//             <span className={styles.customCheckbox}></span>
+//             Email me with news and offers
+//           </label>
+//         </section>
+
+//         <section className={styles.section}>
+//           <h1 className={styles.sectionTitle}>Delivery</h1>
+//           <div className={styles.formSection}>
+//             <h2 className={styles.subsectionTitle}>Country/Region</h2>
+//             <div className={styles.selectWrapper}>
+//               <select className={styles.selectInput} required>
+//                 <option>Lebanon</option>
+//               </select>
+//               <div className={styles.selectArrow}>▼</div>
+//             </div>
+//           </div>
+
+//           <div className={styles.nameRow}>
+//             <div className={styles.formGroup}>
+//               <input 
+//                 type="text" 
+//                 placeholder="First name" 
+//                 className={styles.textInput}
+//                 required 
+//               />
+//             </div>
+//             <div className={styles.formGroup}>
+//               <input 
+//                 type="text" 
+//                 placeholder="Last name" 
+//                 className={styles.textInput}
+//                 required 
+//               />
+//             </div>
+//           </div>
+
+//           <div className={styles.formGroup}>
+//             <input 
+//               type="text" 
+//               placeholder="Address" 
+//               className={styles.textInput}
+//               required 
+//             />
+//           </div>
+
+//           <div className={styles.locationRow}>
+//             <div className={styles.formGroup}>
+//               <input 
+//                 type="text" 
+//                 placeholder="City" 
+//                 className={styles.textInput}
+//                 required 
+//               />
+//             </div>
+//             <div className={styles.formGroup}>
+//               <input 
+//                 type="text" 
+//                 placeholder="Postal code (optional)" 
+//                 className={styles.textInput} 
+//               />
+//             </div>
+//           </div>
+//         </section>
+
+//         <section className={styles.section}>
+//           <h1 className={styles.sectionTitle}>Shipping method</h1>
+//           <label className={styles.radioOption}>
+//             <input 
+//               type="radio" 
+//               name="shipping" 
+//               defaultChecked 
+//               className={styles.radioInput} 
+//             />
+//             <span className={styles.customRadio}></span>
+//             <div className={styles.optionContent}>
+//               <div className={styles.optionRow}>
+//                 <span className={styles.optionTitle}>Standard Shipping</span>
+//                 <span className={styles.shippingPrice}>$3.00</span>
+//               </div>
+//               <span className={styles.optionDescription}>
+//                 Deliveries will take up to 5 working days
+//               </span>
+//             </div>
+//           </label>
+//         </section>
+
+//         <section className={styles.section}>
+//           <h1 className={styles.sectionTitle}>Payment</h1>
+//           <p className={styles.paymentNote}>All transactions are secure and encrypted.</p>
+//           <label className={styles.radioOption}>
+//             <input 
+//               type="radio" 
+//               name="payment" 
+//               className={styles.radioInput} 
+//               required
+//               defaultChecked  // ✅ Add this
+//             />
+//             <span className={styles.customRadio}></span>
+//             <div className={styles.optionContent}>
+//               <span className={styles.optionTitle}>Cash on Delivery (COD)</span>
+//               <p className={styles.optionDescription}>
+//                 Pay in cash when your order is delivered. Available for orders within Lebanon.
+//               </p>
+//             </div>
+//           </label>
+//         </section>
+//       </div>
+
+//       <div className={styles.rightColumn}>
+//         <div className={styles.summaryCard}>
+//           <h2 className={styles.summaryTitle}>Order Summary</h2>
+//           <div className={styles.itemsCount}>
+//             {itemCount} {itemCount === 1 ? 'item' : 'items'}
+//           </div>
+          
+//           <div className={styles.itemsList}>
+//             {basketItems.map((item) => (
+//               <div key={`${item.id}-${item.size}`} className={styles.summaryItem}>
+//                 <div className={styles.itemImageContainer}>
+//                   <img 
+//                     src={`http://localhost:5000/${item.image_path}`} 
+//                     alt={item.name} 
+//                     className={styles.itemImage}
+//                     onError={(e) => {
+//                       e.target.onerror = null;
+//                       e.target.src = '/placeholder-product.jpg';
+//                     }}
+//                   />
+//                   <span className={styles.itemQuantity}>{item.quantity}</span>
+//                 </div>
+//                 <div className={styles.itemDetails}>
+//                   <div className={styles.itemName}>{item.name}</div>
+//                   <div className={styles.itemSize}>{item.size}</div>
+//                 </div>
+//                 <div className={styles.itemPrice}>${(item.price * item.quantity).toFixed(2)}</div>
+//               </div>
+//             ))}
+//           </div>
+          
+//           <div className={styles.discountSection}>
+//             <input 
+//               type="text" 
+//               placeholder="Discount code or gift card" 
+//               className={styles.discountInput}
+//             />
+//             <button className={styles.applyButton}>Apply</button>
+//           </div>
+          
+//           <div className={styles.priceBreakdown}>
+//             <div className={styles.priceRow}>
+//               <span>Subtotal</span>
+//               <span>${subtotal.toFixed(2)}</span>
+//             </div>
+//             <div className={styles.priceRow}>
+//               <span>Shipping</span>
+//               <span>${shipping.toFixed(2)}</span>
+//             </div>
+//             <div className={styles.totalRow}>
+//               <span>Total</span>
+//               <span>${total.toFixed(2)}</span>
+//             </div>
+//           </div>
+          
+//           <button 
+//             className={styles.completeButton}
+//             onClick={handleCompleteOrder}
+//           >
+//             Complete Order
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default CheckoutPage;
+
+
+
+
+
+
+
+
+
+
+
+
 import React from 'react';
 import { useBasket } from '../context/BasketProvider';
 import { useNavigate } from 'react-router-dom';
@@ -1841,13 +2080,17 @@ import styles from '../style/checkout.module.css';
 const CheckoutPage = () => {
   const { basketItems, clearCart } = useBasket();
   const navigate = useNavigate();
-  const subtotal = basketItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const shipping = 3.00;
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  const subtotal = basketItems.reduce(
+    (sum, item) => sum + (item.price * item.quantity),
+    0
+  );
+  const shipping = 3.0;
   const total = subtotal + shipping;
   const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleCompleteOrder = () => {
-    // Process order logic here
     clearCart();
     navigate('/order-confirmation');
   };
@@ -1858,8 +2101,8 @@ const CheckoutPage = () => {
         <div className={styles.emptyCartContent}>
           <h2>Your cart is empty</h2>
           <p>Looks like you haven't added anything to your cart yet.</p>
-          <button 
-            onClick={() => navigate('/')} 
+          <button
+            onClick={() => navigate('/')}
             className={styles.continueShoppingButton}
           >
             Continue Shopping
@@ -1875,8 +2118,8 @@ const CheckoutPage = () => {
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Contact</h1>
           <div className={styles.formGroup}>
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Email or mobile phone number"
               className={styles.textInput}
               required
@@ -1903,46 +2146,46 @@ const CheckoutPage = () => {
 
           <div className={styles.nameRow}>
             <div className={styles.formGroup}>
-              <input 
-                type="text" 
-                placeholder="First name" 
+              <input
+                type="text"
+                placeholder="First name"
                 className={styles.textInput}
-                required 
+                required
               />
             </div>
             <div className={styles.formGroup}>
-              <input 
-                type="text" 
-                placeholder="Last name" 
+              <input
+                type="text"
+                placeholder="Last name"
                 className={styles.textInput}
-                required 
+                required
               />
             </div>
           </div>
 
           <div className={styles.formGroup}>
-            <input 
-              type="text" 
-              placeholder="Address" 
+            <input
+              type="text"
+              placeholder="Address"
               className={styles.textInput}
-              required 
+              required
             />
           </div>
 
           <div className={styles.locationRow}>
             <div className={styles.formGroup}>
-              <input 
-                type="text" 
-                placeholder="City" 
+              <input
+                type="text"
+                placeholder="City"
                 className={styles.textInput}
-                required 
+                required
               />
             </div>
             <div className={styles.formGroup}>
-              <input 
-                type="text" 
-                placeholder="Postal code (optional)" 
-                className={styles.textInput} 
+              <input
+                type="text"
+                placeholder="Postal code (optional)"
+                className={styles.textInput}
               />
             </div>
           </div>
@@ -1951,11 +2194,11 @@ const CheckoutPage = () => {
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Shipping method</h1>
           <label className={styles.radioOption}>
-            <input 
-              type="radio" 
-              name="shipping" 
-              defaultChecked 
-              className={styles.radioInput} 
+            <input
+              type="radio"
+              name="shipping"
+              defaultChecked
+              className={styles.radioInput}
             />
             <span className={styles.customRadio}></span>
             <div className={styles.optionContent}>
@@ -1972,20 +2215,25 @@ const CheckoutPage = () => {
 
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Payment</h1>
-          <p className={styles.paymentNote}>All transactions are secure and encrypted.</p>
+          <p className={styles.paymentNote}>
+            All transactions are secure and encrypted.
+          </p>
           <label className={styles.radioOption}>
-            <input 
-              type="radio" 
-              name="payment" 
-              className={styles.radioInput} 
+            <input
+              type="radio"
+              name="payment"
+              className={styles.radioInput}
               required
-              defaultChecked  // ✅ Add this
+              defaultChecked
             />
             <span className={styles.customRadio}></span>
             <div className={styles.optionContent}>
-              <span className={styles.optionTitle}>Cash on Delivery (COD)</span>
+              <span className={styles.optionTitle}>
+                Cash on Delivery (COD)
+              </span>
               <p className={styles.optionDescription}>
-                Pay in cash when your order is delivered. Available for orders within Lebanon.
+                Pay in cash when your order is delivered. Available for orders
+                within Lebanon.
               </p>
             </div>
           </label>
@@ -1998,14 +2246,17 @@ const CheckoutPage = () => {
           <div className={styles.itemsCount}>
             {itemCount} {itemCount === 1 ? 'item' : 'items'}
           </div>
-          
+
           <div className={styles.itemsList}>
             {basketItems.map((item) => (
-              <div key={`${item.id}-${item.size}`} className={styles.summaryItem}>
+              <div
+                key={`${item.id}-${item.size}`}
+                className={styles.summaryItem}
+              >
                 <div className={styles.itemImageContainer}>
-                  <img 
-                    src={`http://localhost:5000/${item.image_path}`} 
-                    alt={item.name} 
+                  <img
+                    src={`${API_URL}/${item.image_path}`}
+                    alt={item.name}
                     className={styles.itemImage}
                     onError={(e) => {
                       e.target.onerror = null;
@@ -2018,20 +2269,22 @@ const CheckoutPage = () => {
                   <div className={styles.itemName}>{item.name}</div>
                   <div className={styles.itemSize}>{item.size}</div>
                 </div>
-                <div className={styles.itemPrice}>${(item.price * item.quantity).toFixed(2)}</div>
+                <div className={styles.itemPrice}>
+                  ${(item.price * item.quantity).toFixed(2)}
+                </div>
               </div>
             ))}
           </div>
-          
+
           <div className={styles.discountSection}>
-            <input 
-              type="text" 
-              placeholder="Discount code or gift card" 
+            <input
+              type="text"
+              placeholder="Discount code or gift card"
               className={styles.discountInput}
             />
             <button className={styles.applyButton}>Apply</button>
           </div>
-          
+
           <div className={styles.priceBreakdown}>
             <div className={styles.priceRow}>
               <span>Subtotal</span>
@@ -2046,8 +2299,8 @@ const CheckoutPage = () => {
               <span>${total.toFixed(2)}</span>
             </div>
           </div>
-          
-          <button 
+
+          <button
             className={styles.completeButton}
             onClick={handleCompleteOrder}
           >

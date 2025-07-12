@@ -1868,6 +1868,391 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useState, useEffect, useRef } from 'react';
+// import { Link } from 'react-router-dom';
+// import {
+//   AiOutlineShoppingCart,
+//   AiOutlineMenu,
+//   AiOutlineClose,
+//   AiOutlineSearch
+// } from 'react-icons/ai';
+// import { useBasket } from '../../context/BasketProvider';
+// import '../../../src/styles/partials/components/_header.scss';
+
+// const Header = () => {
+//   const [isSticky, setIsSticky] = useState(false);
+//   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+//   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [mobileSearchTerm, setMobileSearchTerm] = useState('');
+//   const [searchResults, setSearchResults] = useState([]);
+//   const [mobileSearchResults, setMobileSearchResults] = useState([]);
+//   const [showDropdown, setShowDropdown] = useState(false);
+  
+//   const inputRef = useRef(null);
+//   const mobileInputRef = useRef(null);
+//   const cartRef = useRef(null);
+
+//   const { basketItems, openSidebar } = useBasket();
+
+//   const menuCategories = [
+//     { id: 1, name: 'All Perfumes', path: '/perfumes' },
+//     { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
+//     { id: 3, name: 'Women Perfumes', path: '/perfumes/women' },
+//     { id: 4, name: 'Sale', path: '/sale' },
+//   ];
+
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       setIsSticky(window.scrollY >= 50);
+//     };
+//     window.addEventListener('scroll', handleScroll);
+//     return () => window.removeEventListener('scroll', handleScroll);
+//   }, []);
+
+//   useEffect(() => {
+//     const fetchSearchResults = async () => {
+//       if (searchTerm.trim().length > 0) {
+//         try {
+//           const response = await fetch(
+//             `http://localhost:5000/api/products/search?q=${encodeURIComponent(searchTerm)}`
+//           );
+//           const data = await response.json();
+//           setSearchResults(data);
+//           setShowDropdown(true);
+//         } catch (error) {
+//           setShowDropdown(false);
+//         }
+//       } else {
+//         setShowDropdown(false);
+//       }
+//     };
+
+//     const timer = setTimeout(() => {
+//       fetchSearchResults();
+//     }, 300);
+
+//     return () => clearTimeout(timer);
+//   }, [searchTerm]);
+
+//   useEffect(() => {
+//     const fetchMobileSearchResults = async () => {
+//       if (mobileSearchTerm.trim().length > 0) {
+//         try {
+//           const response = await fetch(
+//             `http://localhost:5000/api/products/search?q=${encodeURIComponent(mobileSearchTerm)}`
+//           );
+//           const data = await response.json();
+//           setMobileSearchResults(data);
+//         } catch (error) {
+//           setMobileSearchResults([]);
+//         }
+//       } else {
+//         setMobileSearchResults([]);
+//       }
+//     };
+
+//     const timer = setTimeout(() => {
+//       fetchMobileSearchResults();
+//     }, 300);
+
+//     return () => clearTimeout(timer);
+//   }, [mobileSearchTerm]);
+
+//   const handleMobileMenuClick = (e) => {
+//     e.stopPropagation();
+//     setMobileMenuOpen(!mobileMenuOpen);
+//     setMobileSearchOpen(false);
+//   };
+
+//   const handleMobileSearchClick = (e) => {
+//     e.stopPropagation();
+//     setMobileSearchOpen(true);
+//     setMobileMenuOpen(false);
+//     setTimeout(() => {
+//       mobileInputRef.current?.focus();
+//     }, 100);
+//   };
+
+//   const closeMobileSearch = (e) => {
+//     e?.stopPropagation();
+//     setMobileSearchOpen(false);
+//     setMobileSearchTerm('');
+//   };
+
+//   const handleMenuItemClick = () => {
+//     setMobileMenuOpen(false);
+//     setMobileSearchOpen(false);
+//   };
+
+//   const handleBasketClick = (e) => {
+//     e.stopPropagation();
+//     openSidebar();
+//     setMobileSearchOpen(false);
+//     setMobileMenuOpen(false);
+//   };
+
+//   const handleSearchItemClick = (item) => {
+//     setSearchTerm('');
+//     setMobileSearchTerm('');
+//     setShowDropdown(false);
+//     setMobileSearchOpen(false);
+//   };
+
+//   return (
+//     <header id="header" className={isSticky ? 'sticky' : ''}>
+//       <div className="container">
+//         <div className="navbar">
+//           {/* Mobile toggle - First element for left alignment */}
+//           <div 
+//             className="hamburger" 
+//             onClick={handleMobileMenuClick}
+//             aria-label="Toggle menu"
+//           >
+//             {mobileMenuOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
+//           </div>
+
+//           {/* Logo */}
+//           <h1 className="nav_logo">
+//             <Link to="/" onClick={handleMenuItemClick}>
+//               platinumPerfumes
+//             </Link>
+//           </h1>
+
+//           {/* Desktop Search */}
+//           <div className="search-container">
+//             <input
+//               type="text"
+//               placeholder="Search perfumes..."
+//               value={searchTerm}
+//               onChange={(e) => setSearchTerm(e.target.value)}
+//               ref={inputRef}
+//               className="search-input"
+//               aria-label="Search products"
+//             />
+//             {showDropdown && (
+//               <div className="search-dropdown">
+//                 {searchResults.length > 0 ? (
+//                   searchResults.slice(0, 6).map((item) => (
+//                     <Link
+//                       key={item.id}
+//                       to={`/product-details/${item.id}`}
+//                       className="dropdown-item"
+//                       onClick={() => handleSearchItemClick(item)}
+//                     >
+//                       <img
+//                         src={`http://localhost:5000/${item.image_path}`}
+//                         alt={item.name}
+//                         className="dropdown-img"
+//                         onError={(e) => {
+//                           e.target.src = 'https://via.placeholder.com/60';
+//                         }}
+//                       />
+//                       <div className="dropdown-text">
+//                         <p>{item.name}</p>
+//                         <span className="dropdown-price">
+//                           ${parseFloat(item.price).toFixed(2)}
+//                         </span>
+//                       </div>
+//                     </Link>
+//                   ))
+//                 ) : (
+//                   <div className="dropdown-item no-result">
+//                     <span className="no-result-icon">🔍</span>
+//                     <span>No results found for "{searchTerm}"</span>
+//                   </div>
+//                 )}
+//               </div>
+//             )}
+//           </div>
+
+//           {/* Mobile Search Icon */}
+//           <div
+//             className="nav-search-mobile"
+//             onClick={handleMobileSearchClick}
+//             aria-label="Open search"
+//           >
+//             <AiOutlineSearch />
+//           </div>
+
+//           {/* Shopping Cart */}
+//           <div
+//             className="nav_cart"
+//             onClick={handleBasketClick}
+//             ref={cartRef}
+//             aria-label="Shopping cart"
+//           >
+//             <AiOutlineShoppingCart />
+//             {basketItems.length > 0 && (
+//               <span className="cart-badge">{basketItems.length}</span>
+//             )}
+//           </div>
+//         </div>
+
+//         {/* Desktop Menu Categories */}
+//         <div className="desktop-menu-container">
+//           <nav className="menu-nav" aria-label="Main navigation">
+//             <ul className="menu-list">
+//               {menuCategories.map((category) => (
+//                 <li
+//                   key={category.id}
+//                   className={`menu-item ${
+//                     category.name === 'Sale' ? 'sale-item' : ''
+//                   }`}
+//                 >
+//                   <Link 
+//                     to={category.path} 
+//                     className="menu-link"
+//                     onClick={handleMenuItemClick}
+//                   >
+//                     {category.name}
+//                   </Link>
+//                 </li>
+//               ))}
+//             </ul>
+//           </nav>
+//         </div>
+//       </div>
+
+//       {/* Mobile Search Sidebar */}
+//       {mobileSearchOpen && (
+//         <div className="mobile-search-sidebar">
+//           <div className="search-header">
+//             <h2>Search Products</h2>
+//             <button
+//               className="close-search"
+//               onClick={closeMobileSearch}
+//               aria-label="Close search"
+//             >
+//               <AiOutlineClose />
+//             </button>
+//           </div>
+//           <input
+//             type="text"
+//             placeholder="Search perfumes..."
+//             value={mobileSearchTerm}
+//             onChange={(e) => setMobileSearchTerm(e.target.value)}
+//             ref={mobileInputRef}
+//             className="mobile-search-input"
+//             aria-label="Mobile search input"
+//           />
+//           <div className="mobile-search-results">
+//             {mobileSearchResults.length > 0 ? (
+//               mobileSearchResults.slice(0, 6).map((item) => (
+//                 <Link
+//                   key={item.id}
+//                   to={`/product-details/${item.id}`}
+//                   className="mobile-dropdown-item"
+//                   onClick={() => handleSearchItemClick(item)}
+//                 >
+//                   <img
+//                     src={`http://localhost:5000/${item.image_path}`}
+//                     alt={item.name}
+//                     className="mobile-dropdown-img"
+//                     onError={(e) => {
+//                       e.target.src = 'https://via.placeholder.com/60';
+//                     }}
+//                   />
+//                   <div className="mobile-dropdown-text">
+//                     <p>{item.name}</p>
+//                     <span className="mobile-dropdown-price">
+//                       ${parseFloat(item.price).toFixed(2)}
+//                     </span>
+//                   </div>
+//                 </Link>
+//               ))
+//             ) : (
+//               mobileSearchTerm && (
+//                 <div className="mobile-no-results">
+//                   <span className="no-results-icon">🔍</span>
+//                   <span>No results found for "{mobileSearchTerm}"</span>
+//                 </div>
+//               )
+//             )}
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Mobile Menu */}
+//       {mobileMenuOpen && (
+//         <div className="mobile-menu-container">
+//           <nav className="mobile-menu-nav" aria-label="Mobile navigation">
+//             <ul className="mobile-menu-list">
+//               {menuCategories.map((category) => (
+//                 <li
+//                   key={category.id}
+//                   className={`mobile-menu-item ${
+//                     category.name === 'Sale' ? 'sale-item' : ''
+//                   }`}
+//                   onClick={handleMenuItemClick}
+//                 >
+//                   <Link to={category.path} className="mobile-menu-link">
+//                     {category.name}
+//                   </Link>
+//                 </li>
+//               ))}
+//             </ul>
+//           </nav>
+//         </div>
+//       )}
+//     </header>
+//   );
+// };
+
+// export default Header;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -1888,12 +2273,14 @@ const Header = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [mobileSearchResults, setMobileSearchResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  
+
   const inputRef = useRef(null);
   const mobileInputRef = useRef(null);
   const cartRef = useRef(null);
 
   const { basketItems, openSidebar } = useBasket();
+
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const menuCategories = [
     { id: 1, name: 'All Perfumes', path: '/perfumes' },
@@ -1912,15 +2299,15 @@ const Header = () => {
 
   useEffect(() => {
     const fetchSearchResults = async () => {
-      if (searchTerm.trim().length > 0) {
+      if (searchTerm.trim()) {
         try {
           const response = await fetch(
-            `http://localhost:5000/api/products/search?q=${encodeURIComponent(searchTerm)}`
+            `${API_URL}/api/products/search?q=${encodeURIComponent(searchTerm)}`
           );
           const data = await response.json();
           setSearchResults(data);
           setShowDropdown(true);
-        } catch (error) {
+        } catch {
           setShowDropdown(false);
         }
       } else {
@@ -1928,23 +2315,20 @@ const Header = () => {
       }
     };
 
-    const timer = setTimeout(() => {
-      fetchSearchResults();
-    }, 300);
-
+    const timer = setTimeout(fetchSearchResults, 300);
     return () => clearTimeout(timer);
-  }, [searchTerm]);
+  }, [searchTerm, API_URL]);
 
   useEffect(() => {
     const fetchMobileSearchResults = async () => {
-      if (mobileSearchTerm.trim().length > 0) {
+      if (mobileSearchTerm.trim()) {
         try {
           const response = await fetch(
-            `http://localhost:5000/api/products/search?q=${encodeURIComponent(mobileSearchTerm)}`
+            `${API_URL}/api/products/search?q=${encodeURIComponent(mobileSearchTerm)}`
           );
           const data = await response.json();
           setMobileSearchResults(data);
-        } catch (error) {
+        } catch {
           setMobileSearchResults([]);
         }
       } else {
@@ -1952,12 +2336,9 @@ const Header = () => {
       }
     };
 
-    const timer = setTimeout(() => {
-      fetchMobileSearchResults();
-    }, 300);
-
+    const timer = setTimeout(fetchMobileSearchResults, 300);
     return () => clearTimeout(timer);
-  }, [mobileSearchTerm]);
+  }, [mobileSearchTerm, API_URL]);
 
   const handleMobileMenuClick = (e) => {
     e.stopPropagation();
@@ -1969,9 +2350,7 @@ const Header = () => {
     e.stopPropagation();
     setMobileSearchOpen(true);
     setMobileMenuOpen(false);
-    setTimeout(() => {
-      mobileInputRef.current?.focus();
-    }, 100);
+    setTimeout(() => mobileInputRef.current?.focus(), 100);
   };
 
   const closeMobileSearch = (e) => {
@@ -1992,7 +2371,7 @@ const Header = () => {
     setMobileMenuOpen(false);
   };
 
-  const handleSearchItemClick = (item) => {
+  const handleSearchItemClick = () => {
     setSearchTerm('');
     setMobileSearchTerm('');
     setShowDropdown(false);
@@ -2003,20 +2382,14 @@ const Header = () => {
     <header id="header" className={isSticky ? 'sticky' : ''}>
       <div className="container">
         <div className="navbar">
-          {/* Mobile toggle - First element for left alignment */}
-          <div 
-            className="hamburger" 
-            onClick={handleMobileMenuClick}
-            aria-label="Toggle menu"
-          >
+          {/* Hamburger */}
+          <div className="hamburger" onClick={handleMobileMenuClick}>
             {mobileMenuOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
           </div>
 
           {/* Logo */}
           <h1 className="nav_logo">
-            <Link to="/" onClick={handleMenuItemClick}>
-              platinumPerfumes
-            </Link>
+            <Link to="/" onClick={handleMenuItemClick}>platinumPerfumes</Link>
           </h1>
 
           {/* Desktop Search */}
@@ -2028,7 +2401,6 @@ const Header = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               ref={inputRef}
               className="search-input"
-              aria-label="Search products"
             />
             {showDropdown && (
               <div className="search-dropdown">
@@ -2038,10 +2410,10 @@ const Header = () => {
                       key={item.id}
                       to={`/product-details/${item.id}`}
                       className="dropdown-item"
-                      onClick={() => handleSearchItemClick(item)}
+                      onClick={handleSearchItemClick}
                     >
                       <img
-                        src={`http://localhost:5000/${item.image_path}`}
+                        src={`${API_URL}/${item.image_path}`}
                         alt={item.name}
                         className="dropdown-img"
                         onError={(e) => {
@@ -2050,9 +2422,7 @@ const Header = () => {
                       />
                       <div className="dropdown-text">
                         <p>{item.name}</p>
-                        <span className="dropdown-price">
-                          ${parseFloat(item.price).toFixed(2)}
-                        </span>
+                        <span className="dropdown-price">${parseFloat(item.price).toFixed(2)}</span>
                       </div>
                     </Link>
                   ))
@@ -2067,21 +2437,12 @@ const Header = () => {
           </div>
 
           {/* Mobile Search Icon */}
-          <div
-            className="nav-search-mobile"
-            onClick={handleMobileSearchClick}
-            aria-label="Open search"
-          >
+          <div className="nav-search-mobile" onClick={handleMobileSearchClick}>
             <AiOutlineSearch />
           </div>
 
-          {/* Shopping Cart */}
-          <div
-            className="nav_cart"
-            onClick={handleBasketClick}
-            ref={cartRef}
-            aria-label="Shopping cart"
-          >
+          {/* Cart Icon */}
+          <div className="nav_cart" onClick={handleBasketClick} ref={cartRef}>
             <AiOutlineShoppingCart />
             {basketItems.length > 0 && (
               <span className="cart-badge">{basketItems.length}</span>
@@ -2089,23 +2450,14 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Desktop Menu Categories */}
+        {/* Desktop Nav */}
         <div className="desktop-menu-container">
-          <nav className="menu-nav" aria-label="Main navigation">
+          <nav className="menu-nav">
             <ul className="menu-list">
-              {menuCategories.map((category) => (
-                <li
-                  key={category.id}
-                  className={`menu-item ${
-                    category.name === 'Sale' ? 'sale-item' : ''
-                  }`}
-                >
-                  <Link 
-                    to={category.path} 
-                    className="menu-link"
-                    onClick={handleMenuItemClick}
-                  >
-                    {category.name}
+              {menuCategories.map((cat) => (
+                <li key={cat.id} className={`menu-item ${cat.name === 'Sale' ? 'sale-item' : ''}`}>
+                  <Link to={cat.path} onClick={handleMenuItemClick} className="menu-link">
+                    {cat.name}
                   </Link>
                 </li>
               ))}
@@ -2119,11 +2471,7 @@ const Header = () => {
         <div className="mobile-search-sidebar">
           <div className="search-header">
             <h2>Search Products</h2>
-            <button
-              className="close-search"
-              onClick={closeMobileSearch}
-              aria-label="Close search"
-            >
+            <button className="close-search" onClick={closeMobileSearch}>
               <AiOutlineClose />
             </button>
           </div>
@@ -2134,7 +2482,6 @@ const Header = () => {
             onChange={(e) => setMobileSearchTerm(e.target.value)}
             ref={mobileInputRef}
             className="mobile-search-input"
-            aria-label="Mobile search input"
           />
           <div className="mobile-search-results">
             {mobileSearchResults.length > 0 ? (
@@ -2143,10 +2490,10 @@ const Header = () => {
                   key={item.id}
                   to={`/product-details/${item.id}`}
                   className="mobile-dropdown-item"
-                  onClick={() => handleSearchItemClick(item)}
+                  onClick={handleSearchItemClick}
                 >
                   <img
-                    src={`http://localhost:5000/${item.image_path}`}
+                    src={`${API_URL}/${item.image_path}`}
                     alt={item.name}
                     className="mobile-dropdown-img"
                     onError={(e) => {
@@ -2155,9 +2502,7 @@ const Header = () => {
                   />
                   <div className="mobile-dropdown-text">
                     <p>{item.name}</p>
-                    <span className="mobile-dropdown-price">
-                      ${parseFloat(item.price).toFixed(2)}
-                    </span>
+                    <span className="mobile-dropdown-price">${parseFloat(item.price).toFixed(2)}</span>
                   </div>
                 </Link>
               ))
@@ -2176,18 +2521,16 @@ const Header = () => {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="mobile-menu-container">
-          <nav className="mobile-menu-nav" aria-label="Mobile navigation">
+          <nav className="mobile-menu-nav">
             <ul className="mobile-menu-list">
-              {menuCategories.map((category) => (
+              {menuCategories.map((cat) => (
                 <li
-                  key={category.id}
-                  className={`mobile-menu-item ${
-                    category.name === 'Sale' ? 'sale-item' : ''
-                  }`}
+                  key={cat.id}
+                  className={`mobile-menu-item ${cat.name === 'Sale' ? 'sale-item' : ''}`}
                   onClick={handleMenuItemClick}
                 >
-                  <Link to={category.path} className="mobile-menu-link">
-                    {category.name}
+                  <Link to={cat.path} className="mobile-menu-link">
+                    {cat.name}
                   </Link>
                 </li>
               ))}
