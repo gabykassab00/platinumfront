@@ -1422,7 +1422,7 @@
   margin-bottom: 1rem;
   gap: 0.5rem;
 }
-.mobileFilterButton,
+/* .mobileFilterButton,
 .mobileSortButton {
   flex: 1;
   display: flex;
@@ -1435,6 +1435,34 @@
   font-size: 0.9rem;
   color: #333;
   cursor: pointer;
+} */
+
+.mobileFilterButton,
+.mobileSortButton {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #1e1e1e; /* Elegant dark background */
+  color: #fff;          /* White text */
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: 1px solid #333; /* Subtle border */
+  border-radius: 12px;    /* Softer corners */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.mobileFilterButton:hover,
+.mobileSortButton:hover {
+  background: #2a2a2a;
+  transform: translateY(-1px);
+}
+
+.mobileFilterButton:active,
+.mobileSortButton:active {
+  transform: scale(0.97);
 }
 
 /* Mobile Panels */
