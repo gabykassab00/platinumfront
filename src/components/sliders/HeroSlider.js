@@ -162,7 +162,7 @@ const HeroSlider = () => {
               <h3>{title}</h3>
               <h1>{tagline}</h1>
 
-              {/* ✅ Dynamic path from data */}
+              {/* ✅ Go directly to the path */}
               <Link to={path} className="btn">
                 Shop Now
               </Link>
