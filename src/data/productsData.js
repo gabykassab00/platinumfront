@@ -21,7 +21,7 @@ const productsData = [
         quantity: 1,
         ratings: 1234,
         rateCount: 5,
-        path: "/product-details/",
+        path: "/perfumes/men",
     },
     {
         id: 124,
