@@ -1036,43 +1036,195 @@
 
 
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
+// import styles from '../style/ProductCard.module.css';
+// import { FaShoppingCart } from 'react-icons/fa';
+// import { useBasket } from '../context/BasketProvider';
+// import { useNavigate } from 'react-router-dom';
+
+// const ProductCard = ({ product }) => {
+//   const { addItem, openSidebar } = useBasket();
+//   const [selectedSize, setSelectedSize] = useState(null);
+//   const [sizeError, setSizeError] = useState(false);
+//   const navigate = useNavigate();
+
+//   const API_URL = process.env.REACT_APP_API_URL;
+//   const imageUrl = `${API_URL}/${product.image_path}`;
+//   const basePrice = parseFloat(product.price);
+//   const discount = product.discount || 0;
+//   const isMultipleType = product.type === 'multiple';
+
+//   const getPriceForSize = (size) => {
+//     switch (size) {
+//       case 35:
+//         return 7;
+//       case 80:
+//         return 15;
+//       case 100:
+//         return basePrice;
+//       default:
+//         return basePrice;
+//     }
+//   };
+
+//   const currentPrice = selectedSize ? getPriceForSize(selectedSize) : basePrice;
+
+//   const originalPrice =
+//     discount > 0
+//       ? (basePrice / (1 - discount)).toFixed(2)
+//       : basePrice.toFixed(2);
+
+//   const handleAddToBasket = () => {
+//     if (isMultipleType && !selectedSize) {
+//       setSizeError(true);
+//       return;
+//     }
+
+//     const productToAdd = isMultipleType
+//       ? {
+//           ...product,
+//           size: `${selectedSize}ml`,
+//           price: currentPrice.toFixed(2),
+//           sizeValue: selectedSize,
+//         }
+//       : {
+//           ...product,
+//           price: basePrice.toFixed(2),
+//         };
+
+//     addItem(productToAdd);
+//     openSidebar();
+//     setSizeError(false);
+//   };
+
+//   const handleSizeSelect = (size) => {
+//     setSelectedSize(size);
+//     setSizeError(false);
+//   };
+
+//   const handleImageClick = () => {
+//     navigate(`/product-details/${product.id}`);
+//   };
+
+//   return (
+//     <div className={styles.card}>
+//       <div className={styles.imageContainer} onClick={handleImageClick}>
+//         <img
+//           src={imageUrl}
+//           alt={product.name}
+//           onError={(e) => {
+//             e.target.onerror = null;
+//             e.target.src = 'https://via.placeholder.com/150';
+//           }}
+//         />
+//         {discount > 0 && (
+//           <div className={styles.discountBadge}>
+//             -{Math.round(discount * 100)}%
+//           </div>
+//         )}
+//       </div>
+
+//       {isMultipleType && (
+//         <div className={styles.priceButtons}>
+//           {[35, 80, 100].map((size) => (
+//             <div
+//               key={size}
+//               className={`${styles.flipButton} ${
+//                 selectedSize === size ? styles.selectedSize : ''
+//               }`}
+//               onClick={() => handleSizeSelect(size)}
+//             >
+//               <div className={styles.flipInner}>
+//                 <div className={styles.flipFront}>{size}ml</div>
+//                 <div className={styles.flipBack}>
+//                   {size === 35
+//                     ? 'Small'
+//                     : size === 80
+//                     ? 'Medium'
+//                     : 'Large'}
+//                 </div>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       )}
+
+//       {isMultipleType && sizeError && (
+//         <div className={styles.errorMessage}>
+//           Please select a size before adding to cart
+//         </div>
+//       )}
+
+//       <div className={styles.addToCartButton}>
+//         <div className={styles.flipButton} onClick={handleAddToBasket}>
+//           <div className={styles.flipInner}>
+//             <div className={styles.flipFront}>Add to Cart</div>
+//             <div className={styles.flipBack}>
+//               <FaShoppingCart />
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className={styles.details}>
+//         <h3 className={styles.name}>{product.name}</h3>
+//         <div className={styles.price}>
+//           {discount > 0 && (
+//             <span className={styles.original}>${originalPrice}</span>
+//           )}
+//           <span className={styles.current}>
+//             $
+//             {isMultipleType && selectedSize
+//               ? currentPrice.toFixed(2)
+//               : basePrice.toFixed(2)}
+//           </span>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ProductCard;
+
+
+
+
+
+
+
+
+import React, { useState, useMemo, useCallback } from 'react';
 import styles from '../style/ProductCard.module.css';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useBasket } from '../context/BasketProvider';
 import { useNavigate } from 'react-router-dom';
 
-const ProductCard = ({ product }) => {
+const ProductCard = React.memo(({ product }) => {
   const { addItem, openSidebar } = useBasket();
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeError, setSizeError] = useState(false);
   const navigate = useNavigate();
 
   const API_URL = process.env.REACT_APP_API_URL;
-  const imageUrl = `${API_URL}/${product.image_path}`;
-  const basePrice = parseFloat(product.price);
+  const imageUrl = useMemo(() => `${API_URL}/${product.image_path}`, [product.image_path, API_URL]);
+
+  const basePrice = useMemo(() => parseFloat(product.price), [product.price]);
   const discount = product.discount || 0;
   const isMultipleType = product.type === 'multiple';
 
-  const getPriceForSize = (size) => {
+  const getPriceForSize = useCallback((size) => {
     switch (size) {
-      case 35:
-        return 7;
-      case 80:
-        return 15;
-      case 100:
-        return basePrice;
-      default:
-        return basePrice;
+      case 35: return 7;
+      case 80: return 15;
+      case 100: return basePrice;
+      default: return basePrice;
     }
-  };
+  }, [basePrice]);
 
   const currentPrice = selectedSize ? getPriceForSize(selectedSize) : basePrice;
-
-  const originalPrice =
-    discount > 0
-      ? (basePrice / (1 - discount)).toFixed(2)
-      : basePrice.toFixed(2);
+  const originalPrice = useMemo(() => (
+    discount > 0 ? (basePrice / (1 - discount)).toFixed(2) : basePrice.toFixed(2)
+  ), [basePrice, discount]);
 
   const handleAddToBasket = () => {
     if (isMultipleType && !selectedSize) {
@@ -1080,17 +1232,11 @@ const ProductCard = ({ product }) => {
       return;
     }
 
-    const productToAdd = isMultipleType
-      ? {
-          ...product,
-          size: `${selectedSize}ml`,
-          price: currentPrice.toFixed(2),
-          sizeValue: selectedSize,
-        }
-      : {
-          ...product,
-          price: basePrice.toFixed(2),
-        };
+    const productToAdd = {
+      ...product,
+      price: isMultipleType ? currentPrice.toFixed(2) : basePrice.toFixed(2),
+      ...(isMultipleType && { size: `${selectedSize}ml`, sizeValue: selectedSize }),
+    };
 
     addItem(productToAdd);
     openSidebar();
@@ -1112,6 +1258,7 @@ const ProductCard = ({ product }) => {
         <img
           src={imageUrl}
           alt={product.name}
+          loading="lazy"
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = 'https://via.placeholder.com/150';
@@ -1129,19 +1276,13 @@ const ProductCard = ({ product }) => {
           {[35, 80, 100].map((size) => (
             <div
               key={size}
-              className={`${styles.flipButton} ${
-                selectedSize === size ? styles.selectedSize : ''
-              }`}
+              className={`${styles.flipButton} ${selectedSize === size ? styles.selectedSize : ''}`}
               onClick={() => handleSizeSelect(size)}
             >
               <div className={styles.flipInner}>
                 <div className={styles.flipFront}>{size}ml</div>
                 <div className={styles.flipBack}>
-                  {size === 35
-                    ? 'Small'
-                    : size === 80
-                    ? 'Medium'
-                    : 'Large'}
+                  {size === 35 ? 'Small' : size === 80 ? 'Medium' : 'Large'}
                 </div>
               </div>
             </div>
@@ -1182,9 +1323,6 @@ const ProductCard = ({ product }) => {
       </div>
     </div>
   );
-};
+});
 
 export default ProductCard;
-
-
-
