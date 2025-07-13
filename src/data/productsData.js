@@ -151,7 +151,7 @@ const productsData = [
         quantity: 1,
         ratings: 679,
         rateCount: 4,
-        path: "/product-details/",
+        path: "/perfumes/women" ,
     },
     {
         id: 96,
