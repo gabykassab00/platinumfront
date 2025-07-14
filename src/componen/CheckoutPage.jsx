@@ -2368,11 +2368,15 @@ const CheckoutPage = () => {
   const handleCompleteOrder = async () => {
     if (!validateForm()) return;
 
-    const payload = {
-      ...formData,
-      items: basketItems,
-      total: total.toFixed(2)
-    };
+const payload = {
+  to_name: `${formData.firstName} ${formData.lastName}`,
+  to_email: formData.email,
+  address: formData.address,
+  city: formData.city,
+  items: basketItems,
+  total: Number(total)
+};
+
 
     try {
       setSending(true);
