@@ -2624,20 +2624,27 @@ const CheckoutPage = () => {
       item_list: itemList
     };
 
-    setSending(true);
+    console.log('📦 Sending EmailJS request with:', {
+      service: process.env.REACT_APP_EMAILJS_SERVICE_ID,
+      template: process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+      publicKey: process.env.REACT_APP_EMAILJS_PUBLIC_KEY,
+      templateParams
+    });
+
     try {
-      await emailjs.send(
+      setSending(true);
+      const result = await emailjs.send(
         process.env.REACT_APP_EMAILJS_SERVICE_ID,
         process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
         templateParams,
         process.env.REACT_APP_EMAILJS_PUBLIC_KEY
       );
-
+      console.log('✅ Email sent successfully:', result.text);
       clearCart();
       navigate('/order-confirmation');
     } catch (error) {
       console.error('❌ Failed to send email:', error);
-      alert('There was an error sending your order confirmation. Please try again.');
+      alert('There was an error sending your order confirmation. Please check your email or try again.');
     } finally {
       setSending(false);
     }
@@ -2660,12 +2667,13 @@ const CheckoutPage = () => {
   return (
     <div className={styles.checkoutContainer}>
       <div className={styles.leftColumn}>
+        {/* Contact Section */}
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Contact</h1>
           <div className={styles.formGroup}>
             <input
               type="email"
-              placeholder="Email or mobile phone number"
+              placeholder="Email"
               className={styles.textInput}
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
@@ -2674,6 +2682,7 @@ const CheckoutPage = () => {
           </div>
         </section>
 
+        {/* Delivery Section */}
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Delivery</h1>
           <div className={styles.nameRow}>
@@ -2722,6 +2731,7 @@ const CheckoutPage = () => {
           </div>
         </section>
 
+        {/* Shipping Method */}
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Shipping Method</h1>
           <label className={styles.radioOption}>
@@ -2734,6 +2744,7 @@ const CheckoutPage = () => {
           </label>
         </section>
 
+        {/* Payment Method */}
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Payment</h1>
           <label className={styles.radioOption}>
@@ -2747,6 +2758,7 @@ const CheckoutPage = () => {
         </section>
       </div>
 
+      {/* Right Column: Summary */}
       <div className={styles.rightColumn}>
         <div className={styles.summaryCard}>
           <h2 className={styles.summaryTitle}>Order Summary</h2>
@@ -2767,7 +2779,9 @@ const CheckoutPage = () => {
                   <div className={styles.itemName}>{item.name}</div>
                   <div className={styles.itemSize}>{item.size}</div>
                 </div>
-                <div className={styles.itemPrice}>${(item.price * item.quantity).toFixed(2)}</div>
+                <div className={styles.itemPrice}>
+                  ${(item.price * item.quantity).toFixed(2)}
+                </div>
               </div>
             ))}
           </div>
