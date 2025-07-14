@@ -2376,7 +2376,8 @@ const CheckoutPage = () => {
 
     try {
       setSending(true);
-      const response = await fetch(`${API_URL}/api/email/send`, {
+      // const response = await fetch(`${API_URL}/api/email/send`,
+      const response = await fetch(`${API_URL}/api/email/send-confirmation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
