@@ -300,7 +300,7 @@ const SortDropdown = ({ onSortChange }) => {
   const handleSortChange = (value) => {
     setSortMethod(value);
     setIsOpen(false);
-    onSortChange(value);
+    if (onSortChange) onSortChange(value);
   };
 
   return (
@@ -326,9 +326,9 @@ const SortDropdown = ({ onSortChange }) => {
       </div>
 
       {isOpen && (
-        <div className={styles.sortDropdown} role="listbox">
+        <ul className={styles.sortDropdown} role="listbox">
           {sortOptions.map((option) => (
-            <div
+            <li
               key={option.value}
               className={`${styles.sortOption} ${sortMethod === option.value ? styles.active : ''}`}
               role="option"
@@ -341,7 +341,7 @@ const SortDropdown = ({ onSortChange }) => {
                 }
               }}
             >
-              {option.label}
+              <span className={styles.optionText}>{option.label}</span>
               {sortMethod === option.value && (
                 <svg
                   className={styles.checkmark}
@@ -352,9 +352,9 @@ const SortDropdown = ({ onSortChange }) => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               )}
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );
