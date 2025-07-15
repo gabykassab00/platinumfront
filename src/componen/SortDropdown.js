@@ -262,7 +262,7 @@
 
 
 import React, { useState, useRef, useEffect } from 'react';
-import styles from './SortDropdown.module.css';
+import styles from '../style/SortDropdown.module.css';
 
 const SORT_OPTIONS = [
   { value: 'featured', label: 'Featured' },
