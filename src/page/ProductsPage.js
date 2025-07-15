@@ -2229,17 +2229,18 @@ const ProductsPage = ({ defaultGenre }) => {
     return "Premium Perfumes Collection";
   };
 
-  const getSortLabel = () => {
-    switch (selectedSort) {
-      case 'newest': return 'Newest to Oldest';
-      case 'oldest': return 'Oldest to Newest';
-      case 'price-low': return 'Price: Low to High';
-      case 'price-high': return 'Price: High to Low';
-      case 'a-z': return 'A-Z';
-      case 'z-a': return 'Z-A';
-      default: return 'Newest to Oldest';
-    }
-  };
+const getSortLabel = (sort = selectedSort) => {
+  switch (sort) {
+    case 'newest': return 'Newest to Oldest';
+    case 'oldest': return 'Oldest to Newest';
+    case 'price-low': return 'Price: Low to High';
+    case 'price-high': return 'Price: High to Low';
+    case 'a-z': return 'A-Z';
+    case 'z-a': return 'Z-A';
+    default: return 'Newest to Oldest';
+  }
+};
+
 
   if (isLoading) {
     return (
