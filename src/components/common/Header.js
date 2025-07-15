@@ -2263,7 +2263,7 @@ import {
 } from 'react-icons/ai';
 import { useBasket } from '../../context/BasketProvider';
 import '../../../src/styles/partials/components/_header.scss';
-
+import {logo} from  '../../../public/images/products/platinum.png';
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -2388,9 +2388,20 @@ const Header = () => {
           </div>
 
           {/* Logo */}
-          <h1 className="nav_logo">
+          {/* <h1 className="nav_logo">
             <Link to="/" onClick={handleMenuItemClick}>platinumPerfumes</Link>
-          </h1>
+          </h1> */}
+
+<div className="nav_logo">
+  <Link to="/" onClick={handleMenuItemClick}>
+    <img
+      src="/images/products/platinum.png"
+      alt="Platinum Perfumes Logo"
+      className="logo-img"
+    />
+  </Link>
+</div>
+
 
           {/* Desktop Search */}
           <div className="search-container">

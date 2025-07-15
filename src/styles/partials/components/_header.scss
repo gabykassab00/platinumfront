@@ -2190,3 +2190,16 @@
     justify-content: center;
   }
 }
+
+
+
+
+.nav_logo {
+  display: flex;
+  align-items: center;
+
+  .logo-img {
+    height: 36px; // adjust based on design
+    object-fit: contain;
+  }
+}
