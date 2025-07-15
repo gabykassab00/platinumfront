@@ -2263,7 +2263,6 @@ import {
 } from 'react-icons/ai';
 import { useBasket } from '../../context/BasketProvider';
 import '../../../src/styles/partials/components/_header.scss';
-import {logo} from  '../../../public/images/products/platinum.png';
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
