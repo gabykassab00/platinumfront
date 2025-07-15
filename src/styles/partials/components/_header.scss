@@ -2201,5 +2201,8 @@
   .logo-img {
     height: 120px; // adjust based on design
     object-fit: contain;
+      @media (max-width: 480px) {
+    height: 50px; // Smaller height for mobile
+  }
   }
 }
