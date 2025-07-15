@@ -591,9 +591,24 @@
 
 
 
-/* SortDropdown.module.css */
 
-/* Base Container Styles */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .container {
   position: relative;
   width: 100%;
@@ -603,7 +618,6 @@
   z-index: 100;
 }
 
-/* Trigger Button Styles */
 .trigger {
   display: flex;
   align-items: center;
@@ -629,7 +643,6 @@
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
-/* Label and Selected Option Styles */
 .label {
   font-size: 0.875rem;
   color: #64748b;
@@ -649,7 +662,6 @@
   text-align: left;
 }
 
-/* Arrow Icon Styles */
 .arrow {
   width: 1rem;
   height: 1rem;
@@ -665,7 +677,6 @@
   transform: rotate(180deg);
 }
 
-/* Dropdown Menu Styles */
 .dropdown {
   position: absolute;
   top: calc(100% + 0.5rem);
@@ -695,7 +706,6 @@
   }
 }
 
-/* Option Item Styles */
 .option {
   padding: 0.75rem 1rem;
   cursor: pointer;
@@ -722,14 +732,12 @@
   background-color: #eff6ff;
 }
 
-/* Checkmark Styles */
 .checkmark {
   color: #3b82f6;
   margin-left: 0.5rem;
   flex-shrink: 0;
 }
 
-/* Scrollbar Styles */
 .dropdown::-webkit-scrollbar {
   width: 6px;
 }
@@ -748,7 +756,6 @@
   background: #94a3b8;
 }
 
-/* Mobile Responsive Styles */
 @media (max-width: 480px) {
   .container {
     min-width: 100%;
@@ -773,7 +780,6 @@
   }
 }
 
-/* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   .trigger {
     background-color: #1e293b;
@@ -813,4 +819,4 @@
   .dropdown::-webkit-scrollbar-thumb {
     background: #475569;
   }
-}
+} 
