@@ -261,10 +261,10 @@
 
 
 
-import React, { useState, useEffect, useRef } from 'react';
-import styles from '../style/SortDropdown.module.css';
+import React, { useState, useRef, useEffect } from 'react';
+import styles from './SortDropdown.module.css';
 
-const sortOptions = [
+const SORT_OPTIONS = [
   { value: 'featured', label: 'Featured' },
   { value: 'a-z', label: 'Alphabetical (A-Z)' },
   { value: 'z-a', label: 'Alphabetical (Z-A)' },
@@ -275,82 +275,60 @@ const sortOptions = [
 ];
 
 const SortDropdown = ({ onSortChange }) => {
-  const [sortMethod, setSortMethod] = useState('featured');
+  const [selectedOption, setSelectedOption] = useState('featured');
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') setIsOpen(false);
-    };
-    document.addEventListener('keydown', handleEsc);
-    return () => document.removeEventListener('keydown', handleEsc);
-  }, []);
-
-  const handleSortChange = (value) => {
-    setSortMethod(value);
+  const handleOptionClick = (value) => {
+    setSelectedOption(value);
     setIsOpen(false);
     if (onSortChange) onSortChange(value);
   };
 
+  const selectedLabel = SORT_OPTIONS.find(opt => opt.value === selectedOption)?.label || 'Sort';
+
   return (
-    <div className={styles.sortContainer} ref={dropdownRef}>
-      <div 
-        className={styles.sortTrigger}
+    <div className={styles.container} ref={dropdownRef}>
+      <button
+        className={styles.trigger}
         onClick={() => setIsOpen(!isOpen)}
-        aria-haspopup="listbox"
         aria-expanded={isOpen}
+        aria-haspopup="listbox"
       >
-        <span className={styles.sortLabel}>Sort By:</span>
-        <span className={styles.currentSort}>
-          {sortOptions.find(opt => opt.value === sortMethod)?.label || 'Sort'}
+        <span className={styles.label}>Sort By:</span>
+        <span className={styles.selectedOption}>{selectedLabel}</span>
+        <span className={`${styles.arrow} ${isOpen ? styles.open : ''}`}>
+          ▼
         </span>
-        <svg
-          className={`${styles.chevron} ${isOpen ? styles.open : ''}`}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </div>
+      </button>
 
       {isOpen && (
-        <ul className={styles.sortDropdown} role="listbox">
-          {sortOptions.map((option) => (
+        <ul className={styles.dropdown} role="listbox">
+          {SORT_OPTIONS.map((option) => (
             <li
               key={option.value}
-              className={`${styles.sortOption} ${sortMethod === option.value ? styles.active : ''}`}
+              className={`${styles.option} ${selectedOption === option.value ? styles.active : ''}`}
               role="option"
-              aria-selected={sortMethod === option.value}
+              aria-selected={selectedOption === option.value}
+              onClick={() => handleOptionClick(option.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleOptionClick(option.value)}
               tabIndex={0}
-              onClick={() => handleSortChange(option.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  handleSortChange(option.value);
-                }
-              }}
             >
-              <span className={styles.optionText}>{option.label}</span>
-              {sortMethod === option.value && (
-                <svg
-                  className={styles.checkmark}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
+              {option.label}
+              {selectedOption === option.value && (
+                <span className={styles.checkmark}>✓</span>
               )}
             </li>
           ))}
