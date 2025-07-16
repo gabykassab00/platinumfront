@@ -2367,17 +2367,18 @@ const CheckoutPage = () => {
   const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleCompleteOrder = () => {
-    const templateParams = {
-      customer_email: 'test@example.com',
-      first_name: 'John',
-      last_name: 'Doe',
-      delivery_address: '123 Main St, Beirut',
-      order_total: total.toFixed(2),
-      product_name: basketItems[0]?.name || 'N/A',
-      product_size: basketItems[0]?.size || 'N/A',
-      product_quantity: basketItems[0]?.quantity || 1,
-      product_price: (basketItems[0]?.price || 0).toFixed(2)
-    };
+const templateParams = {
+  customer_email: 'test@example.com',
+  first_name: 'John',
+  last_name: 'Doe',
+  delivery_address: '123 Main St, Beirut',
+  order_total: total.toFixed(2),
+  product_name: basketItems[0]?.name || 'N/A',
+  product_size: basketItems[0]?.size || 'N/A',
+  product_quantity: basketItems[0]?.quantity || 1,
+  product_price: (Number(basketItems[0]?.price || 0) * Number(basketItems[0]?.quantity || 1)).toFixed(2)
+};
+
 
     emailjs.send(
       process.env.REACT_APP_EMAILJS_SERVICE_ID,
