@@ -3094,7 +3094,7 @@ const CheckoutPage = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.email.trim()) newErrors.email = 'Email is required.';
-    else if (!/^\S+@\S+\.\S+$/.test(formData.email)) newErrors.email = 'Invalid email.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Email is invalid.';
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required.';
     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required.';
     if (!formData.address.trim()) newErrors.address = 'Address is required.';
@@ -3108,42 +3108,50 @@ const CheckoutPage = () => {
     if (errors[field]) setErrors(prev => ({ ...prev, [field]: '' }));
   };
 
-  const buildOrderItemsHTML = () => {
-    return basketItems.map(item => `
-      <tr>
-        <td style="padding: 8px;">${item.name}</td>
-        <td style="padding: 8px;">${item.size || ''}</td>
-        <td style="padding: 8px;">${item.quantity}</td>
-        <td style="padding: 8px;">$${(item.price * item.quantity).toFixed(2)}</td>
-      </tr>
-    `).join('');
-  };
-
-  const handleCompleteOrder = async () => {
-    if (!validateForm()) return;
-
-    const templateParams = {
+  const prepareTemplateParams = () => {
+    return {
       customer_email: formData.email,
       first_name: formData.firstName,
       last_name: formData.lastName,
       delivery_address: `${formData.address}, ${formData.city}`,
       order_total: total.toFixed(2),
-      order_items: buildOrderItemsHTML()
+      order_items: basketItems.map(item => ({
+        product_name: item.name,
+        product_size: item.size || 'N/A',
+        product_quantity: item.quantity,
+        product_price: (item.price * item.quantity).toFixed(2),
+      }))
     };
+  };
+
+  const handleCompleteOrder = async () => {
+    console.log("🟡 handleCompleteOrder triggered");
+    if (!validateForm()) return;
 
     try {
       setSending(true);
-      await emailjs.send(
+
+      const templateParams = prepareTemplateParams();
+      console.log("📬 ENV:", {
+        service: process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        template: process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        publicKey: process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      });
+      console.log("📦 Template Params:", templateParams);
+
+      const response = await emailjs.send(
         process.env.REACT_APP_EMAILJS_SERVICE_ID,
         process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
         templateParams,
         process.env.REACT_APP_EMAILJS_PUBLIC_KEY
       );
+
+      console.log("✅ Email sent:", response);
       clearCart();
       navigate('/order-confirmation');
     } catch (error) {
-      console.error('❌ EmailJS Error:', error);
-      alert('There was an error sending your order confirmation.');
+      console.error('❌ EmailJS send failed:', error);
+      alert('Order submission failed. Please try again or contact support.');
     } finally {
       setSending(false);
     }
@@ -3177,22 +3185,23 @@ const CheckoutPage = () => {
 
         <section className={styles.section}>
           <h1>Delivery</h1>
-          <input
-            type="text"
-            placeholder="First Name"
-            value={formData.firstName}
-            onChange={(e) => handleInputChange('firstName', e.target.value)}
-            className={`${styles.textInput} ${errors.firstName ? styles.errorInput : ''}`}
-          />
+          <div className={styles.nameRow}>
+            <input
+              type="text"
+              placeholder="First Name"
+              value={formData.firstName}
+              onChange={(e) => handleInputChange('firstName', e.target.value)}
+              className={`${styles.textInput} ${styles.halfWidth} ${errors.firstName ? styles.errorInput : ''}`}
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={formData.lastName}
+              onChange={(e) => handleInputChange('lastName', e.target.value)}
+              className={`${styles.textInput} ${styles.halfWidth} ${errors.lastName ? styles.errorInput : ''}`}
+            />
+          </div>
           {errors.firstName && <p className={styles.errorText}>{errors.firstName}</p>}
-
-          <input
-            type="text"
-            placeholder="Last Name"
-            value={formData.lastName}
-            onChange={(e) => handleInputChange('lastName', e.target.value)}
-            className={`${styles.textInput} ${errors.lastName ? styles.errorInput : ''}`}
-          />
           {errors.lastName && <p className={styles.errorText}>{errors.lastName}</p>}
 
           <input
@@ -3215,7 +3224,7 @@ const CheckoutPage = () => {
         </section>
 
         <section className={styles.section}>
-          <h1>Shipping</h1>
+          <h1>Shipping Method</h1>
           <p>Standard Shipping — $3.00</p>
         </section>
 
@@ -3231,22 +3240,29 @@ const CheckoutPage = () => {
         <ul className={styles.itemsList}>
           {basketItems.map((item) => (
             <li key={`${item.id}-${item.size}`}>
-              <strong>{item.name}</strong> - {item.size} x{item.quantity} = ${(
-                item.price * item.quantity
-              ).toFixed(2)}
+              <strong>{item.name}</strong> - {item.size} x{item.quantity} = $
+              {(item.price * item.quantity).toFixed(2)}
             </li>
           ))}
         </ul>
-        <div className={styles.summaryRow}><span>Subtotal:</span><span>${subtotal.toFixed(2)}</span></div>
-        <div className={styles.summaryRow}><span>Shipping:</span><span>${shipping.toFixed(2)}</span></div>
-        <div className={styles.summaryRow}><strong>Total:</strong><strong>${total.toFixed(2)}</strong></div>
-
+        <div className={styles.summaryRow}>
+          <span>Subtotal:</span>
+          <span>${subtotal.toFixed(2)}</span>
+        </div>
+        <div className={styles.summaryRow}>
+          <span>Shipping:</span>
+          <span>${shipping.toFixed(2)}</span>
+        </div>
+        <div className={styles.summaryRow}>
+          <strong>Total:</strong>
+          <strong>${total.toFixed(2)}</strong>
+        </div>
         <button
           onClick={handleCompleteOrder}
           disabled={sending}
           className={styles.completeButton}
         >
-          {sending ? 'Sending...' : 'Complete Order'}
+          {sending ? 'Processing...' : 'Complete Order'}
         </button>
       </div>
     </div>
