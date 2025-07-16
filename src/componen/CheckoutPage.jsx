@@ -2072,247 +2072,247 @@
 
 
 
-// import React from 'react';
-// import { useBasket } from '../context/BasketProvider';
-// import { useNavigate } from 'react-router-dom';
-// import styles from '../style/checkout.module.css';
+import React from 'react';
+import { useBasket } from '../context/BasketProvider';
+import { useNavigate } from 'react-router-dom';
+import styles from '../style/checkout.module.css';
 
-// const CheckoutPage = () => {
-//   const { basketItems, clearCart } = useBasket();
-//   const navigate = useNavigate();
-//   const API_URL = process.env.REACT_APP_API_URL;
+const CheckoutPage = () => {
+  const { basketItems, clearCart } = useBasket();
+  const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL;
 
-//   const subtotal = basketItems.reduce(
-//     (sum, item) => sum + (item.price * item.quantity),
-//     0
-//   );
-//   const shipping = 3.0;
-//   const total = subtotal + shipping;
-//   const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
+  const subtotal = basketItems.reduce(
+    (sum, item) => sum + (item.price * item.quantity),
+    0
+  );
+  const shipping = 3.0;
+  const total = subtotal + shipping;
+  const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
 
-//   const handleCompleteOrder = () => {
-//     clearCart();
-//     navigate('/order-confirmation');
-//   };
+  const handleCompleteOrder = () => {
+    clearCart();
+    navigate('/order-confirmation');
+  };
 
-//   if (basketItems.length === 0) {
-//     return (
-//       <div className={styles.emptyCartContainer}>
-//         <div className={styles.emptyCartContent}>
-//           <h2>Your cart is empty</h2>
-//           <p>Looks like you haven't added anything to your cart yet.</p>
-//           <button
-//             onClick={() => navigate('/')}
-//             className={styles.continueShoppingButton}
-//           >
-//             Continue Shopping
-//           </button>
-//         </div>
-//       </div>
-//     );
-//   }
+  if (basketItems.length === 0) {
+    return (
+      <div className={styles.emptyCartContainer}>
+        <div className={styles.emptyCartContent}>
+          <h2>Your cart is empty</h2>
+          <p>Looks like you haven't added anything to your cart yet.</p>
+          <button
+            onClick={() => navigate('/')}
+            className={styles.continueShoppingButton}
+          >
+            Continue Shopping
+          </button>
+        </div>
+      </div>
+    );
+  }
 
-//   return (
-//     <div className={styles.checkoutContainer}>
-//       <div className={styles.leftColumn}>
-//         <section className={styles.section}>
-//           <h1 className={styles.sectionTitle}>Contact</h1>
-//           <div className={styles.formGroup}>
-//             <input
-//               type="text"
-//               placeholder="Email or mobile phone number"
-//               className={styles.textInput}
-//               required
-//             />
-//           </div>
-//           <label className={styles.checkboxLabel}>
-//             <input type="checkbox" className={styles.checkboxInput} />
-//             <span className={styles.customCheckbox}></span>
-//             Email me with news and offers
-//           </label>
-//         </section>
+  return (
+    <div className={styles.checkoutContainer}>
+      <div className={styles.leftColumn}>
+        <section className={styles.section}>
+          <h1 className={styles.sectionTitle}>Contact</h1>
+          <div className={styles.formGroup}>
+            <input
+              type="text"
+              placeholder="Email or mobile phone number"
+              className={styles.textInput}
+              required
+            />
+          </div>
+          <label className={styles.checkboxLabel}>
+            <input type="checkbox" className={styles.checkboxInput} />
+            <span className={styles.customCheckbox}></span>
+            Email me with news and offers
+          </label>
+        </section>
 
-//         <section className={styles.section}>
-//           <h1 className={styles.sectionTitle}>Delivery</h1>
-//           <div className={styles.formSection}>
-//             <h2 className={styles.subsectionTitle}>Country/Region</h2>
-//             <div className={styles.selectWrapper}>
-//               <select className={styles.selectInput} required>
-//                 <option>Lebanon</option>
-//               </select>
-//               <div className={styles.selectArrow}>▼</div>
-//             </div>
-//           </div>
+        <section className={styles.section}>
+          <h1 className={styles.sectionTitle}>Delivery</h1>
+          <div className={styles.formSection}>
+            <h2 className={styles.subsectionTitle}>Country/Region</h2>
+            <div className={styles.selectWrapper}>
+              <select className={styles.selectInput} required>
+                <option>Lebanon</option>
+              </select>
+              <div className={styles.selectArrow}>▼</div>
+            </div>
+          </div>
 
-//           <div className={styles.nameRow}>
-//             <div className={styles.formGroup}>
-//               <input
-//                 type="text"
-//                 placeholder="First name"
-//                 className={styles.textInput}
-//                 required
-//               />
-//             </div>
-//             <div className={styles.formGroup}>
-//               <input
-//                 type="text"
-//                 placeholder="Last name"
-//                 className={styles.textInput}
-//                 required
-//               />
-//             </div>
-//           </div>
+          <div className={styles.nameRow}>
+            <div className={styles.formGroup}>
+              <input
+                type="text"
+                placeholder="First name"
+                className={styles.textInput}
+                required
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <input
+                type="text"
+                placeholder="Last name"
+                className={styles.textInput}
+                required
+              />
+            </div>
+          </div>
 
-//           <div className={styles.formGroup}>
-//             <input
-//               type="text"
-//               placeholder="Address"
-//               className={styles.textInput}
-//               required
-//             />
-//           </div>
+          <div className={styles.formGroup}>
+            <input
+              type="text"
+              placeholder="Address"
+              className={styles.textInput}
+              required
+            />
+          </div>
 
-//           <div className={styles.locationRow}>
-//             <div className={styles.formGroup}>
-//               <input
-//                 type="text"
-//                 placeholder="City"
-//                 className={styles.textInput}
-//                 required
-//               />
-//             </div>
-//             <div className={styles.formGroup}>
-//               <input
-//                 type="text"
-//                 placeholder="Postal code (optional)"
-//                 className={styles.textInput}
-//               />
-//             </div>
-//           </div>
-//         </section>
+          <div className={styles.locationRow}>
+            <div className={styles.formGroup}>
+              <input
+                type="text"
+                placeholder="City"
+                className={styles.textInput}
+                required
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <input
+                type="text"
+                placeholder="Postal code (optional)"
+                className={styles.textInput}
+              />
+            </div>
+          </div>
+        </section>
 
-//         <section className={styles.section}>
-//           <h1 className={styles.sectionTitle}>Shipping method</h1>
-//           <label className={styles.radioOption}>
-//             <input
-//               type="radio"
-//               name="shipping"
-//               defaultChecked
-//               className={styles.radioInput}
-//             />
-//             <span className={styles.customRadio}></span>
-//             <div className={styles.optionContent}>
-//               <div className={styles.optionRow}>
-//                 <span className={styles.optionTitle}>Standard Shipping</span>
-//                 <span className={styles.shippingPrice}>$3.00</span>
-//               </div>
-//               <span className={styles.optionDescription}>
-//                 Deliveries will take up to 5 working days
-//               </span>
-//             </div>
-//           </label>
-//         </section>
+        <section className={styles.section}>
+          <h1 className={styles.sectionTitle}>Shipping method</h1>
+          <label className={styles.radioOption}>
+            <input
+              type="radio"
+              name="shipping"
+              defaultChecked
+              className={styles.radioInput}
+            />
+            <span className={styles.customRadio}></span>
+            <div className={styles.optionContent}>
+              <div className={styles.optionRow}>
+                <span className={styles.optionTitle}>Standard Shipping</span>
+                <span className={styles.shippingPrice}>$3.00</span>
+              </div>
+              <span className={styles.optionDescription}>
+                Deliveries will take up to 5 working days
+              </span>
+            </div>
+          </label>
+        </section>
 
-//         <section className={styles.section}>
-//           <h1 className={styles.sectionTitle}>Payment</h1>
-//           <p className={styles.paymentNote}>
-//             All transactions are secure and encrypted.
-//           </p>
-//           <label className={styles.radioOption}>
-//             <input
-//               type="radio"
-//               name="payment"
-//               className={styles.radioInput}
-//               required
-//               defaultChecked
-//             />
-//             <span className={styles.customRadio}></span>
-//             <div className={styles.optionContent}>
-//               <span className={styles.optionTitle}>
-//                 Cash on Delivery (COD)
-//               </span>
-//               <p className={styles.optionDescription}>
-//                 Pay in cash when your order is delivered. Available for orders
-//                 within Lebanon.
-//               </p>
-//             </div>
-//           </label>
-//         </section>
-//       </div>
+        <section className={styles.section}>
+          <h1 className={styles.sectionTitle}>Payment</h1>
+          <p className={styles.paymentNote}>
+            All transactions are secure and encrypted.
+          </p>
+          <label className={styles.radioOption}>
+            <input
+              type="radio"
+              name="payment"
+              className={styles.radioInput}
+              required
+              defaultChecked
+            />
+            <span className={styles.customRadio}></span>
+            <div className={styles.optionContent}>
+              <span className={styles.optionTitle}>
+                Cash on Delivery (COD)
+              </span>
+              <p className={styles.optionDescription}>
+                Pay in cash when your order is delivered. Available for orders
+                within Lebanon.
+              </p>
+            </div>
+          </label>
+        </section>
+      </div>
 
-//       <div className={styles.rightColumn}>
-//         <div className={styles.summaryCard}>
-//           <h2 className={styles.summaryTitle}>Order Summary</h2>
-//           <div className={styles.itemsCount}>
-//             {itemCount} {itemCount === 1 ? 'item' : 'items'}
-//           </div>
+      <div className={styles.rightColumn}>
+        <div className={styles.summaryCard}>
+          <h2 className={styles.summaryTitle}>Order Summary</h2>
+          <div className={styles.itemsCount}>
+            {itemCount} {itemCount === 1 ? 'item' : 'items'}
+          </div>
 
-//           <div className={styles.itemsList}>
-//             {basketItems.map((item) => (
-//               <div
-//                 key={`${item.id}-${item.size}`}
-//                 className={styles.summaryItem}
-//               >
-//                 <div className={styles.itemImageContainer}>
-//                   <img
-//                     src={`${API_URL}/${item.image_path}`}
-//                     alt={item.name}
-//                     className={styles.itemImage}
-//                     onError={(e) => {
-//                       e.target.onerror = null;
-//                       e.target.src = '/placeholder-product.jpg';
-//                     }}
-//                   />
-//                   <span className={styles.itemQuantity}>{item.quantity}</span>
-//                 </div>
-//                 <div className={styles.itemDetails}>
-//                   <div className={styles.itemName}>{item.name}</div>
-//                   <div className={styles.itemSize}>{item.size}</div>
-//                 </div>
-//                 <div className={styles.itemPrice}>
-//                   ${(item.price * item.quantity).toFixed(2)}
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
+          <div className={styles.itemsList}>
+            {basketItems.map((item) => (
+              <div
+                key={`${item.id}-${item.size}`}
+                className={styles.summaryItem}
+              >
+                <div className={styles.itemImageContainer}>
+                  <img
+                    src={`${API_URL}/${item.image_path}`}
+                    alt={item.name}
+                    className={styles.itemImage}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/placeholder-product.jpg';
+                    }}
+                  />
+                  <span className={styles.itemQuantity}>{item.quantity}</span>
+                </div>
+                <div className={styles.itemDetails}>
+                  <div className={styles.itemName}>{item.name}</div>
+                  <div className={styles.itemSize}>{item.size}</div>
+                </div>
+                <div className={styles.itemPrice}>
+                  ${(item.price * item.quantity).toFixed(2)}
+                </div>
+              </div>
+            ))}
+          </div>
 
-//           <div className={styles.discountSection}>
-//             <input
-//               type="text"
-//               placeholder="Discount code or gift card"
-//               className={styles.discountInput}
-//             />
-//             <button className={styles.applyButton}>Apply</button>
-//           </div>
+          <div className={styles.discountSection}>
+            <input
+              type="text"
+              placeholder="Discount code or gift card"
+              className={styles.discountInput}
+            />
+            <button className={styles.applyButton}>Apply</button>
+          </div>
 
-//           <div className={styles.priceBreakdown}>
-//             <div className={styles.priceRow}>
-//               <span>Subtotal</span>
-//               <span>${subtotal.toFixed(2)}</span>
-//             </div>
-//             <div className={styles.priceRow}>
-//               <span>Shipping</span>
-//               <span>${shipping.toFixed(2)}</span>
-//             </div>
-//             <div className={styles.totalRow}>
-//               <span>Total</span>
-//               <span>${total.toFixed(2)}</span>
-//             </div>
-//           </div>
+          <div className={styles.priceBreakdown}>
+            <div className={styles.priceRow}>
+              <span>Subtotal</span>
+              <span>${subtotal.toFixed(2)}</span>
+            </div>
+            <div className={styles.priceRow}>
+              <span>Shipping</span>
+              <span>${shipping.toFixed(2)}</span>
+            </div>
+            <div className={styles.totalRow}>
+              <span>Total</span>
+              <span>${total.toFixed(2)}</span>
+            </div>
+          </div>
 
-//           <button
-//             className={styles.completeButton}
-//             onClick={handleCompleteOrder}
-//           >
-//             Complete Order
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
+          <button
+            className={styles.completeButton}
+            onClick={handleCompleteOrder}
+          >
+            Complete Order
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-// export default CheckoutPage;
+export default CheckoutPage;
 
 
 
@@ -3288,203 +3288,3 @@
 
 
 
-import React, { useState } from 'react';
-import { useBasket } from '../context/BasketProvider';
-import { useNavigate } from 'react-router-dom';
-import styles from '../style/checkout.module.css';
-import emailjs from '@emailjs/browser';
-
-const CheckoutPage = () => {
-  const { basketItems, clearCart } = useBasket();
-  const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
-    address: '',
-    city: ''
-  });
-
-  const [errors, setErrors] = useState({});
-  const [sending, setSending] = useState(false);
-
-  const subtotal = basketItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = 3.0;
-  const total = subtotal + shipping;
-  const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
-
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.email.trim()) newErrors.email = 'Email is required.';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Email is invalid.';
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required.';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required.';
-    if (!formData.address.trim()) newErrors.address = 'Address is required.';
-    if (!formData.city.trim()) newErrors.city = 'City is required.';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) setErrors(prev => ({ ...prev, [field]: '' }));
-  };
-
-  const prepareTemplateParams = () => {
-    return {
-      customer_email: formData.email,
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-      delivery_address: `${formData.address}, ${formData.city}`,
-      order_total: total.toFixed(2),
-      order_items: basketItems.map(item => ({
-        product_name: item.name,
-        product_size: item.size || 'N/A',
-        product_quantity: item.quantity,
-        product_price: (item.price * item.quantity).toFixed(2)
-      }))
-    };
-  };
-
-  const handleCompleteOrder = async () => {
-    console.log('🟡 handleCompleteOrder triggered');
-    if (!validateForm()) return;
-
-    try {
-      setSending(true);
-
-      const templateParams = prepareTemplateParams();
-      console.log('📦 Template Params:', templateParams);
-
-      const response = await emailjs.send(
-        'service_bhs702o',
-        'template_3ln5knh',
-        templateParams,
-        'UH5D9l_vkI_SwvgqL'
-      );
-
-      console.log('✅ Email sent:', response);
-      clearCart();
-      navigate('/order-confirmation');
-    } catch (error) {
-      console.error('❌ EmailJS send failed:', error);
-      alert('Order submission failed. Please try again or contact support.');
-    } finally {
-      setSending(false);
-    }
-  };
-
-  if (basketItems.length === 0) {
-    return (
-      <div className={styles.emptyCartContainer}>
-        <h2>Your cart is empty</h2>
-        <button onClick={() => navigate('/')} className={styles.continueShoppingButton}>
-          Continue Shopping
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className={styles.checkoutContainer}>
-      <div className={styles.leftColumn}>
-        <section className={styles.section}>
-          <h1>Contact</h1>
-          <input
-            type="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
-            className={`${styles.textInput} ${errors.email ? styles.errorInput : ''}`}
-          />
-          {errors.email && <p className={styles.errorText}>{errors.email}</p>}
-        </section>
-
-        <section className={styles.section}>
-          <h1>Delivery</h1>
-          <div className={styles.nameRow}>
-            <input
-              type="text"
-              placeholder="First Name"
-              value={formData.firstName}
-              onChange={(e) => handleInputChange('firstName', e.target.value)}
-              className={`${styles.textInput} ${styles.halfWidth} ${errors.firstName ? styles.errorInput : ''}`}
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={formData.lastName}
-              onChange={(e) => handleInputChange('lastName', e.target.value)}
-              className={`${styles.textInput} ${styles.halfWidth} ${errors.lastName ? styles.errorInput : ''}`}
-            />
-          </div>
-          {errors.firstName && <p className={styles.errorText}>{errors.firstName}</p>}
-          {errors.lastName && <p className={styles.errorText}>{errors.lastName}</p>}
-
-          <input
-            type="text"
-            placeholder="Address"
-            value={formData.address}
-            onChange={(e) => handleInputChange('address', e.target.value)}
-            className={`${styles.textInput} ${errors.address ? styles.errorInput : ''}`}
-          />
-          {errors.address && <p className={styles.errorText}>{errors.address}</p>}
-
-          <input
-            type="text"
-            placeholder="City"
-            value={formData.city}
-            onChange={(e) => handleInputChange('city', e.target.value)}
-            className={`${styles.textInput} ${errors.city ? styles.errorInput : ''}`}
-          />
-          {errors.city && <p className={styles.errorText}>{errors.city}</p>}
-        </section>
-
-        <section className={styles.section}>
-          <h1>Shipping Method</h1>
-          <p>Standard Shipping — $3.00</p>
-        </section>
-
-        <section className={styles.section}>
-          <h1>Payment</h1>
-          <p>Cash on Delivery (COD)</p>
-        </section>
-      </div>
-
-      <div className={styles.rightColumn}>
-        <h2>Order Summary</h2>
-        <p>{itemCount} item(s)</p>
-        <ul className={styles.itemsList}>
-          {basketItems.map((item) => (
-            <li key={`${item.id}-${item.size}`}>
-              <strong>{item.name}</strong> - {item.size} x{item.quantity} = $
-              {(item.price * item.quantity).toFixed(2)}
-            </li>
-          ))}
-        </ul>
-        <div className={styles.summaryRow}>
-          <span>Subtotal:</span>
-          <span>${subtotal.toFixed(2)}</span>
-        </div>
-        <div className={styles.summaryRow}>
-          <span>Shipping:</span>
-          <span>${shipping.toFixed(2)}</span>
-        </div>
-        <div className={styles.summaryRow}>
-          <strong>Total:</strong>
-          <strong>${total.toFixed(2)}</strong>
-        </div>
-        <button
-          onClick={handleCompleteOrder}
-          disabled={sending}
-          className={styles.completeButton}
-        >
-          {sending ? 'Processing...' : 'Complete Order'}
-        </button>
-      </div>
-    </div>
-  );
-};
-
-export default CheckoutPage;
