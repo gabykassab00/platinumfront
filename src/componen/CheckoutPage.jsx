@@ -2903,10 +2903,6 @@ const CheckoutPage = () => {
   const handleCompleteOrder = async () => {
     if (!validateForm()) return;
 
-    const itemList = basketItems.map(item =>
-      `${item.name} (Size: ${item.size}, x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`
-    ).join('\n');
-
     const templateParams = {
       email: formData.email,
       firstName: formData.firstName,
@@ -2914,7 +2910,12 @@ const CheckoutPage = () => {
       address: formData.address,
       city: formData.city,
       total: total.toFixed(2),
-      item_list: itemList
+      items: basketItems.map(item => ({
+        name: item.name,
+        size: item.size,
+        quantity: item.quantity,
+        price: (item.price * item.quantity).toFixed(2),
+      }))
     };
 
     try {
@@ -2929,6 +2930,7 @@ const CheckoutPage = () => {
       navigate('/order-confirmation');
     } catch (error) {
       alert('There was an error sending your order confirmation. Please try again.');
+      console.error('EmailJS Error:', error);
     } finally {
       setSending(false);
     }
@@ -2948,6 +2950,7 @@ const CheckoutPage = () => {
   return (
     <div className={styles.checkoutContainer}>
       <div className={styles.leftColumn}>
+        {/* Contact Section */}
         <section className={styles.section}>
           <h1>Contact</h1>
           <input
@@ -2960,6 +2963,7 @@ const CheckoutPage = () => {
           {errors.email && <p className={styles.errorText}>{errors.email}</p>}
         </section>
 
+        {/* Delivery Section */}
         <section className={styles.section}>
           <h1>Delivery</h1>
           <input
@@ -2999,26 +3003,28 @@ const CheckoutPage = () => {
           {errors.city && <p className={styles.errorText}>{errors.city}</p>}
         </section>
 
+        {/* Shipping */}
         <section className={styles.section}>
           <h1>Shipping Method</h1>
           <p>Standard Shipping — $3.00</p>
         </section>
 
+        {/* Payment */}
         <section className={styles.section}>
           <h1>Payment</h1>
           <p>Cash on Delivery (COD)</p>
         </section>
       </div>
 
+      {/* Order Summary */}
       <div className={styles.rightColumn}>
         <h2>Order Summary</h2>
         <p>{itemCount} item(s)</p>
         <ul>
           {basketItems.map((item) => (
             <li key={`${item.id}-${item.size}`}>
-              <strong>{item.name}</strong> - {item.size} x{item.quantity} = ${
-                (item.price * item.quantity).toFixed(2)
-              }
+              <strong>{item.name}</strong> - {item.size} x{item.quantity} = $
+              {(item.price * item.quantity).toFixed(2)}
             </li>
           ))}
         </ul>
