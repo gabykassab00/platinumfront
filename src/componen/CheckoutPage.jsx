@@ -3273,75 +3273,69 @@
 
 
 
+
+
+
+
+
+
 import React, { useState } from 'react';
 import emailjs from '@emailjs/browser';
 
 const CheckoutPage = () => {
   const [sending, setSending] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
-  const dummyTemplateParams = {
-    customer_email: 'testuser@example.com',
-    first_name: 'John',
-    last_name: 'Doe',
-    delivery_address: '123 Main St, New York',
-    order_total: '45.00',
-    order_items: [
-      {
-        product_name: 'Ocean Breeze',
-        product_size: '100ml',
-        product_quantity: 1,
-        product_price: '20.00'
-      },
-      {
-        product_name: 'Amber Nights',
-        product_size: '50ml',
-        product_quantity: 1,
-        product_price: '25.00'
-      }
-    ]
-  };
+  const handleSendEmail = async () => {
+    setSending(true);
 
-  const sendDummyOrder = async () => {
-    console.log("🟡 Sending dummy order...");
+    const templateParams = {
+      first_name: 'John',
+      last_name: 'Doe',
+      customer_email: 'john.doe@example.com',
+      delivery_address: '123 Main Street, New York',
+      product_name: 'Armani Code',
+      product_size: '100ml',
+      product_quantity: '1',
+      product_price: '20.00',
+      order_total: '23.00',
+    };
+
     try {
-      setSending(true);
-
       const response = await emailjs.send(
-        'service_bhs702o',           // ✅ your service ID
-        'template_3ln5knh',          // ✅ your template ID
-        dummyTemplateParams,
-        'UH5D9l_vkI_SwvgqL'          // ✅ your public key
+        'service_bhs702o', // Replace with your actual service ID
+        'template_3ln5knh', // Replace with your actual template ID
+        templateParams,
+        'UH5D9l_vkI_SwvgqL' // Replace with your actual public key
       );
-
-      console.log("✅ Email sent:", response);
-      alert("Dummy order email sent successfully!");
+      console.log('✅ Email sent:', response);
+      setEmailSent(true);
     } catch (error) {
-      console.error("❌ Failed to send dummy order:", error);
-      alert("Error sending dummy order.");
+      console.error('❌ EmailJS failed:', error);
+      alert('Failed to send email.');
     } finally {
       setSending(false);
     }
   };
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "Arial" }}>
-      <h1>🧪 Dummy Checkout Email Test</h1>
-      <p>This test will send a hardcoded order email via EmailJS.</p>
-      <button
-        onClick={sendDummyOrder}
-        disabled={sending}
-        style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          backgroundColor: "#000",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer"
-        }}
-      >
-        {sending ? "Sending..." : "Send Dummy Order"}
+    <div style={{ padding: 20, fontFamily: 'Arial' }}>
+      <h1>📦 Checkout (Dummy Data)</h1>
+
+      <p><strong>Name:</strong> John Doe</p>
+      <p><strong>Email:</strong> john.doe@example.com</p>
+      <p><strong>Address:</strong> 123 Main Street, New York</p>
+      <p><strong>Product:</strong> Armani Code</p>
+      <p><strong>Size:</strong> 100ml</p>
+      <p><strong>Qty:</strong> 1</p>
+      <p><strong>Price:</strong> $20.00</p>
+      <p><strong>Total:</strong> $23.00</p>
+
+      <button onClick={handleSendEmail} disabled={sending}>
+        {sending ? 'Sending...' : 'Send Test Email'}
       </button>
+
+      {emailSent && <p style={{ color: 'green' }}>✅ Email sent successfully!</p>}
     </div>
   );
 };
