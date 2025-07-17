@@ -2942,21 +2942,13 @@ const ProductsPage = ({ defaultGenre }) => {
             </div>
           </div>
 
-          {/* <div className={styles.productsGrid}>
+          {<div className={styles.productsGrid}>
             {products.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}
-          </div> */}
+          </div> }
 
-            <div className={styles.productsGrid}>
-  {Array.isArray(products) && products.length > 0 ? (
-    products.map(product => (
-      <ProductCard key={product.id} product={product} />
-    ))
-  ) : (
-    <p>No products found.</p>
-  )}
-</div>
+
 
 
 
