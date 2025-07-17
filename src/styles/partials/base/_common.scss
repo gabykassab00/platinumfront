@@ -45,17 +45,31 @@
     overflow: hidden;
 }
 
-.btn {
-    display: inline-block;
-    background-color: rgba($color: grey, $alpha: 0.8);
-    color: #fff;
-    padding: 0.8rem 1.5rem;
-    border-radius: 3px;
-    @include transition(background-color, 0.2s, ease-out);
+// .btn {
+//     display: inline-block;
+//     background-color: rgba($color: grey, $alpha: 0.8);
+//     color: #fff;
+//     padding: 0.8rem 1.5rem;
+//     border-radius: 3px;
+//     @include transition(background-color, 0.2s, ease-out);
 
-    &:hover {
-        background-color: var(--main-color);
-    }
+//     &:hover {
+//         background-color: var(--main-color);
+//     }
+// }
+
+
+.btn {
+  display: inline-block;
+  background-color: black;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 3px;
+  @include transition(background-color, 0.2s, ease-out);
+
+  &:hover {
+    background-color: #333; // Optional darker hover
+  }
 }
 
 .input_box {
