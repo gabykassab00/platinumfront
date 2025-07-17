@@ -71,12 +71,13 @@
     background-color: #333;
   }
 
-  // ✅ Add this for small screens
   @include devices(sm) {
     display: block;
-    margin: 2rem auto 0 auto; // centers horizontally
-    font-size: 1.2rem;
-    padding: 1.2rem 2rem; // bigger size
+    margin: 2rem auto 0 auto;
+    font-size: 1.1rem;
+    padding: 0.9rem 2rem;
+    width: 220px; // slightly bigger width
+    text-align: center;
   }
 }
 
@@ -225,5 +226,39 @@
 
   @include devices(sm) {
     font-size: 1.5rem;
+  }
+}
+#hero-swiper,
+#hero-swiper .swiper,
+#hero-swiper .swiper-slide,
+.hero_wrapper {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+
+  @media (max-width: 768px) {
+    margin-top: -4rem !important; // Pull closer to navbar
+  }
+}
+
+.tagline {
+  color: #d4af37;
+  font-weight: bold;
+  font-size: 2rem;
+
+  @include devices(sm) {
+    font-size: 1.5rem;
+  }
+}
+
+.shop-btn {
+  display: block;
+  margin: 2rem auto 0 auto;
+  font-size: 1.1rem;
+  padding: 0.9rem 2rem;
+  width: 220px;
+  text-align: center;
+
+  @include devices(sm) {
+    width: 220px;
   }
 }
