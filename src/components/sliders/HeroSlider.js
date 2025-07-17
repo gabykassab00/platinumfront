@@ -160,7 +160,8 @@ const HeroSlider = () => {
           >
             <div className="hero_item_txt">
               <h3>{title}</h3>
-              <h1>{tagline}</h1>
+              {/* <h1>{tagline}</h1> */}
+              <h1 className="tagline">{tagline}</h1>
 
               {/* ✅ Go directly to the path */}
               <Link to={path} className="btn">

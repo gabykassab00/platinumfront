@@ -209,3 +209,13 @@
 .swiper-pagination-bullet-active {
     background: var(--main-color) !important;
 }
+
+.tagline {
+  color: #d4af37; // gold color
+  font-weight: bold;
+  font-size: 2rem;
+
+  @include devices(sm) {
+    font-size: 1.5rem;
+  }
+}
