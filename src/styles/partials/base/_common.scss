@@ -64,7 +64,7 @@
   background-color: black;
   color: white;
   padding: 0.8rem 1.5rem;
-  border-radius: 3px;
+  border-radius: 8px;
   @include transition(background-color, 0.2s, ease-out);
 
   &:hover {
