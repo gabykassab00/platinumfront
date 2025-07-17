@@ -68,7 +68,15 @@
   @include transition(background-color, 0.2s, ease-out);
 
   &:hover {
-    background-color: #333; // Optional darker hover
+    background-color: #333;
+  }
+
+  // ✅ Add this for small screens
+  @include devices(sm) {
+    display: block;
+    margin: 2rem auto 0 auto; // centers horizontally
+    font-size: 1.2rem;
+    padding: 1.2rem 2rem; // bigger size
   }
 }
 
