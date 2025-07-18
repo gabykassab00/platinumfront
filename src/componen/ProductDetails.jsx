@@ -2354,7 +2354,7 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {relatedProducts.length > 0 && (
+      {/* {relatedProducts.length > 0 && (
         <div className={styles.relatedSection}>
           <h2 className={styles.relatedTitle}>You may also like</h2>
           <div className={styles.relatedGrid}>
@@ -2363,7 +2363,41 @@ const ProductDetails = () => {
             ))}
           </div>
         </div>
-      )}
+      )} */}
+      {relatedProducts.length > 0 && (
+  <div className={styles.relatedSection}>
+    <h2 className={styles.relatedTitle}>You may also like</h2>
+
+    <div className={styles.relatedScrollWrapper}>
+      <button
+        className={styles.scrollBtn}
+        onClick={() =>
+          document.getElementById('relatedSlider').scrollBy({ left: -250, behavior: 'smooth' })
+        }
+        aria-label="Scroll Left"
+      >
+        ‹
+      </button>
+
+      <div id="relatedSlider" className={styles.relatedGrid}>
+        {relatedProducts.map((item) => (
+          <ProductCard key={item.id} product={item} className={styles.relatedCard} />
+        ))}
+      </div>
+
+      <button
+        className={styles.scrollBtn}
+        onClick={() =>
+          document.getElementById('relatedSlider').scrollBy({ left: 250, behavior: 'smooth' })
+        }
+        aria-label="Scroll Right"
+      >
+        ›
+      </button>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
