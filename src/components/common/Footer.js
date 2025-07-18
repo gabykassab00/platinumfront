@@ -130,25 +130,6 @@ const Footer = () => {
               )}
             </div>
           </div>
-
-          {footMenu.map(item => {
-            const { id, title, menu } = item;
-            return (
-              <div className="foot_menu" key={id}>
-                <h4>{title}</h4>
-                <ul>
-                  {menu.map(item => {
-                    const { id, link, path } = item;
-                    return (
-                      <li key={id}>
-                        <Link to={path}>{link}</Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            );
-          })}
         </div>
       </div>
 
