@@ -83,3 +83,17 @@
     font-size: 1.2rem;
     margin-right: 4rem;
 }
+
+#footer {
+  color: white;
+
+  a {
+    color: white;
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
