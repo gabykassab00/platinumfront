@@ -3311,10 +3311,30 @@ import SortDropdown from '../componen/SortDropdown';
 import axios from 'axios';
 import styles from '../../src/style/ProductsPage.module.css';
 
+// Memoize the ProductCard to prevent unnecessary re-renders
 const MemoizedProductCard = React.memo(ProductCard);
 
+// Predefined sort functions outside component to avoid recreation
+const sortFunctions = {
+  'a-z': (a, b) => a.name.localeCompare(b.name),
+  'z-a': (a, b) => b.name.localeCompare(a.name),
+  'price-low': (a, b) => a.price - b.price,
+  'price-high': (a, b) => b.price - a.price,
+  'newest': (a, b) => b.id - a.id,
+  'oldest': (a, b) => a.id - b.id
+};
+
+const sortLabels = {
+  'newest': 'Newest to Oldest',
+  'oldest': 'Oldest to Newest',
+  'price-low': 'Price: Low to High',
+  'price-high': 'Price: High to Low',
+  'a-z': 'A-Z',
+  'z-a': 'Z-A'
+};
+
 const ProductsPage = ({ defaultGenre }) => {
-  // All hooks must be at the top level, before any conditional returns
+  // State management
   const { genre } = useParams();
   const location = useLocation();
   const [products, setProducts] = useState([]);
@@ -3334,6 +3354,7 @@ const ProductsPage = ({ defaultGenre }) => {
   const API_URL = process.env.REACT_APP_API_URL;
   const isGenderPage = Boolean(genre || defaultGenre);
 
+  // Memoized values
   const activeGenre = useMemo(() => {
     const genreValue = genre || defaultGenre;
     if (!genreValue) return null;
@@ -3345,22 +3366,36 @@ const ProductsPage = ({ defaultGenre }) => {
     }
   }, [genre, defaultGenre]);
 
+  // Optimized data fetching with pagination and caching
   const fetchProducts = useCallback(async () => {
+    const cacheKey = `products_${API_URL}`;
+    const cachedData = sessionStorage.getItem(cacheKey);
+    
+    if (cachedData) {
+      setProducts(JSON.parse(cachedData));
+      setIsLoading(false);
+      return;
+    }
+
     const source = axios.CancelToken.source();
     
     try {
       setIsLoading(true);
       setError(null);
       
+      // Only request essential fields and implement server-side pagination if possible
       const response = await axios.get(`${API_URL}/api/products`, {
         cancelToken: source.token,
         params: {
-          _limit: 100,
-          _fields: 'id,name,price,brand,genre,image'
+          _limit: 100, // Adjust based on your API capabilities
+          _fields: 'id,name,price,brand,genre,image,createdAt'
         }
       });
       
       setProducts(response.data);
+      // Cache the response for 5 minutes
+      sessionStorage.setItem(cacheKey, JSON.stringify(response.data));
+      sessionStorage.setItem(`${cacheKey}_timestamp`, Date.now());
     } catch (err) {
       if (!axios.isCancel(err)) {
         setError(err.message);
@@ -3375,10 +3410,27 @@ const ProductsPage = ({ defaultGenre }) => {
     return () => source.cancel('Component unmounted');
   }, [API_URL]);
 
+  // Clean up old cache entries
+  useEffect(() => {
+    const now = Date.now();
+    Object.keys(sessionStorage).forEach(key => {
+      if (key.startsWith('products_') && key.endsWith('_timestamp')) {
+        const timestamp = sessionStorage.getItem(key);
+        if (now - timestamp > 300000) { // 5 minutes
+          const cacheKey = key.replace('_timestamp', '');
+          sessionStorage.removeItem(cacheKey);
+          sessionStorage.removeItem(key);
+        }
+      }
+    });
+  }, []);
+
+  // Fetch products on mount
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
+  // Update filters when genre changes
   useEffect(() => {
     setFilters(prev => ({
       ...prev,
@@ -3387,6 +3439,7 @@ const ProductsPage = ({ defaultGenre }) => {
     setCurrentPage(1);
   }, [location.pathname, activeGenre]);
 
+  // Optimized filter change handler
   const handleFilterChange = useCallback((filterType, value) => {
     setFilters(prev => {
       if (filterType === 'price') {
@@ -3403,33 +3456,15 @@ const ProductsPage = ({ defaultGenre }) => {
     setCurrentPage(1);
   }, []);
 
-  const sortFunctions = useMemo(() => ({
-    'a-z': (a, b) => a.name.localeCompare(b.name),
-    'z-a': (a, b) => b.name.localeCompare(a.name),
-    'price-low': (a, b) => a.price - b.price,
-    'price-high': (a, b) => b.price - a.price,
-    'newest': (a, b) => b.id - a.id,
-    'oldest': (a, b) => a.id - b.id
-  }), []);
-
+  // Optimized sort handler
   const handleSortChange = useCallback((sortMethod) => {
     setSelectedSort(sortMethod);
     setProducts(prev => [...prev].sort(sortFunctions[sortMethod] || sortFunctions['newest']));
     setCurrentPage(1);
     setMobileSortOpen(false);
-  }, [sortFunctions]);
+  }, []);
 
-  const sortLabels = useMemo(() => ({
-    'newest': 'Newest to Oldest',
-    'oldest': 'Oldest to Newest',
-    'price-low': 'Price: Low to High',
-    'price-high': 'Price: High to Low',
-    'a-z': 'A-Z',
-    'z-a': 'Z-A'
-  }), []);
-
-  const getSortLabel = useCallback((sort) => sortLabels[sort] || 'Newest to Oldest', [sortLabels]);
-
+  // Optimized product filtering
   const filteredProducts = useMemo(() => {
     const { brands, genres, price } = filters;
     
@@ -3443,6 +3478,7 @@ const ProductsPage = ({ defaultGenre }) => {
     });
   }, [products, filters]);
 
+  // Optimized pagination
   const { totalPages, paginatedProducts } = useMemo(() => {
     const total = Math.ceil(filteredProducts.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -3456,6 +3492,7 @@ const ProductsPage = ({ defaultGenre }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  // Memoized page title
   const pageTitle = useMemo(() => {
     const active = (genre || defaultGenre)?.toLowerCase();
     return active === 'men' ? "Men's Perfumes" : 
@@ -3472,7 +3509,7 @@ const ProductsPage = ({ defaultGenre }) => {
     setMobileFilterOpen(false);
   }, [isGenderPage, activeGenre]);
 
-  // Move the renderPaginationButtons function to the top level
+  // Render pagination buttons
   const renderPaginationButtons = useCallback(() => {
     if (totalPages <= 1) return null;
 
@@ -3487,6 +3524,7 @@ const ProductsPage = ({ defaultGenre }) => {
       );
     }
 
+    // Previous button
     buttons.push(
       <button
         key="prev"
@@ -3498,6 +3536,7 @@ const ProductsPage = ({ defaultGenre }) => {
       </button>
     );
 
+    // Page buttons
     for (let i = 0; i < Math.min(maxVisible, totalPages); i++) {
       const page = startPage + i;
       buttons.push(
@@ -3511,6 +3550,7 @@ const ProductsPage = ({ defaultGenre }) => {
       );
     }
 
+    // Next button
     buttons.push(
       <button
         key="next"
@@ -3525,7 +3565,7 @@ const ProductsPage = ({ defaultGenre }) => {
     return <div className={styles.paginationContainer}>{buttons}</div>;
   }, [totalPages, currentPage, handlePageChange]);
 
-  // Only after all hooks are declared can we have conditional returns
+  // Loading state
   if (isLoading) {
     return (
       <div className={styles.loadingContainer}>
@@ -3535,6 +3575,7 @@ const ProductsPage = ({ defaultGenre }) => {
     );
   }
 
+  // Error state
   if (error) {
     return (
       <div className={styles.errorContainer}>
@@ -3547,6 +3588,7 @@ const ProductsPage = ({ defaultGenre }) => {
     );
   }
 
+  // Main render
   return (
     <div className={styles.container}>
       <header className={styles.pageHeader}>
@@ -3555,6 +3597,7 @@ const ProductsPage = ({ defaultGenre }) => {
       </header>
 
       <div className={styles.mainContent}>
+        {/* Filter Panel */}
         <aside className={`${styles.filterPanel} ${mobileFilterOpen ? styles.mobileOpen : ''}`}>
           <FilterSection
             filters={filters}
@@ -3564,7 +3607,9 @@ const ProductsPage = ({ defaultGenre }) => {
           />
         </aside>
 
+        {/* Main Product Area */}
         <main className={styles.productArea}>
+          {/* Mobile controls */}
           <div className={styles.mobileFilterSortBar}>
             <button 
               onClick={() => setMobileFilterOpen(!mobileFilterOpen)} 
@@ -3577,10 +3622,11 @@ const ProductsPage = ({ defaultGenre }) => {
               onClick={() => setMobileSortOpen(!mobileSortOpen)} 
               className={styles.mobileSortButton}
             >
-              <span>{getSortLabel(selectedSort)}</span>
+              <span>{sortLabels[selectedSort] || 'Newest to Oldest'}</span>
             </button>
           </div>
 
+          {/* Mobile sort panel */}
           {mobileSortOpen && (
             <div className={styles.mobileSortPanel}>
               <div className={styles.mobileSortHeader}>
@@ -3606,6 +3652,7 @@ const ProductsPage = ({ defaultGenre }) => {
             </div>
           )}
 
+          {/* Desktop controls */}
           <div className={styles.desktopToolbar}>
             <div className={styles.resultsCount}>
               Showing {paginatedProducts.length} of {filteredProducts.length} products
@@ -3620,6 +3667,7 @@ const ProductsPage = ({ defaultGenre }) => {
             </div>
           </div>
 
+          {/* Product Grid */}
           {filteredProducts.length > 0 ? (
             <>
               <div className={styles.productsGrid}>
