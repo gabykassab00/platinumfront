@@ -97,3 +97,23 @@
     }
   }
 }
+
+
+
+.subscription_popup {
+  margin-top: 1rem;
+  background-color: #222;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  animation: fadeInOut 4s ease-in-out forwards;
+  text-align: center;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
