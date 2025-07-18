@@ -3305,16 +3305,16 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import FilterSection from '../components/FilterSection';
-import ProductCard from '../components/ProductCard';
-import SortDropdown from '../components/SortDropdown';
+import FilterSection from '../componen/FilterSection';
+import ProductCard from '../componen/ProductCard';
+import SortDropdown from '../componen/SortDropdown';
 import axios from 'axios';
 import styles from '../../src/style/ProductsPage.module.css';
 
-// Memoize the ProductCard to prevent unnecessary re-renders
 const MemoizedProductCard = React.memo(ProductCard);
 
 const ProductsPage = ({ defaultGenre }) => {
+  // All hooks must be at the top level, before any conditional returns
   const { genre } = useParams();
   const location = useLocation();
   const [products, setProducts] = useState([]);
@@ -3334,7 +3334,6 @@ const ProductsPage = ({ defaultGenre }) => {
   const API_URL = process.env.REACT_APP_API_URL;
   const isGenderPage = Boolean(genre || defaultGenre);
 
-  // Memoize the active genre calculation
   const activeGenre = useMemo(() => {
     const genreValue = genre || defaultGenre;
     if (!genreValue) return null;
@@ -3346,16 +3345,6 @@ const ProductsPage = ({ defaultGenre }) => {
     }
   }, [genre, defaultGenre]);
 
-  // Optimized filter initialization
-  useEffect(() => {
-    setFilters(prev => ({
-      ...prev,
-      genres: activeGenre ? [activeGenre] : [],
-    }));
-    setCurrentPage(1);
-  }, [location.pathname, activeGenre]);
-
-  // Optimized product fetching with cancellation
   const fetchProducts = useCallback(async () => {
     const source = axios.CancelToken.source();
     
@@ -3366,8 +3355,8 @@ const ProductsPage = ({ defaultGenre }) => {
       const response = await axios.get(`${API_URL}/api/products`, {
         cancelToken: source.token,
         params: {
-          _limit: 100, // Request server-side pagination if possible
-          _fields: 'id,name,price,brand,genre,image' // Only request needed fields
+          _limit: 100,
+          _fields: 'id,name,price,brand,genre,image'
         }
       });
       
@@ -3390,7 +3379,14 @@ const ProductsPage = ({ defaultGenre }) => {
     fetchProducts();
   }, [fetchProducts]);
 
-  // Optimized filter change handler
+  useEffect(() => {
+    setFilters(prev => ({
+      ...prev,
+      genres: activeGenre ? [activeGenre] : [],
+    }));
+    setCurrentPage(1);
+  }, [location.pathname, activeGenre]);
+
   const handleFilterChange = useCallback((filterType, value) => {
     setFilters(prev => {
       if (filterType === 'price') {
@@ -3407,7 +3403,6 @@ const ProductsPage = ({ defaultGenre }) => {
     setCurrentPage(1);
   }, []);
 
-  // Predefined sort functions for better performance
   const sortFunctions = useMemo(() => ({
     'a-z': (a, b) => a.name.localeCompare(b.name),
     'z-a': (a, b) => b.name.localeCompare(a.name),
@@ -3417,7 +3412,6 @@ const ProductsPage = ({ defaultGenre }) => {
     'oldest': (a, b) => a.id - b.id
   }), []);
 
-  // Optimized sort handler
   const handleSortChange = useCallback((sortMethod) => {
     setSelectedSort(sortMethod);
     setProducts(prev => [...prev].sort(sortFunctions[sortMethod] || sortFunctions['newest']));
@@ -3425,7 +3419,6 @@ const ProductsPage = ({ defaultGenre }) => {
     setMobileSortOpen(false);
   }, [sortFunctions]);
 
-  // Memoized sort labels
   const sortLabels = useMemo(() => ({
     'newest': 'Newest to Oldest',
     'oldest': 'Oldest to Newest',
@@ -3437,7 +3430,6 @@ const ProductsPage = ({ defaultGenre }) => {
 
   const getSortLabel = useCallback((sort) => sortLabels[sort] || 'Newest to Oldest', [sortLabels]);
 
-  // Optimized product filtering
   const filteredProducts = useMemo(() => {
     const { brands, genres, price } = filters;
     
@@ -3451,7 +3443,6 @@ const ProductsPage = ({ defaultGenre }) => {
     });
   }, [products, filters]);
 
-  // Optimized pagination
   const { totalPages, paginatedProducts } = useMemo(() => {
     const total = Math.ceil(filteredProducts.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -3465,7 +3456,6 @@ const ProductsPage = ({ defaultGenre }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  // Memoized page title
   const pageTitle = useMemo(() => {
     const active = (genre || defaultGenre)?.toLowerCase();
     return active === 'men' ? "Men's Perfumes" : 
@@ -3473,7 +3463,6 @@ const ProductsPage = ({ defaultGenre }) => {
            "Premium Perfumes Collection";
   }, [genre, defaultGenre]);
 
-  // Optimized reset filters
   const resetFilters = useCallback(() => {
     setFilters({
       brands: [],
@@ -3483,30 +3472,7 @@ const ProductsPage = ({ defaultGenre }) => {
     setMobileFilterOpen(false);
   }, [isGenderPage, activeGenre]);
 
-  // Render loading state
-  if (isLoading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <div className={styles.loadingSpinner}></div>
-        <p>Loading perfumes...</p>
-      </div>
-    );
-  }
-
-  // Render error state
-  if (error) {
-    return (
-      <div className={styles.errorContainer}>
-        <h2>Error loading products</h2>
-        <p>{error}</p>
-        <button className={styles.retryButton} onClick={fetchProducts}>
-          Try Again
-        </button>
-      </div>
-    );
-  }
-
-  // Render pagination buttons
+  // Move the renderPaginationButtons function to the top level
   const renderPaginationButtons = useCallback(() => {
     if (totalPages <= 1) return null;
 
@@ -3521,7 +3487,6 @@ const ProductsPage = ({ defaultGenre }) => {
       );
     }
 
-    // Previous button
     buttons.push(
       <button
         key="prev"
@@ -3533,7 +3498,6 @@ const ProductsPage = ({ defaultGenre }) => {
       </button>
     );
 
-    // Page buttons
     for (let i = 0; i < Math.min(maxVisible, totalPages); i++) {
       const page = startPage + i;
       buttons.push(
@@ -3547,7 +3511,6 @@ const ProductsPage = ({ defaultGenre }) => {
       );
     }
 
-    // Next button
     buttons.push(
       <button
         key="next"
@@ -3561,6 +3524,28 @@ const ProductsPage = ({ defaultGenre }) => {
 
     return <div className={styles.paginationContainer}>{buttons}</div>;
   }, [totalPages, currentPage, handlePageChange]);
+
+  // Only after all hooks are declared can we have conditional returns
+  if (isLoading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}></div>
+        <p>Loading perfumes...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.errorContainer}>
+        <h2>Error loading products</h2>
+        <p>{error}</p>
+        <button className={styles.retryButton} onClick={fetchProducts}>
+          Try Again
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
