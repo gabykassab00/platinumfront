@@ -1922,6 +1922,241 @@
 
 
 
+// import React, { useEffect, useState, useRef } from 'react';
+// import { useParams } from 'react-router-dom';
+// import ProductCard from '../componen/ProductCard';
+// import styles from '../style/ProductDetail.module.css';
+// import { useBasket } from '../context/BasketProvider';
+
+// const ProductDetails = () => {
+//   const { productId } = useParams();
+//   const { addItem, openSidebar } = useBasket();
+
+//   const [product, setProduct] = useState(null);
+//   const [selectedSize, setSelectedSize] = useState('100ml');
+//   const [quantity, setQuantity] = useState(1);
+//   const [relatedProducts, setRelatedProducts] = useState([]);
+
+//   const infoRef = useRef();
+//   const imageBoxRef = useRef();
+//   const API_URL = process.env.REACT_APP_API_URL;
+
+//   // Fetch product details
+//   useEffect(() => {
+//     fetch(`${API_URL}/api/products/${productId}`)
+//       .then((res) => res.json())
+//       .then((data) => setProduct(data))
+//       .catch((err) => console.error('Error fetching product:', err));
+//   }, [productId, API_URL]);
+
+//   // Set image container height to match info box
+//   useEffect(() => {
+//     if (infoRef.current && imageBoxRef.current) {
+//       const infoHeight = infoRef.current.offsetHeight;
+//       imageBoxRef.current.style.height = `${infoHeight}px`;
+//     }
+//   }, [product]);
+
+//   // Fetch related products
+//   useEffect(() => {
+//     if (!product) return;
+
+//     const imagePath = product.image_path || '';
+//     const genre = product.genre || '';
+//     let baseImagePath = '';
+
+//     if (imagePath.includes('images/terkibmen/')) {
+//       baseImagePath = 'terkibmen';
+//     } else if (imagePath.includes('images/terkibwomen/')) {
+//       baseImagePath = 'terkibwomen';
+//     } else if (imagePath.includes('images/jehiz/')) {
+//       baseImagePath = 'jehiz';
+//     }
+
+//     if (baseImagePath) {
+//       const genreQuery = baseImagePath === 'jehiz' ? `&genre=${genre}` : '';
+//       const url = `${API_URL}/api/products/recommend?baseImagePath=${baseImagePath}${genreQuery}`;
+
+//       fetch(url)
+//         .then((res) => res.json())
+//         .then((data) => {
+//           setRelatedProducts(data.filter((p) => p.id !== product.id));
+//         })
+//         .catch((err) => console.error('Error fetching related products:', err));
+//     }
+//   }, [product, API_URL]);
+
+//   if (!product) return <div className={styles.loading}>Loading...</div>;
+
+//   const imageUrl = `${API_URL}/${product.image_path}`;
+//   const basePrice = parseFloat(product.price);
+//   const discount = parseFloat(product.discount || 0);
+//   const hasDiscount = discount > 0;
+
+//   const getSizePrice = (size) => {
+//     if (size === '25ml') return 7;
+//     if (size === '80ml') return 15;
+//     return basePrice;
+//   };
+
+//   const unitPrice = getSizePrice(selectedSize);
+//   const discountedUnitPrice = hasDiscount ? unitPrice * (1 - discount) : unitPrice;
+//   const totalPrice = (discountedUnitPrice * quantity).toFixed(2);
+//   const originalTotal = (unitPrice * quantity).toFixed(2);
+
+//   const handleAddToCart = () => {
+//     const item = {
+//       ...product,
+//       price: discountedUnitPrice.toFixed(2),
+//       total: totalPrice,
+//       quantity,
+//       size: selectedSize,
+//     };
+
+//     addItem(item);
+//     openSidebar();
+//   };
+
+//   return (
+//     <div className={styles.container}>
+//       <div className={styles.productContainer}>
+//         {/* Image Column */}
+//         <div className={styles.imageContainer}>
+//           <div ref={imageBoxRef} className={styles.imageWrapper}>
+//             <img
+//               src={imageUrl}
+//               alt={product.name}
+//               className={styles.productImage}
+//               onError={(e) => (e.target.src = 'https://via.placeholder.com/300')}
+//             />
+//             {hasDiscount && (
+//               <div className={styles.discountBadge}>
+//                 -{Math.round(discount * 100)}%
+//               </div>
+//             )}
+//           </div>
+//         </div>
+
+//         {/* Info Column */}
+//         <div ref={infoRef} className={styles.infoContainer}>
+//           <h1 className={styles.title}>{product.name}</h1>
+
+//           <div className={styles.priceRow}>
+//             {hasDiscount && <span className={styles.originalPrice}>${originalTotal}</span>}
+//             <span className={styles.finalPrice}>${totalPrice}</span>
+//           </div>
+
+//           <p className={styles.description}>
+//             {product.description || 'Premium quality product'}
+//           </p>
+//           <p className={styles.shipping}>Shipping calculated at checkout.</p>
+
+//           {/* Size Selection */}
+//           <div className={styles.sizeSection}>
+//             <h3 className={styles.sectionTitle}>Size</h3>
+//             <div className={styles.sizeButtons}>
+//               {['25ml', '80ml', '100ml'].map((size) => (
+//                 <button
+//                   key={size}
+//                   className={`${styles.sizeBtn} ${selectedSize === size ? styles.selected : ''}`}
+//                   onClick={() => setSelectedSize(size)}
+//                 >
+//                   {size}
+//                 </button>
+//               ))}
+//             </div>
+//           </div>
+
+//           {/* Quantity */}
+//           <div className={styles.quantitySection}>
+//             <h3 className={styles.sectionTitle}>Quantity</h3>
+//             <div className={styles.quantityControls}>
+//               <button
+//                 className={styles.quantityBtn}
+//                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+//               >
+//                 −
+//               </button>
+//               <span className={styles.quantityValue}>{quantity}</span>
+//               <button
+//                 className={styles.quantityBtn}
+//                 onClick={() => setQuantity((q) => q + 1)}
+//               >
+//                 +
+//               </button>
+//             </div>
+//           </div>
+
+//           <button className={styles.addToCartBtn} onClick={handleAddToCart}>
+//             ADD TO CART
+//           </button>
+
+//           {/* Meta Info */}
+//           <div className={styles.detailsSection}>
+//             <h3 className={styles.sectionTitle}>Product Details</h3>
+//             <div className={styles.detailsGrid}>
+//               <div className={styles.detailItem}>
+//                 <span className={styles.detailLabel}>SKU:</span>
+//                 <span className={styles.detailValue}>N/A</span>
+//               </div>
+//               <div className={styles.detailItem}>
+//                 <span className={styles.detailLabel}>Availability:</span>
+//                 <span className={styles.detailValue}>In Stock</span>
+//               </div>
+//               <div className={styles.detailItem}>
+//                 <span className={styles.detailLabel}>Categories:</span>
+//                 <span className={styles.detailValue}>Perfumes, {product.genre}</span>
+//               </div>
+//               <div className={styles.detailItem}>
+//                 <span className={styles.detailLabel}>Tags:</span>
+//                 <span className={styles.detailValue}>2025 Collection, Minimal</span>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* You may also like */}
+//       {relatedProducts.length > 0 && (
+//         <div className={styles.relatedSection}>
+//           <h2 className={styles.relatedTitle}>You may also like</h2>
+//           <div className={styles.relatedGrid}>
+//             {relatedProducts.map((item) => (
+//               <ProductCard
+//                 key={item.id}
+//                 product={item}
+//                 className={styles.relatedCard}
+//               />
+//             ))}
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default ProductDetails;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../componen/ProductCard';
@@ -1933,7 +2168,7 @@ const ProductDetails = () => {
   const { addItem, openSidebar } = useBasket();
 
   const [product, setProduct] = useState(null);
-  const [selectedSize, setSelectedSize] = useState('100ml');
+  const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [relatedProducts, setRelatedProducts] = useState([]);
 
@@ -1945,11 +2180,16 @@ const ProductDetails = () => {
   useEffect(() => {
     fetch(`${API_URL}/api/products/${productId}`)
       .then((res) => res.json())
-      .then((data) => setProduct(data))
+      .then((data) => {
+        setProduct(data);
+        if (data.type !== 'multiple') {
+          setSelectedSize('100ml'); // default for single-type
+        }
+      })
       .catch((err) => console.error('Error fetching product:', err));
   }, [productId, API_URL]);
 
-  // Set image container height to match info box
+  // Set image height to match info height
   useEffect(() => {
     if (infoRef.current && imageBoxRef.current) {
       const infoHeight = infoRef.current.offsetHeight;
@@ -1992,6 +2232,7 @@ const ProductDetails = () => {
   const basePrice = parseFloat(product.price);
   const discount = parseFloat(product.discount || 0);
   const hasDiscount = discount > 0;
+  const isMultiple = product.type === 'multiple';
 
   const getSizePrice = (size) => {
     if (size === '25ml') return 7;
@@ -2010,7 +2251,7 @@ const ProductDetails = () => {
       price: discountedUnitPrice.toFixed(2),
       total: totalPrice,
       quantity,
-      size: selectedSize,
+      ...(isMultiple && { size: selectedSize }),
     };
 
     addItem(item);
@@ -2020,7 +2261,6 @@ const ProductDetails = () => {
   return (
     <div className={styles.container}>
       <div className={styles.productContainer}>
-        {/* Image Column */}
         <div className={styles.imageContainer}>
           <div ref={imageBoxRef} className={styles.imageWrapper}>
             <img
@@ -2037,7 +2277,6 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        {/* Info Column */}
         <div ref={infoRef} className={styles.infoContainer}>
           <h1 className={styles.title}>{product.name}</h1>
 
@@ -2046,26 +2285,26 @@ const ProductDetails = () => {
             <span className={styles.finalPrice}>${totalPrice}</span>
           </div>
 
-          <p className={styles.description}>
-            {product.description || 'Premium quality product'}
-          </p>
+          <p className={styles.description}>{product.description || 'Premium quality product'}</p>
           <p className={styles.shipping}>Shipping calculated at checkout.</p>
 
-          {/* Size Selection */}
-          <div className={styles.sizeSection}>
-            <h3 className={styles.sectionTitle}>Size</h3>
-            <div className={styles.sizeButtons}>
-              {['25ml', '80ml', '100ml'].map((size) => (
-                <button
-                  key={size}
-                  className={`${styles.sizeBtn} ${selectedSize === size ? styles.selected : ''}`}
-                  onClick={() => setSelectedSize(size)}
-                >
-                  {size}
-                </button>
-              ))}
+          {/* Size Section (only if multiple) */}
+          {isMultiple && (
+            <div className={styles.sizeSection}>
+              <h3 className={styles.sectionTitle}>Size</h3>
+              <div className={styles.sizeButtons}>
+                {['25ml', '80ml', '100ml'].map((size) => (
+                  <button
+                    key={size}
+                    className={`${styles.sizeBtn} ${selectedSize === size ? styles.selected : ''}`}
+                    onClick={() => setSelectedSize(size)}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Quantity */}
           <div className={styles.quantitySection}>
@@ -2091,7 +2330,6 @@ const ProductDetails = () => {
             ADD TO CART
           </button>
 
-          {/* Meta Info */}
           <div className={styles.detailsSection}>
             <h3 className={styles.sectionTitle}>Product Details</h3>
             <div className={styles.detailsGrid}>
@@ -2116,17 +2354,12 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {/* You may also like */}
       {relatedProducts.length > 0 && (
         <div className={styles.relatedSection}>
           <h2 className={styles.relatedTitle}>You may also like</h2>
           <div className={styles.relatedGrid}>
             {relatedProducts.map((item) => (
-              <ProductCard
-                key={item.id}
-                product={item}
-                className={styles.relatedCard}
-              />
+              <ProductCard key={item.id} product={item} className={styles.relatedCard} />
             ))}
           </div>
         </div>
