@@ -40,7 +40,7 @@ const Footer = () => {
                         </div>
                     </div>
 
-                    {
+                    {/* {
                         footMenu.map(item => {
                             const { id, title, menu } = item;
                             return (
@@ -61,7 +61,7 @@ const Footer = () => {
                                 </div>
                             );
                         })
-                    }
+                    } */}
                 </div>
             </div>
 
