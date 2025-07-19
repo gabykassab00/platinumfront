@@ -2241,7 +2241,7 @@
     grid-template-columns: 1fr auto auto auto;
     gap: 0.5rem;
     padding: 0.5rem 0;
-    align-items: start;
+    align-items: center;
   }
 }
 
@@ -2695,11 +2695,15 @@
   .hamburger,
   .nav-search-mobile,
   .nav_cart {
-    font-size: 2.2rem; // Make icons visibly bigger
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
     padding: 0.5rem;
 
     svg {
-      font-size: 2.2rem; // Also ensure inner icons scale
+      font-size: 2.2rem;
     }
   }
 }
+
