@@ -2473,6 +2473,6 @@
   }
 
   .imageWrapper {
-    margin-top: -1rem; /* Pull image upward */
+    margin-top: -2rem; /* Pull image upward */
   }
 }
