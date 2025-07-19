@@ -2462,3 +2462,17 @@
     display: none;
   }
 }
+
+@media (max-width: 576px) {
+  .container {
+    padding-top: 0.5rem; /* Reduce top padding */
+  }
+
+  .productContainer {
+    margin-top: 0;
+  }
+
+  .imageWrapper {
+    margin-top: -1rem; /* Pull image upward */
+  }
+}
