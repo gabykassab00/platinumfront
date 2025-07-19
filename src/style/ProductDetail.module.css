@@ -2337,12 +2337,37 @@
   transform: scale(0.95);
 }
 
+/* Compact card styles for mobile */
+@media (max-width: 767px) {
+  .relatedCard {
+    padding: 0.8rem;
+  }
+  
+  .relatedCard img {
+    height: 100px;
+    max-width: 100%;
+  }
+  
+  .relatedCard h3 {
+    font-size: 0.85rem;
+    margin: 0.3rem 0;
+  }
+  
+  .relatedCard .price {
+    font-size: 0.9rem;
+  }
+  
+  .relatedCard .originalPrice {
+    font-size: 0.75rem;
+  }
+}
+
 .scrollButton {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   background: white;
   border: 1px solid #ddd;
   border-radius: 50%;
@@ -2383,6 +2408,18 @@
     transform: none !important;
   }
   
+  .relatedCard {
+    padding: 1rem;
+  }
+  
+  .relatedCard img {
+    height: 180px;
+  }
+  
+  .relatedCard h3 {
+    font-size: 1rem;
+  }
+  
   .scrollButton {
     display: none;
   }
@@ -2403,7 +2440,7 @@
   }
   
   .scrollButton {
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
   }
 }

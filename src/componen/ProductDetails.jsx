@@ -2452,7 +2452,7 @@ const ProductDetails = () => {
 
   const scrollRelated = (direction) => {
     if (relatedProductsRef.current) {
-      const cardWidth = 160; // Approximate width of each card + margin
+      const cardWidth = 140; // Smaller card width for mobile
       const scrollAmount = direction === 'left' ? -cardWidth * 2 : cardWidth * 2;
       
       relatedProductsRef.current.scrollBy({
@@ -2460,7 +2460,6 @@ const ProductDetails = () => {
         behavior: 'smooth'
       });
 
-      // Update visible products index
       setVisibleProducts(prev => {
         const newIndex = direction === 'left' ? prev - 2 : prev + 2;
         return Math.max(0, Math.min(newIndex, relatedProducts.length - 2));
@@ -2616,7 +2615,11 @@ const ProductDetails = () => {
                     index >= visibleProducts && index < visibleProducts + 2 ? styles.visible : ''
                   }`}
                 >
-                  <ProductCard product={item} className={styles.relatedCard} />
+                  <ProductCard 
+                    product={item} 
+                    className={styles.relatedCard}
+                    compactMode={true}
+                  />
                 </div>
               ))}
             </div>
