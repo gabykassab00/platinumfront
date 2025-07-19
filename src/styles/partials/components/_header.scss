@@ -2689,3 +2689,17 @@
     transform: scale(1.1);
   }
 }
+
+
+@media (max-width: 768px) {
+  .hamburger,
+  .nav-search-mobile,
+  .nav_cart {
+    font-size: 2.2rem; // Make icons visibly bigger
+    padding: 0.5rem;
+
+    svg {
+      font-size: 2.2rem; // Also ensure inner icons scale
+    }
+  }
+}
