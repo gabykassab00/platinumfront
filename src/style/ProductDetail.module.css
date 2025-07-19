@@ -2108,7 +2108,7 @@
 
 .imageWrapper {
   position: relative;
-  background: #f8f8f8;
+  background: white;
   border-radius: 8px;
   overflow: hidden;
   display: flex;
