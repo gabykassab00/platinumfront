@@ -2475,7 +2475,7 @@ const ProductDetails = () => {
   const isMultiple = product.type === 'multiple';
 
   const getSizePrice = (size) => {
-    if (size === '25ml') return 7;
+    if (size === '50ml') return 10;
     if (size === '80ml') return 15;
     return basePrice;
   };
@@ -2532,7 +2532,7 @@ const ProductDetails = () => {
             <div className={styles.sizeSection}>
               <h3 className={styles.sectionTitle}>Size</h3>
               <div className={styles.sizeButtons}>
-                {['25ml', '80ml', '100ml'].map((size) => (
+                {['50ml', '80ml', '100ml'].map((size) => (
                   <button
                     key={size}
                     className={`${styles.sizeBtn} ${selectedSize === size ? styles.selected : ''}`}
