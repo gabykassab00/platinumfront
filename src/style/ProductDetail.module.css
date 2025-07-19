@@ -2465,7 +2465,7 @@
 
 @media (max-width: 576px) {
   .container {
-    padding-top: 0.5rem; /* Reduce top padding */
+    padding-top: 0rem; /* Reduce top padding */
   }
 
   .productContainer {
@@ -2473,6 +2473,6 @@
   }
 
   .imageWrapper {
-    margin-top: -2rem; /* Pull image upward */
+    margin-top: -3rem; /* Pull image upward */
   }
 }
