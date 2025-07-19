@@ -1359,7 +1359,7 @@ const ProductCard = React.memo(({ product }) => {
 
   const getPriceForSize = useCallback((size) => {
     switch (size) {
-      case 35: return 7;
+      case 50: return 10;
       case 80: return 15;
       case 100: return basePrice;
       default: return basePrice;
@@ -1420,7 +1420,7 @@ const ProductCard = React.memo(({ product }) => {
         {isMultipleType && (
           <div className={styles.sizeSection}>
             <div className={styles.priceButtons}>
-              {[35, 80, 100].map((size) => (
+              {[50, 80, 100].map((size) => (
                 <div
                   key={size}
                   className={`${styles.flipButton} ${selectedSize === size ? styles.selectedSize : ''}`}
@@ -1429,7 +1429,7 @@ const ProductCard = React.memo(({ product }) => {
                   <div className={styles.flipInner}>
                     <div className={styles.flipFront}>{size}ml</div>
                     <div className={styles.flipBack}>
-                      {size === 35 ? 'Small' : size === 80 ? 'Medium' : 'Large'}
+                      {size === 50 ? 'Small' : size === 80 ? 'Medium' : 'Large'}
                     </div>
                   </div>
                 </div>
