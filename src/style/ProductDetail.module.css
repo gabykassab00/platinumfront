@@ -2310,16 +2310,34 @@
 
 .relatedContainer {
   position: relative;
+  width: 100%;
+  padding: 0 2rem;
 }
 
 .relatedGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
+  display: flex;
+  overflow-x: hidden;
+  gap: 1rem;
+  padding: 1rem 0;
+  scroll-snap-type: x mandatory;
+}
+
+.relatedCardWrapper {
+  flex: 0 0 calc(50% - 0.5rem);
+  transition: all 0.3s ease;
+}
+
+.relatedCardWrapper.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.relatedCardWrapper:not(.visible) {
+  opacity: 0.6;
+  transform: scale(0.95);
 }
 
 .scrollButton {
-  display: none;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -2343,36 +2361,49 @@
 }
 
 .scrollButton:first-child {
-  left: -20px;
+  left: 0;
 }
 
 .scrollButton:last-child {
-  right: -20px;
+  right: 0;
 }
 
-/* Mobile styles */
-@media (max-width: 767px) {
+/* Desktop styles */
+@media (min-width: 768px) {
   .relatedGrid {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 1.5rem;
-    padding: 1rem 0;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    overflow-x: visible;
+    gap: 2rem;
   }
-
-  .relatedGrid::-webkit-scrollbar {
+  
+  .relatedCardWrapper {
+    flex: 1;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  .scrollButton {
     display: none;
   }
-
-  .relatedCard {
-    flex: 0 0 75%;
-    scroll-snap-align: start;
-    min-width: 250px;
+  
+  .relatedContainer {
+    padding: 0;
   }
+}
 
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .relatedCardWrapper {
+    flex: 0 0 calc(50% - 0.5rem);
+  }
+  
+  .relatedContainer {
+    padding: 0 1.5rem;
+  }
+  
   .scrollButton {
-    display: flex;
+    width: 35px;
+    height: 35px;
   }
 }

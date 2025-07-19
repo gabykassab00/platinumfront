@@ -2393,6 +2393,7 @@ const ProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [visibleProducts, setVisibleProducts] = useState(0);
 
   const infoRef = useRef();
   const imageBoxRef = useRef();
@@ -2451,10 +2452,18 @@ const ProductDetails = () => {
 
   const scrollRelated = (direction) => {
     if (relatedProductsRef.current) {
-      const scrollAmount = direction === 'left' ? -300 : 300;
+      const cardWidth = 160; // Approximate width of each card + margin
+      const scrollAmount = direction === 'left' ? -cardWidth * 2 : cardWidth * 2;
+      
       relatedProductsRef.current.scrollBy({
         left: scrollAmount,
         behavior: 'smooth'
+      });
+
+      // Update visible products index
+      setVisibleProducts(prev => {
+        const newIndex = direction === 'left' ? prev - 2 : prev + 2;
+        return Math.max(0, Math.min(newIndex, relatedProducts.length - 2));
       });
     }
   };
@@ -2589,27 +2598,38 @@ const ProductDetails = () => {
         <div className={styles.relatedSection}>
           <h2 className={styles.relatedTitle}>You may also like</h2>
           <div className={styles.relatedContainer}>
-            <button 
-              className={styles.scrollButton} 
-              onClick={() => scrollRelated('left')}
-              aria-label="Scroll left"
-            >
-              <FiChevronLeft />
-            </button>
+            {visibleProducts > 0 && (
+              <button 
+                className={styles.scrollButton} 
+                onClick={() => scrollRelated('left')}
+                aria-label="Scroll left"
+              >
+                <FiChevronLeft />
+              </button>
+            )}
             
             <div className={styles.relatedGrid} ref={relatedProductsRef}>
-              {relatedProducts.map((item) => (
-                <ProductCard key={item.id} product={item} className={styles.relatedCard} />
+              {relatedProducts.map((item, index) => (
+                <div 
+                  key={item.id} 
+                  className={`${styles.relatedCardWrapper} ${
+                    index >= visibleProducts && index < visibleProducts + 2 ? styles.visible : ''
+                  }`}
+                >
+                  <ProductCard product={item} className={styles.relatedCard} />
+                </div>
               ))}
             </div>
             
-            <button 
-              className={styles.scrollButton} 
-              onClick={() => scrollRelated('right')}
-              aria-label="Scroll right"
-            >
-              <FiChevronRight />
-            </button>
+            {visibleProducts < relatedProducts.length - 2 && (
+              <button 
+                className={styles.scrollButton} 
+                onClick={() => scrollRelated('right')}
+                aria-label="Scroll right"
+              >
+                <FiChevronRight />
+              </button>
+            )}
           </div>
         </div>
       )}
