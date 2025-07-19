@@ -2672,3 +2672,20 @@
     opacity: 1;
   }
 }
+
+
+.mobile-menu-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #333;
+  z-index: 1002;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
