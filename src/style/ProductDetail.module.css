@@ -2430,17 +2430,82 @@
 }
 
 /* Mobile adjustments */
-@media (max-width: 480px) {
+/* Add to your existing CSS */
+
+/* Mobile styles for related products */
+@media (max-width: 767px) {
   .relatedCardWrapper {
     flex: 0 0 calc(50% - 0.5rem);
+    scroll-snap-align: start;
+    min-width: 0; /* Allow flex items to shrink */
   }
-  
-  .relatedContainer {
-    padding: 0 1.5rem;
+
+  .relatedCard.compactHeight {
+    height: 180px; /* Reduced height while maintaining width */
+    display: flex;
+    flex-direction: column;
   }
-  
+
+  .relatedCard.compactHeight img {
+    height: 80px; /* Smaller image height */
+    width: auto;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+
+  .relatedCard.compactHeight .product-info {
+    padding: 0.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .relatedCard.compactHeight h3 {
+    font-size: 0.85rem;
+    margin: 0.3rem 0;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .relatedCard.compactHeight .price {
+    font-size: 0.9rem;
+    margin-top: auto;
+  }
+
+  .relatedGrid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  .relatedGrid::-webkit-scrollbar {
+    display: none;
+  }
+
   .scrollButton {
     width: 32px;
     height: 32px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #eee;
+  }
+}
+
+/* Desktop styles remain unchanged */
+@media (min-width: 768px) {
+  .relatedCard {
+    height: auto; /* Full height */
+  }
+  
+  .relatedCard img {
+    height: 180px;
   }
 }
