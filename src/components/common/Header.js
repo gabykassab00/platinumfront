@@ -2529,7 +2529,7 @@ const Header = () => {
       )}
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
+      {/* {mobileMenuOpen && (
         <div className="mobile-menu-container">
           <nav className="mobile-menu-nav">
             <ul className="mobile-menu-list">
@@ -2547,7 +2547,30 @@ const Header = () => {
             </ul>
           </nav>
         </div>
-      )}
+      )} */}
+      {mobileMenuOpen && (
+  <div className="mobile-menu-container">
+    <button className="mobile-menu-close" onClick={handleMobileMenuClick}>
+      <AiOutlineClose />
+    </button>
+    <nav className="mobile-menu-nav">
+      <ul className="mobile-menu-list">
+        {menuCategories.map((cat) => (
+          <li
+            key={cat.id}
+            className={`mobile-menu-item ${cat.name === 'Sale' ? 'sale-item' : ''}`}
+            onClick={handleMenuItemClick}
+          >
+            <Link to={cat.path} className="mobile-menu-link">
+              {cat.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+)}
+
     </header>
   );
 };
