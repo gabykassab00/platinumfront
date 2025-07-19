@@ -2847,7 +2847,7 @@ const ProductDetails = () => {
           </button>
 
           {/* Updated: Custom bullet list instead of SKU/Tags */}
-          <div className={styles.detailsSection}>
+          {/* <div className={styles.detailsSection}>
             <h3 className={styles.sectionTitle}>Product Details</h3>
             <ul className={styles.bulletList}>
               <li>🇫🇷 3rd French fragrance oil company agency in all over Lebanon</li>
@@ -2855,7 +2855,17 @@ const ProductDetails = () => {
               <li>🧴 Bold. Precise. Aromatic.</li>
               <li>💨 Stays long. Speaks loud.</li>
             </ul>
-          </div>
+          </div> */}
+          <div className={styles.detailsSection}>
+  <h3 className={styles.sectionTitle}>Product Details</h3>
+  <ul className={styles.bulletList}>
+    <li><strong>🏢 3rd French fragrance oil company agency in all over Lebanon</strong></li>
+    <li><strong>📜 ISO certification of quality scents</strong></li>
+    <li><strong>🧴 Bold. Precise. Aromatic.</strong></li>
+    <li><strong>💨 Stays long. Speaks loud.</strong></li>
+  </ul>
+</div>
+
         </div>
       </div>
 
