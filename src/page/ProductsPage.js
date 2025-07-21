@@ -3841,15 +3841,6 @@ const ProductsPage = ({ defaultGenre }) => {
     setMobileSortOpen(false);
   }, []);
 
-  // const filteredProducts = useMemo(() => {
-  //   const { brands, genres, price } = filters;
-  //   return products.filter(product => {
-  //     const matchesBrand = brands.length === 0 || brands.includes(product.brand);
-  //     const matchesGenre = genres.length === 0 || genres.some(g => g.toLowerCase() === product.genre?.toLowerCase());
-  //     const matchesPrice = product.price <= price;
-  //     return matchesBrand && matchesGenre && matchesPrice;
-  //   });
-  // }, [products, filters]);
 
   const filteredProducts = useMemo(() => {
   const { brands, genres, price } = filters;
@@ -3950,7 +3941,8 @@ const ProductsPage = ({ defaultGenre }) => {
           <div className={styles.mobileFilterSortBar}>
             <button onClick={() => setMobileFilterOpen(!mobileFilterOpen)} className={styles.mobileFilterButton}>
               <span>Filter By</span>
-              <span>{products.length} products</span>
+              {/* <span>{products.length} products</span> */}
+            <span>{filteredProducts.length} products</span>
             </button>
             <button onClick={() => setMobileSortOpen(!mobileSortOpen)} className={styles.mobileSortButton}>
               <span>{sortLabels[selectedSort] || 'Newest to Oldest'}</span>
@@ -3977,7 +3969,9 @@ const ProductsPage = ({ defaultGenre }) => {
 
           <div className={styles.desktopToolbar}>
             <div className={styles.resultsCount}>
-              Showing {products.length} products • Page {currentPage} of {totalPages}
+              {/* Showing {products.length} products • Page {currentPage} of {totalPages} */}
+            Showing {filteredProducts.length} products • Page {currentPage} of {totalPages}
+
             </div>
             <div className={styles.sortContainer}>
               <SortDropdown onSortChange={handleSortChange} selectedSort={selectedSort} sortLabels={sortLabels} />
@@ -3987,9 +3981,13 @@ const ProductsPage = ({ defaultGenre }) => {
           {products.length > 0 ? (
             <>
               <div className={styles.productsGrid}>
-                {products.map(product => (
+                {/* {products.map(product => (
                   <MemoizedProductCard key={`${product.id}-${product.name}`} product={product} />
-                ))}
+                ))} */}
+                {filteredProducts.map(product => (
+  <MemoizedProductCard key={`${product.id}-${product.name}`} product={product} />
+))}
+
               </div>
               {renderPaginationButtons()}
             </>
