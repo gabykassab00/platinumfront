@@ -3841,15 +3841,26 @@ const ProductsPage = ({ defaultGenre }) => {
     setMobileSortOpen(false);
   }, []);
 
+  // const filteredProducts = useMemo(() => {
+  //   const { brands, genres, price } = filters;
+  //   return products.filter(product => {
+  //     const matchesBrand = brands.length === 0 || brands.includes(product.brand);
+  //     const matchesGenre = genres.length === 0 || genres.some(g => g.toLowerCase() === product.genre?.toLowerCase());
+  //     const matchesPrice = product.price <= price;
+  //     return matchesBrand && matchesGenre && matchesPrice;
+  //   });
+  // }, [products, filters]);
+
   const filteredProducts = useMemo(() => {
-    const { brands, genres, price } = filters;
-    return products.filter(product => {
-      const matchesBrand = brands.length === 0 || brands.includes(product.brand);
-      const matchesGenre = genres.length === 0 || genres.some(g => g.toLowerCase() === product.genre?.toLowerCase());
-      const matchesPrice = product.price <= price;
-      return matchesBrand && matchesGenre && matchesPrice;
-    });
-  }, [products, filters]);
+  const { brands, genres, price } = filters;
+
+  return (products || []).filter(product => {
+    const matchesBrand = brands.length === 0 || brands.includes(product.brand);
+    const matchesGenre = genres.length === 0 || genres.some(g => g.toLowerCase() === product.genre?.toLowerCase());
+    const matchesPrice = product.price <= price;
+    return matchesBrand && matchesGenre && matchesPrice;
+  });
+}, [products, filters]);
 
   const handlePageChange = useCallback((page) => {
     setCurrentPage(page);
