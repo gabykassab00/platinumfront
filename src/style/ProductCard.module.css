@@ -1377,8 +1377,7 @@
 
 
 
-
- .card {
+.card {
   position: relative;
   background: #fff;
   border-radius: 10px;
@@ -1441,8 +1440,9 @@
 }
 
 .sizeSection {
-  margin: 6px 0 2px; /* Reduced vertical space */
+  margin: 4px 0 0;
   padding: 0;
+  min-height: 70px;
 }
 
 .priceButtons {
@@ -1454,13 +1454,24 @@
 
 .priceButtons .flipButton {
   flex: 1;
-  height: 42px;
-  border-radius: 16px;
+  height: 40px;
+  border-radius: 14px;
 }
 
-.flipButton {
+.footer {
+  margin-top: auto;
+  padding-bottom: 15px;
+}
+
+.addToCartButton {
+  margin: 12px 0;
   width: 100%;
-  height: 100%;
+  height: 40px;
+  perspective: 1000px;
+}
+
+.flipButton,
+.addToCartButton {
   perspective: 1000px;
   cursor: pointer;
 }
@@ -1473,7 +1484,8 @@
   position: relative;
 }
 
-.flipButton:hover .flipInner {
+.flipButton:hover .flipInner,
+.addToCartButton:hover .flipInner {
   transform: rotateY(180deg);
 }
 
@@ -1486,20 +1498,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
+  border-radius: 14px;
   font-size: 1rem;
   font-weight: bold;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  line-height: 1;
+  padding: 0 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   background-color: #000;
   color: #FFD700;
   border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
 .priceButtons .flipFront:hover,
 .priceButtons .flipBack:hover {
-  background-color: #FFD700;
-  color: #000;
+  background-color: #1a1a1a;
+  color: black;
 }
 
 .priceButtons .selectedSize .flipFront,
@@ -1509,14 +1526,11 @@
   box-shadow: 0 0 0 2px white, 0 0 0 4px #000;
 }
 
-.addToCartButton {
-  margin: 10px 0;
-}
-
 .addToCartButton .flipFront,
 .addToCartButton .flipBack {
   background-color: #000;
   color: white;
+  font-size: 0.95rem;
 }
 
 .addToCartButton .flipFront:hover,
@@ -1530,13 +1544,13 @@
 
 .details {
   text-align: center;
-  margin-top: 6px;
+  margin-bottom: 10px;
 }
 
 .name {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: bold;
-  margin: 6px 0 2px;
+  margin: 6px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1545,28 +1559,21 @@
 .price {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 10px;
-  font-size: 1.3rem;
-  color: #FFD700;
-  font-weight: bold;
+  align-items: center;
+  font-size: 1.4rem;
 }
 
 .original {
   text-decoration: line-through;
-  color: #888;
+  color: #6b7280;
   font-size: 0.95rem;
 }
 
 .current {
   color: #FFD700;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: bold;
-}
-
-.footer {
-  margin-top: auto;
-  padding-bottom: 15px;
 }
 
 .errorMessage {
@@ -1585,21 +1592,22 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
   .priceButtons {
     flex-direction: row;
+    margin: 10px 0 5px;
     flex-wrap: nowrap;
-    margin: 8px 0 4px;
   }
 
   .priceButtons .flipButton {
     width: auto;
+    min-width: 0;
     flex: 1;
+    max-width: none;
   }
 
   .name {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
   .current {
@@ -1613,14 +1621,16 @@
   }
 
   .priceButtons .flipButton {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
-  .flipFront {
-    font-size: 0.9rem;
-  }
-
+  .flipFront,
   .flipBack {
-    font-size: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .addToCartButton .flipFront,
+  .addToCartButton .flipBack {
+    font-size: 0.9rem;
   }
 }
