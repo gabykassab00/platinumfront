@@ -1511,7 +1511,7 @@
 .priceButtons .flipFront:hover,
 .priceButtons .flipBack:hover {
   background-color: #1a1a1a;
-  color: black;
+  color: #FFD700;
 }
 
 .priceButtons .selectedSize .flipFront,
