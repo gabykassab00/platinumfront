@@ -1119,6 +1119,8 @@
 
 
 
+
+
 .card {
   position: relative;
   background: #fff;
@@ -1131,16 +1133,22 @@
   height: 100%;
 }
 
-
 .card:hover {
-  transform: scale(0.98);
+  transform: translateY(-5px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 0 15px;
 }
 
 .imageContainer {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1.1;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   background-color: white;
   cursor: pointer;
@@ -1176,16 +1184,15 @@
 }
 
 .sizeSection {
-  min-height: 0; /* reduce unused vertical space */
-  margin-bottom: 4px; /* reduce space between size buttons and product name */
+  margin: 6px 0 0;
+  padding: 0;
 }
-
 
 .priceButtons {
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  margin: 15px 0 5px;
+  margin: 10px 0 0;
 }
 
 .priceButtons .flipButton {
@@ -1235,32 +1242,33 @@
   font-weight: bold;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
-  background-color: black;
-  color: #ffd700; /* gold */
+  background-color: #000;
+  color: #FFD700; /* gold */
   border: none;
 }
 
 .priceButtons .flipFront:hover,
 .priceButtons .flipBack:hover {
-  background-color: #000; /* black background */
-  color: #ffd700; /* gold text */
+  background-color: #1a1a1a;
+  color: black;
 }
 
 .priceButtons .selectedSize .flipFront,
 .priceButtons .selectedSize .flipBack {
-  background-color: #caa500;
-  box-shadow: 0 0 0 2px white, 0 0 0 4px #000007;
+  background-color: #FFD700;
+  color: black;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px #000;
 }
 
 .addToCartButton .flipFront,
 .addToCartButton .flipBack {
-  background-color: #00040a;
+  background-color: #000;
   color: white;
 }
 
 .addToCartButton .flipFront:hover,
 .addToCartButton .flipBack:hover {
-  background-color: #00050e;
+  background-color: #1a1a1a;
 }
 
 .flipFront {
@@ -1300,7 +1308,7 @@
 }
 
 .current {
-  color: #ffd700;
+  color: #FFD700;
   font-size: 1.1rem;
   font-weight: bold;
 }
@@ -1361,3 +1369,4 @@
     font-size: 0.8rem;
   }
 }
+
