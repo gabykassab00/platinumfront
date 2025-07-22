@@ -1249,7 +1249,7 @@
 
 .priceButtons .flipFront:hover,
 .priceButtons .flipBack:hover {
-  background-color: #caa52e;
+  background-color: #000;
 }
 
 .priceButtons .selectedSize .flipFront,
