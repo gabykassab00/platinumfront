@@ -1118,7 +1118,7 @@
 
 
 
-
+/* 
 
 
 .card {
@@ -1243,7 +1243,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
   background-color: #000;
-  color: #FFD700; /* gold */
+  color: #FFD700;
   border: none;
 }
 
@@ -1287,7 +1287,7 @@
 
 .name {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: bold;
   margin: 5px 0;
   white-space: nowrap;
   overflow: hidden;
@@ -1299,6 +1299,7 @@
   justify-content: center;
   gap: 10px;
   align-items: center;
+    font-size: 1.3rem; 
 }
 
 .original {
@@ -1369,4 +1370,257 @@
     font-size: 0.8rem;
   }
 }
+ */
 
+
+
+
+
+
+
+ .card {
+  position: relative;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 0 15px;
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background-color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.imageContainer:hover {
+  transform: scale(1.02);
+}
+
+.imageContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .imageContainer img {
+  transform: scale(1.05);
+}
+
+.discountBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: orange;
+  color: white;
+  padding: 5px 10px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-radius: 3px;
+  z-index: 2;
+}
+
+.sizeSection {
+  margin: 6px 0 2px; /* Reduced vertical space */
+  padding: 0;
+}
+
+.priceButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 6px 0 0;
+}
+
+.priceButtons .flipButton {
+  flex: 1;
+  height: 42px;
+  border-radius: 16px;
+}
+
+.flipButton {
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.flipInner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.flipButton:hover .flipInner {
+  transform: rotateY(180deg);
+}
+
+.flipFront,
+.flipBack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #000;
+  color: #FFD700;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.priceButtons .flipFront:hover,
+.priceButtons .flipBack:hover {
+  background-color: #FFD700;
+  color: #000;
+}
+
+.priceButtons .selectedSize .flipFront,
+.priceButtons .selectedSize .flipBack {
+  background-color: #FFD700;
+  color: black;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px #000;
+}
+
+.addToCartButton {
+  margin: 10px 0;
+}
+
+.addToCartButton .flipFront,
+.addToCartButton .flipBack {
+  background-color: #000;
+  color: white;
+}
+
+.addToCartButton .flipFront:hover,
+.addToCartButton .flipBack:hover {
+  background-color: #1a1a1a;
+}
+
+.flipBack {
+  transform: rotateY(180deg);
+}
+
+.details {
+  text-align: center;
+  margin-top: 6px;
+}
+
+.name {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 6px 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.3rem;
+  color: #FFD700;
+  font-weight: bold;
+}
+
+.original {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 0.95rem;
+}
+
+.current {
+  color: #FFD700;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.footer {
+  margin-top: auto;
+  padding-bottom: 15px;
+}
+
+.errorMessage {
+  color: #ef4444;
+  font-size: 0.8rem;
+  text-align: center;
+  margin: 5px 0;
+  padding: 5px;
+  background-color: #fee2e2;
+  border-radius: 4px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .priceButtons {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 8px 0 4px;
+  }
+
+  .priceButtons .flipButton {
+    width: auto;
+    flex: 1;
+  }
+
+  .name {
+    font-size: 0.95rem;
+  }
+
+  .current {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .priceButtons {
+    gap: 5px;
+  }
+
+  .priceButtons .flipButton {
+    font-size: 0.9rem;
+  }
+
+  .flipFront {
+    font-size: 0.9rem;
+  }
+
+  .flipBack {
+    font-size: 1rem;
+  }
+}
