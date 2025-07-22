@@ -3612,14 +3612,25 @@ const ProductsPage = ({ defaultGenre }) => {
 
       <div className={styles.mainContent}>
         {/* Filter Panel */}
-        <aside className={`${styles.filterPanel} ${mobileFilterOpen ? styles.mobileOpen : ''}`}>
-          <FilterSection
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            activeGenre={filters.genres[0]}
-            hideGenreFilter={isGenderPage}
-          />
-        </aside>
+<aside className={`${styles.filterPanel} ${mobileFilterOpen ? styles.mobileOpen : ''}`}>
+  <div className={styles.mobileFilterHeader}>
+    <h3>FILTER BY</h3>
+    <button 
+      className={styles.closeMobileFilter}
+      onClick={() => setMobileFilterOpen(false)}
+    >
+      ×
+    </button>
+  </div>
+
+  <FilterSection
+    filters={filters}
+    onFilterChange={handleFilterChange}
+    activeGenre={filters.genres[0]}
+    hideGenreFilter={isGenderPage}
+  />
+</aside>
+
 
         {/* Main Product Area */}
         <main className={styles.productArea}>
