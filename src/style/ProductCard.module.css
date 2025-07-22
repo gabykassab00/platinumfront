@@ -1120,36 +1120,29 @@
 
 
 
-
-
 .card {
   position: relative;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
+  transform: scale(0.96);
   transition: transform 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding: 10px;
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: scale(0.98);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.cardContent {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  padding: 0 15px;
 }
 
 .imageContainer {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 1.1;
   overflow: hidden;
   background-color: white;
   cursor: pointer;
@@ -1199,6 +1192,7 @@
 .priceButtons .flipButton {
   flex: 1;
   height: 40px;
+  border-radius: 14px;
 }
 
 .footer {
@@ -1240,33 +1234,34 @@
   justify-content: center;
   border-radius: 14px;
   font-weight: bold;
-  color: #d4af37; 
-  background-color: #000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border: none;
   transition: all 0.2s ease;
+  background-color: black;
+  color: #ffd700; /* gold */
+  border: none;
 }
 
 .priceButtons .flipFront:hover,
 .priceButtons .flipBack:hover {
-  background-color: #000;
+  background-color: #000; /* black background */
+  color: #ffd700; /* gold text */
 }
 
 .priceButtons .selectedSize .flipFront,
 .priceButtons .selectedSize .flipBack {
-  background-color: #b89117;
-  box-shadow: 0 0 0 2px white, 0 0 0 4px #000;
+  background-color: #caa500;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px #000007;
 }
 
 .addToCartButton .flipFront,
 .addToCartButton .flipBack {
-  background-color: #000;
+  background-color: #00040a;
   color: white;
 }
 
 .addToCartButton .flipFront:hover,
 .addToCartButton .flipBack:hover {
-  background-color: #111;
+  background-color: #00050e;
 }
 
 .flipFront {
@@ -1306,7 +1301,7 @@
 }
 
 .current {
-  color: #d4af37; /* Gold color */
+  color: #ffd700;
   font-size: 1.1rem;
   font-weight: bold;
 }
