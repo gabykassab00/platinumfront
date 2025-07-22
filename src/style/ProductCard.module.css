@@ -1176,9 +1176,10 @@
 }
 
 .sizeSection {
-  min-height: 90px;
-  margin-bottom: 10px;
+  min-height: 0; /* reduce unused vertical space */
+  margin-bottom: 4px; /* reduce space between size buttons and product name */
 }
+
 
 .priceButtons {
   display: flex;
