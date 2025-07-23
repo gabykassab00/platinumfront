@@ -1065,7 +1065,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: black;
+  background: grey;
   border: 1px solid white;
   border-radius: 12px;
   cursor: pointer;
@@ -1076,7 +1076,7 @@
 }
 
 .sortTrigger:hover {
-  background: #111;
+  background: grey;
 }
 
 .sortTrigger:focus-visible {
@@ -1121,7 +1121,7 @@
   top: calc(100% + 8px);
   left: 0;
   width: 100%;
-  background: black;
+  background: grey;
   border-radius: 12px;
   border: 1px solid white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -1153,19 +1153,19 @@
   font-size: 0.875rem;
   color: white;
   cursor: pointer;
-  background: black;
+  background: grey;
   transition: background 0.2s ease;
 }
 
 .sortOption:hover {
   background: white;
-  color: black;
+  color: grey;
 }
 
 .sortOption.active {
   font-weight: bold;
   background: white;
-  color: black;
+  color: grey;
 }
 
 .optionText {
@@ -1188,7 +1188,7 @@
 }
 
 .sortDropdown::-webkit-scrollbar-track {
-  background: black;
+  background: grey;
 }
 
 .sortDropdown::-webkit-scrollbar-thumb {
