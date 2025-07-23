@@ -3061,7 +3061,7 @@ const ProductDetails = () => {
             <span className={styles.finalPrice}>${totalPrice}</span>
           </div>
 
-          {/* Moved Product Details UP */}
+          {/* Moved Product Details ABOVE Size */}
           <div className={styles.detailsSection}>
             <h3 className={styles.sectionTitle}>Product Details</h3>
             <ul className={styles.bulletList}>
@@ -3071,10 +3071,6 @@ const ProductDetails = () => {
               <li><strong>💨 Stays long. Speaks loud.</strong></li>
             </ul>
           </div>
-
-          {/* Moved Description/Shipping DOWN */}
-          <p className={styles.description}>{product.description || 'Premium quality product'}</p>
-          <p className={styles.shipping}>Shipping calculated at checkout.</p>
 
           {isMultiple && (
             <div className={styles.sizeSection}>
@@ -3115,6 +3111,10 @@ const ProductDetails = () => {
           <button className={styles.addToCartBtn} onClick={handleAddToCart}>
             ADD TO CART
           </button>
+
+          {/* ✅ Moved description & shipping below Add to Cart */}
+          <p className={styles.description}>{product.description || 'Premium quality product'}</p>
+          <p className={styles.shipping}>Shipping calculated at checkout.</p>
         </div>
       </div>
 
