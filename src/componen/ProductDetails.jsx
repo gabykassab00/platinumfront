@@ -3101,11 +3101,14 @@ const ProductDetails = () => {
             ADD TO CART
           </button>
 
-          {/* Replaced bullet list with product description */}
-          <p className={styles.description}>
-            {product.description || 'Premium quality product'}
-          </p>
-          <p className={styles.shipping}>Shipping calculated at checkout.</p>
+          {/* This section now contains the product description and shipping info */}
+          <div className={styles.detailsSection}>
+            <h3 className={styles.sectionTitle}>Product Details</h3>
+            <p className={styles.description}>
+              {product.description || 'Premium quality product'}
+            </p>
+            <p className={styles.shipping}>Shipping calculated at checkout.</p>
+          </div>
         </div>
       </div>
 
