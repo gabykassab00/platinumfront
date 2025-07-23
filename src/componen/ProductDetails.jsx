@@ -2659,6 +2659,264 @@
 
 
 
+// import React, { useEffect, useState, useRef } from 'react';
+// import { useParams } from 'react-router-dom';
+// import ProductCard from '../componen/ProductCard';
+// import styles from '../style/ProductDetail.module.css';
+// import { useBasket } from '../context/BasketProvider';
+// import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+
+// const ProductDetails = () => {
+//   const { productId } = useParams();
+//   const { addItem, openSidebar } = useBasket();
+
+//   const [product, setProduct] = useState(null);
+//   const [selectedSize, setSelectedSize] = useState(null);
+//   const [quantity, setQuantity] = useState(1);
+//   const [relatedProducts, setRelatedProducts] = useState([]);
+//   const [visibleProducts, setVisibleProducts] = useState(0);
+
+//   const infoRef = useRef();
+//   const imageBoxRef = useRef();
+//   const relatedProductsRef = useRef(null);
+//   const API_URL = process.env.REACT_APP_API_URL;
+
+//   useEffect(() => {
+//     fetch(`${API_URL}/api/products/${productId}`)
+//       .then((res) => res.json())
+//       .then((data) => {
+//         setProduct(data);
+//         if (data.type !== 'multiple') {
+//           setSelectedSize('100ml');
+//         }
+//       })
+//       .catch((err) => console.error('Error fetching product:', err));
+//   }, [productId, API_URL]);
+
+//   useEffect(() => {
+//     if (infoRef.current && imageBoxRef.current) {
+//       const infoHeight = infoRef.current.offsetHeight;
+//       imageBoxRef.current.style.height = `${infoHeight}px`;
+//     }
+//   }, [product]);
+
+//   useEffect(() => {
+//     if (!product) return;
+
+//     const imagePath = product.image_path || '';
+//     const genre = product.genre || '';
+//     let baseImagePath = '';
+
+//     if (imagePath.includes('images/terkibmen/')) {
+//       baseImagePath = 'terkibmen';
+//     } else if (imagePath.includes('images/terkibwomen/')) {
+//       baseImagePath = 'terkibwomen';
+//     } else if (imagePath.includes('images/jehiz/')) {
+//       baseImagePath = 'jehiz';
+//     }
+
+//     if (baseImagePath) {
+//       const genreQuery = baseImagePath === 'jehiz' ? `&genre=${genre}` : '';
+//       const url = `${API_URL}/api/products/recommend?baseImagePath=${baseImagePath}${genreQuery}`;
+
+//       fetch(url)
+//         .then((res) => res.json())
+//         .then((data) => {
+//           setRelatedProducts(data.filter((p) => p.id !== product.id));
+//         })
+//         .catch((err) => console.error('Error fetching related products:', err));
+//     }
+//   }, [product, API_URL]);
+
+//   const scrollRelated = (direction) => {
+//     if (relatedProductsRef.current && relatedProductsRef.current.children[0]) {
+//       const container = relatedProductsRef.current;
+//       const card = container.children[0];
+//       const cardWidth = card.offsetWidth + parseInt(window.getComputedStyle(card).marginRight);
+
+//       container.style.scrollBehavior = 'smooth';
+//       container.scrollLeft += direction === 'left' ? -cardWidth * 2 : cardWidth * 2;
+
+//       setVisibleProducts((prev) => {
+//         const newIndex = direction === 'left' ? prev - 2 : prev + 2;
+//         return Math.max(0, Math.min(newIndex, relatedProducts.length - 2));
+//       });
+//     }
+//   };
+
+//   if (!product) return <div className={styles.loading}>Loading...</div>;
+
+//   const imageUrl = `${API_URL}/${product.image_path}`;
+//   const basePrice = parseFloat(product.price);
+//   const discount = parseFloat(product.discount || 0);
+//   const hasDiscount = discount > 0;
+//   const isMultiple = product.type === 'multiple';
+
+//   const getSizePrice = (size) => {
+//     if (size === '50ml') return 10;
+//     if (size === '80ml') return 15;
+//     return basePrice;
+//   };
+
+//   const unitPrice = getSizePrice(selectedSize);
+//   const discountedUnitPrice = hasDiscount ? unitPrice * (1 - discount) : unitPrice;
+//   const totalPrice = (discountedUnitPrice * quantity).toFixed(2);
+//   const originalTotal = (unitPrice * quantity).toFixed(2);
+
+//   const handleAddToCart = () => {
+//     const item = {
+//       ...product,
+//       price: discountedUnitPrice.toFixed(2),
+//       total: totalPrice,
+//       quantity,
+//       ...(isMultiple && { size: selectedSize }),
+//     };
+
+//     addItem(item);
+//     openSidebar();
+//   };
+
+//   return (
+//     <div className={styles.container}>
+//       <div className={styles.productContainer}>
+//         <div className={styles.imageContainer}>
+//           <div ref={imageBoxRef} className={styles.imageWrapper}>
+//             <img
+//               src={imageUrl}
+//               alt={product.name}
+//               className={styles.productImage}
+//               onError={(e) => (e.target.src = 'https://via.placeholder.com/300')}
+//             />
+//             {hasDiscount && (
+//               <div className={styles.discountBadge}>
+//                 -{Math.round(discount * 100)}%
+//               </div>
+//             )}
+//           </div>
+//         </div>
+
+//         <div ref={infoRef} className={styles.infoContainer}>
+//           <h1 className={styles.title}>{product.name}</h1>
+
+//           <div className={styles.priceRow}>
+//             {hasDiscount && <span className={styles.originalPrice}>${originalTotal}</span>}
+//             <span className={styles.finalPrice}>${totalPrice}</span>
+//           </div>
+
+//           <p className={styles.description}>{product.description || 'Premium quality product'}</p>
+//           <p className={styles.shipping}>Shipping calculated at checkout.</p>
+
+//           {isMultiple && (
+//             <div className={styles.sizeSection}>
+//               <h3 className={styles.sectionTitle}>Size</h3>
+//               <div className={styles.sizeButtons}>
+//                 {['50ml', '80ml', '100ml'].map((size) => (
+//                   <button
+//                     key={size}
+//                     className={`${styles.sizeBtn} ${selectedSize === size ? styles.selected : ''}`}
+//                     onClick={() => setSelectedSize(size)}
+//                   >
+//                     {size}
+//                   </button>
+//                 ))}
+//               </div>
+//             </div>
+//           )}
+
+//           <div className={styles.quantitySection}>
+//             <h3 className={styles.sectionTitle}>Quantity</h3>
+//             <div className={styles.quantityControls}>
+//               <button
+//                 className={styles.quantityBtn}
+//                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+//               >
+//                 −
+//               </button>
+//               <span className={styles.quantityValue}>{quantity}</span>
+//               <button
+//                 className={styles.quantityBtn}
+//                 onClick={() => setQuantity((q) => q + 1)}
+//               >
+//                 +
+//               </button>
+//             </div>
+//           </div>
+
+//           <button className={styles.addToCartBtn} onClick={handleAddToCart}>
+//             ADD TO CART
+//           </button>
+//           <div className={styles.detailsSection}>
+//   <h3 className={styles.sectionTitle}>Product Details</h3>
+//   <ul className={styles.bulletList}>
+//     <li><strong>🏢 3rd French fragrance oil company agency in all over Lebanon</strong></li>
+//     <li><strong>📜 ISO certification of quality scents</strong></li>
+//     <li><strong>🧴 Bold. Precise. Aromatic.</strong></li>
+//     <li><strong>💨 Stays long. Speaks loud.</strong></li>
+//   </ul>
+// </div>
+
+//         </div>
+//       </div>
+
+//       {relatedProducts.length > 0 && (
+//         <div className={styles.relatedSection}>
+//           <h2 className={styles.relatedTitle}>You may also like</h2>
+//           <div className={styles.relatedContainer}>
+//             {visibleProducts > 0 && (
+//               <button
+//                 className={styles.scrollButton}
+//                 onClick={() => scrollRelated('left')}
+//                 aria-label="Scroll left"
+//               >
+//                 <FiChevronLeft />
+//               </button>
+//             )}
+
+//             <div className={styles.relatedGrid} ref={relatedProductsRef}>
+//               {relatedProducts.map((item) => (
+//                 <div key={item.id} className={styles.relatedCardWrapper}>
+//                   <ProductCard
+//                     product={item}
+//                     className={styles.relatedCard}
+//                     compactHeight={true}
+//                   />
+//                 </div>
+//               ))}
+//             </div>
+
+//             {visibleProducts < relatedProducts.length - 2 && (
+//               <button
+//                 className={styles.scrollButton}
+//                 onClick={() => scrollRelated('right')}
+//                 aria-label="Scroll right"
+//               >
+//                 <FiChevronRight />
+//               </button>
+//             )}
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default ProductDetails;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../componen/ProductCard';
@@ -2803,9 +3061,6 @@ const ProductDetails = () => {
             <span className={styles.finalPrice}>${totalPrice}</span>
           </div>
 
-          <p className={styles.description}>{product.description || 'Premium quality product'}</p>
-          <p className={styles.shipping}>Shipping calculated at checkout.</p>
-
           {isMultiple && (
             <div className={styles.sizeSection}>
               <h3 className={styles.sectionTitle}>Size</h3>
@@ -2846,26 +3101,11 @@ const ProductDetails = () => {
             ADD TO CART
           </button>
 
-          {/* Updated: Custom bullet list instead of SKU/Tags */}
-          {/* <div className={styles.detailsSection}>
-            <h3 className={styles.sectionTitle}>Product Details</h3>
-            <ul className={styles.bulletList}>
-              <li>🇫🇷 3rd French fragrance oil company agency in all over Lebanon</li>
-              <li>📜 ISO certification of quality scents</li>
-              <li>🧴 Bold. Precise. Aromatic.</li>
-              <li>💨 Stays long. Speaks loud.</li>
-            </ul>
-          </div> */}
-          <div className={styles.detailsSection}>
-  <h3 className={styles.sectionTitle}>Product Details</h3>
-  <ul className={styles.bulletList}>
-    <li><strong>🏢 3rd French fragrance oil company agency in all over Lebanon</strong></li>
-    <li><strong>📜 ISO certification of quality scents</strong></li>
-    <li><strong>🧴 Bold. Precise. Aromatic.</strong></li>
-    <li><strong>💨 Stays long. Speaks loud.</strong></li>
-  </ul>
-</div>
-
+          {/* Replaced bullet list with product description */}
+          <p className={styles.description}>
+            {product.description || 'Premium quality product'}
+          </p>
+          <p className={styles.shipping}>Shipping calculated at checkout.</p>
         </div>
       </div>
 
