@@ -1556,7 +1556,7 @@
   cursor: pointer;
 }
 .mobileSortOptions .activeSort {
-  color: #3b82f6;
+  color: black;
   font-weight: 600;
 }
 
