@@ -3061,6 +3061,21 @@ const ProductDetails = () => {
             <span className={styles.finalPrice}>${totalPrice}</span>
           </div>
 
+          {/* Moved Product Details UP */}
+          <div className={styles.detailsSection}>
+            <h3 className={styles.sectionTitle}>Product Details</h3>
+            <ul className={styles.bulletList}>
+              <li><strong>🏢 3rd French fragrance oil company agency in all over Lebanon</strong></li>
+              <li><strong>📜 ISO certification of quality scents</strong></li>
+              <li><strong>🧴 Bold. Precise. Aromatic.</strong></li>
+              <li><strong>💨 Stays long. Speaks loud.</strong></li>
+            </ul>
+          </div>
+
+          {/* Moved Description/Shipping DOWN */}
+          <p className={styles.description}>{product.description || 'Premium quality product'}</p>
+          <p className={styles.shipping}>Shipping calculated at checkout.</p>
+
           {isMultiple && (
             <div className={styles.sizeSection}>
               <h3 className={styles.sectionTitle}>Size</h3>
@@ -3100,15 +3115,6 @@ const ProductDetails = () => {
           <button className={styles.addToCartBtn} onClick={handleAddToCart}>
             ADD TO CART
           </button>
-
-          {/* This section now contains the product description and shipping info */}
-          <div className={styles.detailsSection}>
-            <h3 className={styles.sectionTitle}>Product Details</h3>
-            <p className={styles.description}>
-              {product.description || 'Premium quality product'}
-            </p>
-            <p className={styles.shipping}>Shipping calculated at checkout.</p>
-          </div>
         </div>
       </div>
 
