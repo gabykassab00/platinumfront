@@ -830,7 +830,7 @@
   max-width: 320px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   z-index: 100;
-  --primary-color: #3b82f6;
+  --primary-color: black;
   --hover-bg: #f8fafc;
   --active-bg: #eff6ff;
   --text-color: #1f2937;
@@ -1018,7 +1018,7 @@
     --text-color: #f8fafc;
     --border-color: #334155;
     --hover-bg: #1e293b;
-    --active-bg: #1e40af;
+    --active-bg: black;
   }
 
   .sortTrigger {

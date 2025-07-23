@@ -1453,7 +1453,7 @@
   border-radius: 50%;
   background: transparent;
   border: 1px solid #e5e7eb;
-  color: #3b82f6;
+  color: black;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -1462,7 +1462,7 @@
   cursor: not-allowed;
 }
 .paginationNumber.active {
-  background: #3b82f6;
+  background: black;
   color: white;
   border: none;
 }
