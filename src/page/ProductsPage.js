@@ -3745,7 +3745,7 @@
 
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import FilterSection from '../componen/FilterSection';
 import ProductCard from '../componen/ProductCard';
 import SortDropdown from '../componen/SortDropdown';
@@ -3783,17 +3783,16 @@ const ProductsPage = () => {
   const [mobileSortOpen, setMobileSortOpen] = useState(false);
   const [selectedSort, setSelectedSort] = useState('newest');
   const itemsPerPage = 12;
-
   const API_URL = process.env.REACT_APP_API_URL;
 
-  // Determine filters based on path
+  // Route-based backend filters
   const routeFilters = useMemo(() => {
     if (location.pathname.includes('/perfumes/men')) {
       return { genres: ['men'], type: 'multiple' };
     } else if (location.pathname.includes('/perfumes/women')) {
       return { genres: ['women'], type: 'multiple' };
     } else if (location.pathname.includes('/lattafa-rasasi')) {
-      return { brands: ['Lattafa', 'Rasasi'] };
+      return { brands: ['lattafa', 'rasasi'] };
     } else if (location.pathname.includes('/sale')) {
       return { type: 'single' };
     } else if (location.pathname.includes('/makeup')) {
@@ -3802,29 +3801,39 @@ const ProductsPage = () => {
     return {};
   }, [location.pathname]);
 
-  // Fetch products
+  // Fetch products with backend filters
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
-        const res = await axios.get(`${API_URL}/api/products`);
+
+        const params = new URLSearchParams();
+        if (routeFilters.genres) params.append('genre', routeFilters.genres[0]);
+        if (routeFilters.type) params.append('type', routeFilters.type);
+        if (routeFilters.brands) {
+          routeFilters.brands.forEach((b) => params.append('brand', b));
+        }
+
+        const res = await axios.get(`${API_URL}/api/products?${params.toString()}`);
         setProducts(res.data);
         setError(null);
       } catch (err) {
+        console.error(err);
         setError('Failed to fetch products.');
       } finally {
         setIsLoading(false);
       }
     };
+
     fetchProducts();
-  }, [API_URL]);
+  }, [API_URL, routeFilters]);
 
   const handleFilterChange = useCallback((filterType, value) => {
-    setFilters(prev => {
+    setFilters((prev) => {
       if (filterType === 'price') return { ...prev, price: Number(value) };
       const current = prev[filterType];
       const updated = current.includes(value)
-        ? current.filter(item => item !== value)
+        ? current.filter((item) => item !== value)
         : [...current, value];
       return { ...prev, [filterType]: updated };
     });
@@ -3833,34 +3842,26 @@ const ProductsPage = () => {
 
   const handleSortChange = useCallback((sortMethod) => {
     setSelectedSort(sortMethod);
-    setProducts(prev => [...prev].sort(sortFunctions[sortMethod]));
+    setProducts((prev) => [...prev].sort(sortFunctions[sortMethod]));
     setCurrentPage(1);
     setMobileSortOpen(false);
   }, []);
 
   const filteredProducts = useMemo(() => {
     const { brands, genres, price } = filters;
-    return products.filter(product => {
+
+    return products.filter((product) => {
       const matchesPrice = product.price <= price;
 
       const matchesGenre =
-        routeFilters.genres
-          ? routeFilters.genres.includes(product.genre?.toLowerCase())
-          : genres.length === 0 || genres.includes(product.genre?.toLowerCase());
+        !genres.length || genres.includes(product.genre?.toLowerCase());
 
       const matchesBrand =
-        routeFilters.brands
-          ? routeFilters.brands.includes(product.brand?.toLowerCase())
-          : brands.length === 0 || brands.includes(product.brand?.toLowerCase());
+        !brands.length || brands.includes(product.brand?.toLowerCase());
 
-      const matchesType =
-        routeFilters.type
-          ? product.type?.toLowerCase() === routeFilters.type
-          : true;
-
-      return matchesPrice && matchesGenre && matchesBrand && matchesType;
+      return matchesPrice && matchesGenre && matchesBrand;
     });
-  }, [products, filters, routeFilters]);
+  }, [products, filters]);
 
   const { totalPages, paginatedProducts } = useMemo(() => {
     const total = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -3934,7 +3935,7 @@ const ProductsPage = () => {
 
           {mobileSortOpen && (
             <div className={styles.mobileSortPanel}>
-              {Object.keys(sortLabels).map(sort => (
+              {Object.keys(sortLabels).map((sort) => (
                 <button key={sort} onClick={() => handleSortChange(sort)}>
                   {sortLabels[sort]}
                 </button>
@@ -3956,7 +3957,7 @@ const ProductsPage = () => {
           {filteredProducts.length > 0 ? (
             <>
               <div className={styles.productsGrid}>
-                {paginatedProducts.map(product => (
+                {paginatedProducts.map((product) => (
                   <MemoizedProductCard key={product.id} product={product} />
                 ))}
               </div>
