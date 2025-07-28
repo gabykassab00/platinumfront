@@ -2281,14 +2281,6 @@ const Header = () => {
 
   const API_URL = process.env.REACT_APP_API_URL;
 
-  // const menuCategories = [
-  //   { id: 1, name: 'All Perfumes', path: '/perfumes' },
-  //   { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
-  //   { id: 3, name: 'Women Perfumes', path: '/perfumes/women' },
-  //   { id: 4, name: 'Sale', path: '/sale' },
-  // ];
-
-
   const menuCategories = [
   { id: 1, name: 'All Perfumes', path: '/perfumes' },
   { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
@@ -2398,11 +2390,6 @@ const Header = () => {
           <div className="hamburger" onClick={handleMobileMenuClick}>
             {mobileMenuOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
           </div>
-
-          {/* Logo */}
-          {/* <h1 className="nav_logo">
-            <Link to="/" onClick={handleMenuItemClick}>platinumPerfumes</Link>
-          </h1> */}
 
 <div className="nav_logo">
   <Link to="/" onClick={handleMenuItemClick}>
