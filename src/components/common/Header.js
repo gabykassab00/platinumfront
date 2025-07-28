@@ -2286,7 +2286,7 @@ const Header = () => {
   { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
   { id: 3, name: 'Women Perfumes', path: '/perfumes/women' },
   { id: 4, name: 'Lattafa & Rasasi Perfumes', path: '/lattafa-rasasi' },
-  { id: 5, name: 'Original and others perfumes', path: '/sale' },
+  { id: 5, name: 'Original and others perfumes', path: '/original' },
   { id: 6, name: 'Musk', path: '/musk' },
   { id: 7, name: 'Air and Furniture Refresheners', path: '/refresheners' },
   { id: 8, name: 'Watches', path: '/watches' },
