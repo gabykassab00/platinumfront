@@ -1058,7 +1058,7 @@ const SidebarBasket = () => {
               <div className={styles.itemDetails}>
                 <h4>{item.name}</h4>
                 <p>Size: {item.size}</p>
-                <p className={styles.price}>€{Number(item.price).toFixed(2)}</p>
+                <p className={styles.price}>${Number(item.price).toFixed(2)}</p>
                 <div className={styles.qtyControl}>
                   <button
                     className={styles.qtyBtn}
@@ -1089,7 +1089,7 @@ const SidebarBasket = () => {
       <div className={styles.footer}>
         <div className={styles.totalRow}>
           <span>Total:</span>
-          <span className={styles.total}>€{total.toFixed(2)}</span>
+          <span className={styles.total}>${total.toFixed(2)}</span>
         </div>
         <button className={styles.checkoutButton} onClick={goToCheckout}>
           Checkout
