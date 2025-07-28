@@ -3793,7 +3793,7 @@ const ProductsPage = () => {
     } else if (location.pathname.includes('/perfumes/women')) {
       return { genres: ['women'], type: 'multiple' };
     } else if (location.pathname.includes('/lattafa-rasasi')) {
-      return { brands: ['lattafa', 'rasasi'] };
+      return { brands: ['Lattafa', 'Rasasi'] };
     } else if (location.pathname.includes('/sale')) {
       return { type: 'single' };
     } else if (location.pathname.includes('/makeup')) {
