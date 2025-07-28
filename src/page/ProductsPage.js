@@ -3745,6 +3745,289 @@
 
 
 
+// import React, { useState, useEffect, useMemo, useCallback } from 'react';
+// import { useLocation } from 'react-router-dom';
+// import FilterSection from '../componen/FilterSection';
+// import ProductCard from '../componen/ProductCard';
+// import SortDropdown from '../componen/SortDropdown';
+// import axios from 'axios';
+// import styles from '../../src/style/ProductsPage.module.css';
+
+// const MemoizedProductCard = React.memo(ProductCard);
+
+// const sortFunctions = {
+//   'a-z': (a, b) => a.name.localeCompare(b.name),
+//   'z-a': (a, b) => b.name.localeCompare(a.name),
+//   'price-low': (a, b) => a.price - b.price,
+//   'price-high': (a, b) => b.price - a.price,
+//   'newest': (a, b) => b.id - a.id,
+//   'oldest': (a, b) => a.id - b.id,
+// };
+
+// const sortLabels = {
+//   'newest': 'Newest to Oldest',
+//   'oldest': 'Oldest to Newest',
+//   'price-low': 'Price: Low to High',
+//   'price-high': 'Price: High to Low',
+//   'a-z': 'A-Z',
+//   'z-a': 'Z-A',
+// };
+
+// const ProductsPage = () => {
+//   const location = useLocation();
+//   const [products, setProducts] = useState([]);
+//   const [isLoading, setIsLoading] = useState(true);
+//   const [error, setError] = useState(null);
+//   const [filters, setFilters] = useState({ brands: [], genres: [], price: 500 });
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+//   const [mobileSortOpen, setMobileSortOpen] = useState(false);
+//   const [selectedSort, setSelectedSort] = useState('newest');
+//   const itemsPerPage = 12;
+
+//   const API_URL = process.env.REACT_APP_API_URL;
+
+//   // Route-based filter logic
+//   const routeFilters = useMemo(() => {
+//     if (location.pathname.includes('/perfumes/men')) {
+//       return { genres: ['men'], type: 'multiple' };
+//     } else if (location.pathname.includes('/perfumes/women')) {
+//       return { genres: ['women'], type: 'multiple' };
+//     } else if (location.pathname.includes('/lattafa-rasasi')) {
+//       return { brands: ['lattafa', 'rasasi'] };
+//     } else if (location.pathname.includes('/original')) {
+//       return { type: 'single' };
+//     } else if (location.pathname.includes('/makeup')) {
+//       return { type: 'makeup' };
+//     }
+//     return {};
+//   }, [location.pathname]);
+
+//   // Fetch products
+//   useEffect(() => {
+//     const fetchProducts = async () => {
+//       try {
+//         setIsLoading(true);
+//         const res = await axios.get(`${API_URL}/api/products`);
+//         setProducts(res.data);
+//         setError(null);
+//       } catch (err) {
+//         setError('Failed to fetch products.');
+//       } finally {
+//         setIsLoading(false);
+//       }
+//     };
+//     fetchProducts();
+//   }, [API_URL]);
+
+//   const handleFilterChange = useCallback((filterType, value) => {
+//     setFilters(prev => {
+//       if (filterType === 'price') return { ...prev, price: Number(value) };
+//       const current = prev[filterType];
+//       const updated = current.includes(value)
+//         ? current.filter(item => item !== value)
+//         : [...current, value];
+//       return { ...prev, [filterType]: updated };
+//     });
+//     setCurrentPage(1);
+//   }, []);
+
+//   const handleSortChange = useCallback((sortMethod) => {
+//     setSelectedSort(sortMethod);
+//     setProducts(prev => [...prev].sort(sortFunctions[sortMethod]));
+//     setCurrentPage(1);
+//     setMobileSortOpen(false);
+//   }, []);
+
+//   const filteredProducts = useMemo(() => {
+//     const { brands, genres, price } = filters;
+//     return products.filter(product => {
+//       const matchesPrice = product.price <= price;
+
+//       const matchesGenre =
+//         routeFilters.genres
+//           ? routeFilters.genres.includes(product.genre?.toLowerCase())
+//           : genres.length === 0 || genres.includes(product.genre?.toLowerCase());
+
+//       const matchesBrand =
+//         routeFilters.brands
+//           ? routeFilters.brands.includes(product.brand?.toLowerCase())
+//           : brands.length === 0 || brands.includes(product.brand?.toLowerCase());
+
+//       const matchesType =
+//         routeFilters.type
+//           ? product.type?.toLowerCase() === routeFilters.type
+//           : true;
+
+//       return matchesPrice && matchesGenre && matchesBrand && matchesType;
+//     });
+//   }, [products, filters, routeFilters]);
+
+//   const { totalPages, paginatedProducts } = useMemo(() => {
+//     const total = Math.ceil(filteredProducts.length / itemsPerPage);
+//     const start = (currentPage - 1) * itemsPerPage;
+//     return {
+//       totalPages: total,
+//       paginatedProducts: filteredProducts.slice(start, start + itemsPerPage),
+//     };
+//   }, [filteredProducts, currentPage]);
+
+//   const handlePageChange = (page) => {
+//     setCurrentPage(page);
+//     window.scrollTo({ top: 0, behavior: 'smooth' });
+//   };
+
+//   const renderPagination = () => {
+//   if (totalPages <= 1) return null;
+
+//   const maxVisible = 5;
+//   let startPage = 1;
+  
+//   if (totalPages > maxVisible) {
+//     startPage = Math.min(
+//       Math.max(1, currentPage - Math.floor(maxVisible / 2)),
+//       totalPages - maxVisible + 1
+//     );
+//   }
+
+//   return (
+//     <div className={styles.paginationContainer}>
+//       <button 
+//         onClick={() => handlePageChange(currentPage - 1)} 
+//         disabled={currentPage === 1}
+//         className={styles.paginationArrow}
+//       >
+//         &lt;
+//       </button>
+      
+//       {Array.from({ length: Math.min(maxVisible, totalPages) }).map((_, i) => {
+//         const page = startPage + i;
+//         return (
+//           <button
+//             key={page}
+//             onClick={() => handlePageChange(page)}
+//             className={`${styles.paginationNumber} ${
+//               currentPage === page ? styles.active : ''
+//             }`}
+//           >
+//             {page}
+//           </button>
+//         );
+//       })}
+      
+//       <button 
+//         onClick={() => handlePageChange(currentPage + 1)} 
+//         disabled={currentPage === totalPages}
+//         className={styles.paginationArrow}
+//       >
+//         &gt;
+//       </button>
+//     </div>
+//   );
+// };
+
+//   if (isLoading) return <p>Loading...</p>;
+//   if (error) return <p>{error}</p>;
+
+//   return (
+//     <div className={styles.container}>
+//       <header className={styles.pageHeader}>
+//         <h1 className={styles.title}>Explore Perfumes</h1>
+//       </header>
+
+//       <div className={styles.mainContent}>
+//         <aside className={`${styles.filterPanel} ${mobileFilterOpen ? styles.mobileOpen : ''}`}>
+//           <div className={styles.mobileFilterHeader}>
+//             <h3>Filters</h3>
+//             <button onClick={() => setMobileFilterOpen(false)}>×</button>
+//           </div>
+//           <FilterSection
+//             filters={filters}
+//             onFilterChange={handleFilterChange}
+//             activeGenre={filters.genres[0]}
+//             hideGenreFilter={!!routeFilters.genres}
+//           />
+//         </aside>
+
+//         <main className={styles.productArea}>
+//           <div className={styles.mobileFilterSortBar}>
+//             <button onClick={() => setMobileFilterOpen(!mobileFilterOpen)}>
+//               Filter • {filteredProducts.length} products
+//             </button>
+//             <button onClick={() => setMobileSortOpen(!mobileSortOpen)}>
+//               {sortLabels[selectedSort]}
+//             </button>
+//           </div>
+
+//           {mobileSortOpen && (
+//             <div className={styles.mobileSortPanel}>
+//               {Object.keys(sortLabels).map(sort => (
+//                 <button key={sort} onClick={() => handleSortChange(sort)}>
+//                   {sortLabels[sort]}
+//                 </button>
+//               ))}
+//             </div>
+//           )}
+
+//           <div className={styles.desktopToolbar}>
+//             <div className={styles.resultsCount}>
+//               Showing {paginatedProducts.length} of {filteredProducts.length} products
+//             </div>
+//             <SortDropdown
+//               onSortChange={handleSortChange}
+//               selectedSort={selectedSort}
+//               sortLabels={sortLabels}
+//             />
+//           </div>
+
+//           {filteredProducts.length > 0 ? (
+//             <>
+//               <div className={styles.productsGrid}>
+//                 {paginatedProducts.map(product => (
+//                   <MemoizedProductCard key={product.id} product={product} />
+//                 ))}
+//               </div>
+//               {renderPagination()}
+//             </>
+//           ) : (
+//             <div className={styles.noResults}>
+//               <p>No products match your filters.</p>
+//             </div>
+//           )}
+//         </main>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ProductsPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import FilterSection from '../componen/FilterSection';
@@ -3801,6 +4084,11 @@ const ProductsPage = () => {
       return { type: 'makeup' };
     }
     return {};
+  }, [location.pathname]);
+
+  // Reset page to 1 when URL changes
+  useEffect(() => {
+    setCurrentPage(1);
   }, [location.pathname]);
 
   // Fetch products
@@ -3878,53 +4166,53 @@ const ProductsPage = () => {
   };
 
   const renderPagination = () => {
-  if (totalPages <= 1) return null;
+    if (totalPages <= 1) return null;
 
-  const maxVisible = 5;
-  let startPage = 1;
-  
-  if (totalPages > maxVisible) {
-    startPage = Math.min(
-      Math.max(1, currentPage - Math.floor(maxVisible / 2)),
-      totalPages - maxVisible + 1
+    const maxVisible = 5;
+    let startPage = 1;
+    
+    if (totalPages > maxVisible) {
+      startPage = Math.min(
+        Math.max(1, currentPage - Math.floor(maxVisible / 2)),
+        totalPages - maxVisible + 1
+      );
+    }
+
+    return (
+      <div className={styles.paginationContainer}>
+        <button 
+          onClick={() => handlePageChange(currentPage - 1)} 
+          disabled={currentPage === 1}
+          className={styles.paginationArrow}
+        >
+          &lt;
+        </button>
+        
+        {Array.from({ length: Math.min(maxVisible, totalPages) }).map((_, i) => {
+          const page = startPage + i;
+          return (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`${styles.paginationNumber} ${
+                currentPage === page ? styles.active : ''
+              }`}
+            >
+              {page}
+            </button>
+          );
+        })}
+        
+        <button 
+          onClick={() => handlePageChange(currentPage + 1)} 
+          disabled={currentPage === totalPages}
+          className={styles.paginationArrow}
+        >
+          &gt;
+        </button>
+      </div>
     );
-  }
-
-  return (
-    <div className={styles.paginationContainer}>
-      <button 
-        onClick={() => handlePageChange(currentPage - 1)} 
-        disabled={currentPage === 1}
-        className={styles.paginationArrow}
-      >
-        &lt;
-      </button>
-      
-      {Array.from({ length: Math.min(maxVisible, totalPages) }).map((_, i) => {
-        const page = startPage + i;
-        return (
-          <button
-            key={page}
-            onClick={() => handlePageChange(page)}
-            className={`${styles.paginationNumber} ${
-              currentPage === page ? styles.active : ''
-            }`}
-          >
-            {page}
-          </button>
-        );
-      })}
-      
-      <button 
-        onClick={() => handlePageChange(currentPage + 1)} 
-        disabled={currentPage === totalPages}
-        className={styles.paginationArrow}
-      >
-        &gt;
-      </button>
-    </div>
-  );
-};
+  };
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -4001,8 +4289,6 @@ const ProductsPage = () => {
 };
 
 export default ProductsPage;
-
-
 
 
 
