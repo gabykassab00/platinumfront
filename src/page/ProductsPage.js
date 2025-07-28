@@ -3878,27 +3878,53 @@ const ProductsPage = () => {
   };
 
   const renderPagination = () => {
-    if (totalPages <= 1) return null;
-    return (
-      <div className={styles.paginationContainer}>
-        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-          &lt;
-        </button>
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i + 1}
-            onClick={() => handlePageChange(i + 1)}
-            className={currentPage === i + 1 ? styles.active : ''}
-          >
-            {i + 1}
-          </button>
-        ))}
-        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-          &gt;
-        </button>
-      </div>
+  if (totalPages <= 1) return null;
+
+  const maxVisible = 5;
+  let startPage = 1;
+  
+  if (totalPages > maxVisible) {
+    startPage = Math.min(
+      Math.max(1, currentPage - Math.floor(maxVisible / 2)),
+      totalPages - maxVisible + 1
     );
-  };
+  }
+
+  return (
+    <div className={styles.paginationContainer}>
+      <button 
+        onClick={() => handlePageChange(currentPage - 1)} 
+        disabled={currentPage === 1}
+        className={styles.paginationArrow}
+      >
+        &lt;
+      </button>
+      
+      {Array.from({ length: Math.min(maxVisible, totalPages) }).map((_, i) => {
+        const page = startPage + i;
+        return (
+          <button
+            key={page}
+            onClick={() => handlePageChange(page)}
+            className={`${styles.paginationNumber} ${
+              currentPage === page ? styles.active : ''
+            }`}
+          >
+            {page}
+          </button>
+        );
+      })}
+      
+      <button 
+        onClick={() => handlePageChange(currentPage + 1)} 
+        disabled={currentPage === totalPages}
+        className={styles.paginationArrow}
+      >
+        &gt;
+      </button>
+    </div>
+  );
+};
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
