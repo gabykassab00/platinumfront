@@ -4669,61 +4669,35 @@ const ProductsPage = () => {
 
   const API_URL = process.env.REACT_APP_API_URL;
 
-  // Get page title based on current route
   const pageTitle = useMemo(() => {
-    if (location.pathname.includes('/perfumes/men')) {
-      return "Men's Perfumes";
-    } else if (location.pathname.includes('/perfumes/women')) {
-      return "Women's Perfumes";
-    } else if (location.pathname.includes('/lattafa-rasasi')) {
-      return "Lattafa & Rasasi Perfumes";
-    } else if (location.pathname.includes('/original')) {
-      return "Original Perfumes";
-    } else if (location.pathname.includes('/makeup')) {
-      return "Makeup Products";
-    }
+    if (location.pathname.includes('/perfumes/men')) return "Men's Perfumes";
+    if (location.pathname.includes('/perfumes/women')) return "Women's Perfumes";
+    if (location.pathname.includes('/lattafa-rasasi')) return "Lattafa & Rasasi Perfumes";
+    if (location.pathname.includes('/original')) return "Original Perfumes";
+    if (location.pathname.includes('/makeup')) return "Makeup Products";
     return "All Perfumes";
   }, [location.pathname]);
 
-  // Route-based filter logic
   const routeFilters = useMemo(() => {
-    if (location.pathname.includes('/perfumes/men')) {
-      return { genres: ['men'], type: 'multiple' };
-    } else if (location.pathname.includes('/perfumes/women')) {
-      return { genres: ['women'], type: 'multiple' };
-    } else if (location.pathname.includes('/lattafa-rasasi')) {
-      return { brands: ['lattafa', 'rasasi'] };
-    } else if (location.pathname.includes('/original')) {
-      return { type: 'single' };
-    } else if (location.pathname.includes('/makeup')) {
-      return { type: 'makeup' };
-    }
+    if (location.pathname.includes('/perfumes/men')) return { genres: ['men'], type: 'multiple' };
+    if (location.pathname.includes('/perfumes/women')) return { genres: ['women'], type: 'multiple' };
+    if (location.pathname.includes('/lattafa-rasasi')) return { brands: ['lattafa', 'rasasi'] };
+    if (location.pathname.includes('/original')) return { type: 'single' };
+    if (location.pathname.includes('/makeup')) return { type: 'makeup' };
     return {};
   }, [location.pathname]);
 
-  // Reset page to 1 when URL changes
   useEffect(() => {
     setCurrentPage(1);
   }, [location.pathname]);
 
-  // Fetch products with caching
   useEffect(() => {
     const fetchProducts = async () => {
-      const cacheKey = `products_${API_URL}`;
-      const cachedData = sessionStorage.getItem(cacheKey);
-      
-      if (cachedData) {
-        setProducts(JSON.parse(cachedData));
-        setIsLoading(false);
-        return;
-      }
-
       try {
         setIsLoading(true);
         const res = await axios.get(`${API_URL}/api/products`);
         setProducts(res.data);
         setError(null);
-        sessionStorage.setItem(cacheKey, JSON.stringify(res.data));
       } catch (err) {
         setError('Failed to fetch products.');
       } finally {
@@ -4733,7 +4707,6 @@ const ProductsPage = () => {
     fetchProducts();
   }, [API_URL]);
 
-  // Handle filter changes
   const handleFilterChange = useCallback((filterType, value) => {
     setFilters(prev => {
       if (filterType === 'price') return { ...prev, price: Number(value) };
@@ -4746,63 +4719,34 @@ const ProductsPage = () => {
     setCurrentPage(1);
   }, []);
 
-  // Handle sort changes
   const handleSortChange = useCallback((sortMethod) => {
     setSelectedSort(sortMethod);
+    setProducts(prev => [...prev].sort(sortFunctions[sortMethod]));
     setCurrentPage(1);
     setMobileSortOpen(false);
   }, []);
 
-  // Apply all filters
   const filteredProducts = useMemo(() => {
     const { brands, genres, price } = filters;
-    let result = [...products];
-    
-    // Apply price filter
-    result = result.filter(product => product.price <= price);
+    return products.filter(product => {
+      const matchesPrice = product.price <= price;
 
-    // Apply route-based filters
-    if (routeFilters.genres?.length > 0) {
-      result = result.filter(product => 
-        routeFilters.genres.some(rg => 
-          product.genre?.toLowerCase() === rg.toLowerCase()
-        )
-      );
-    }
-    
-    if (routeFilters.brands?.length > 0) {
-      result = result.filter(product => 
-        routeFilters.brands.some(rb => 
-          product.brand?.toLowerCase() === rb.toLowerCase()
-        )
-      );
-    }
-    
-    if (routeFilters.type) {
-      result = result.filter(product => 
-        product.type?.toLowerCase() === routeFilters.type.toLowerCase()
-      );
-    }
+      const matchesGenre = routeFilters.genres
+        ? routeFilters.genres.includes(product.genre?.toLowerCase())
+        : genres.length === 0 || genres.includes(product.genre?.toLowerCase());
 
-    // Apply user-selected filters
-    if (genres.length > 0) {
-      result = result.filter(product => 
-        genres.some(fg => product.genre?.toLowerCase() === fg.toLowerCase())
-      );
-    }
-    
-    if (brands.length > 0) {
-      result = result.filter(product => 
-        brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
-      );
-    }
+      const matchesBrand = routeFilters.brands
+        ? routeFilters.brands.includes(product.brand?.toLowerCase())
+        : brands.length === 0 || brands.includes(product.brand?.toLowerCase());
 
-    // Apply sorting
-    const sortFunction = sortFunctions[selectedSort] || sortFunctions.newest;
-    return result.sort(sortFunction);
-  }, [products, filters, routeFilters, selectedSort]);
+      const matchesType = routeFilters.type
+        ? product.type?.toLowerCase() === routeFilters.type.toLowerCase()
+        : true;
 
-  // Pagination logic
+      return matchesPrice && matchesGenre && matchesBrand && matchesType;
+    });
+  }, [products, filters, routeFilters]);
+
   const { totalPages, paginatedProducts } = useMemo(() => {
     const total = Math.ceil(filteredProducts.length / itemsPerPage);
     const start = (currentPage - 1) * itemsPerPage;
@@ -4822,7 +4766,7 @@ const ProductsPage = () => {
 
     const maxVisible = 5;
     let startPage = 1;
-    
+
     if (totalPages > maxVisible) {
       startPage = Math.min(
         Math.max(1, currentPage - Math.floor(maxVisible / 2)),
@@ -4832,34 +4776,22 @@ const ProductsPage = () => {
 
     return (
       <div className={styles.paginationContainer}>
-        <button 
-          onClick={() => handlePageChange(currentPage - 1)} 
-          disabled={currentPage === 1}
-          className={styles.paginationArrow}
-        >
+        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className={styles.paginationArrow}>
           &lt;
         </button>
-        
         {Array.from({ length: Math.min(maxVisible, totalPages) }).map((_, i) => {
           const page = startPage + i;
           return (
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`${styles.paginationNumber} ${
-                currentPage === page ? styles.active : ''
-              }`}
+              className={`${styles.paginationNumber} ${currentPage === page ? styles.active : ''}`}
             >
               {page}
             </button>
           );
         })}
-        
-        <button 
-          onClick={() => handlePageChange(currentPage + 1)} 
-          disabled={currentPage === totalPages}
-          className={styles.paginationArrow}
-        >
+        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className={styles.paginationArrow}>
           &gt;
         </button>
       </div>
@@ -4942,6 +4874,7 @@ const ProductsPage = () => {
 };
 
 export default ProductsPage;
+
 
 
 
