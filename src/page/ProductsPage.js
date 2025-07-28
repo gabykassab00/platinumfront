@@ -4662,26 +4662,14 @@ const ProductsPage = () => {
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({ brands: [], genres: [], price: 500 });
   const [currentPage, setCurrentPage] = useState(1);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [mobileSortOpen, setMobileSortOpen] = useState(false);
   const [selectedSort, setSelectedSort] = useState('newest');
   const itemsPerPage = 12;
 
   const API_URL = process.env.REACT_APP_API_URL;
 
-  const routeFilters = useMemo(() => {
-    if (location.pathname.includes('/perfumes/men')) {
-      return { genres: ['men'], type: 'multiple' };
-    } else if (location.pathname.includes('/perfumes/women')) {
-      return { genres: ['women'], type: 'multiple' };
-    } else if (location.pathname.includes('/lattafa-rasasi')) {
-      return { brands: ['lattafa', 'rasasi'] };
-    } else if (location.pathname.includes('/original')) {
-      return { type: 'single' };
-    } else if (location.pathname.includes('/makeup')) {
-      return { type: 'makeup' };
-    }
-    return {};
-  }, [location.pathname]);
-
+  // Get page title based on current route
   const pageTitle = useMemo(() => {
     if (location.pathname.includes('/perfumes/men')) {
       return "Men's Perfumes";
@@ -4697,10 +4685,28 @@ const ProductsPage = () => {
     return "All Perfumes";
   }, [location.pathname]);
 
+  // Route-based filter logic
+  const routeFilters = useMemo(() => {
+    if (location.pathname.includes('/perfumes/men')) {
+      return { genres: ['men'], type: 'multiple' };
+    } else if (location.pathname.includes('/perfumes/women')) {
+      return { genres: ['women'], type: 'multiple' };
+    } else if (location.pathname.includes('/lattafa-rasasi')) {
+      return { brands: ['lattafa', 'rasasi'] };
+    } else if (location.pathname.includes('/original')) {
+      return { type: 'single' };
+    } else if (location.pathname.includes('/makeup')) {
+      return { type: 'makeup' };
+    }
+    return {};
+  }, [location.pathname]);
+
+  // Reset page to 1 when URL changes
   useEffect(() => {
     setCurrentPage(1);
   }, [location.pathname]);
 
+  // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -4731,43 +4737,57 @@ const ProductsPage = () => {
 
   const handleSortChange = useCallback((sortMethod) => {
     setSelectedSort(sortMethod);
-    setProducts(prev => [...prev].sort(sortFunctions[sortMethod]));
     setCurrentPage(1);
+    setMobileSortOpen(false);
   }, []);
 
   const filteredProducts = useMemo(() => {
     const { brands, genres, price } = filters;
-    return products.filter(product => {
-      const matchesPrice = product.price <= price;
+    let result = [...products];
+    
+    // Apply price filter
+    result = result.filter(product => product.price <= price);
 
-      const matchesGenre =
-        routeFilters.genres?.length > 0
-          ? routeFilters.genres.some(rg =>
-              product.genre?.toLowerCase() === rg.toLowerCase()
-            )
-          : genres.length === 0 ||
-            genres.some(fg =>
-              product.genre?.toLowerCase() === fg.toLowerCase()
-            );
+    // Apply route-based filters
+    if (routeFilters.genres?.length > 0) {
+      result = result.filter(product => 
+        routeFilters.genres.some(rg => 
+          product.genre?.toLowerCase() === rg.toLowerCase()
+        )
+      );
+    }
+    
+    if (routeFilters.brands?.length > 0) {
+      result = result.filter(product => 
+        routeFilters.brands.some(rb => 
+          product.brand?.toLowerCase() === rb.toLowerCase()
+        )
+      );
+    }
+    
+    if (routeFilters.type) {
+      result = result.filter(product => 
+        product.type?.toLowerCase() === routeFilters.type.toLowerCase()
+      );
+    }
 
-      const matchesBrand =
-        routeFilters.brands?.length > 0
-          ? routeFilters.brands.some(rb =>
-              product.brand?.toLowerCase() === rb.toLowerCase()
-            )
-          : brands.length === 0 ||
-            brands.some(fb =>
-              product.brand?.toLowerCase() === fb.toLowerCase()
-            );
+    // Apply user-selected filters
+    if (genres.length > 0) {
+      result = result.filter(product => 
+        genres.some(fg => product.genre?.toLowerCase() === fg.toLowerCase())
+      );
+    }
+    
+    if (brands.length > 0) {
+      result = result.filter(product => 
+        brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
+      );
+    }
 
-      const matchesType =
-        routeFilters.type
-          ? product.type?.toLowerCase() === routeFilters.type.toLowerCase()
-          : true;
-
-      return matchesPrice && matchesGenre && matchesBrand && matchesType;
-    });
-  }, [products, filters, routeFilters]);
+    // Apply sorting
+    const sortFunction = sortFunctions[selectedSort] || sortFunctions.newest;
+    return result.sort(sortFunction);
+  }, [products, filters, routeFilters, selectedSort]);
 
   const { totalPages, paginatedProducts } = useMemo(() => {
     const total = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -4788,7 +4808,7 @@ const ProductsPage = () => {
 
     const maxVisible = 5;
     let startPage = 1;
-
+    
     if (totalPages > maxVisible) {
       startPage = Math.min(
         Math.max(1, currentPage - Math.floor(maxVisible / 2)),
@@ -4798,29 +4818,31 @@ const ProductsPage = () => {
 
     return (
       <div className={styles.paginationContainer}>
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
+        <button 
+          onClick={() => handlePageChange(currentPage - 1)} 
           disabled={currentPage === 1}
           className={styles.paginationArrow}
         >
           &lt;
         </button>
-
+        
         {Array.from({ length: Math.min(maxVisible, totalPages) }).map((_, i) => {
           const page = startPage + i;
           return (
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`${styles.paginationNumber} ${currentPage === page ? styles.active : ''}`}
+              className={`${styles.paginationNumber} ${
+                currentPage === page ? styles.active : ''
+              }`}
             >
               {page}
             </button>
           );
         })}
-
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
+        
+        <button 
+          onClick={() => handlePageChange(currentPage + 1)} 
           disabled={currentPage === totalPages}
           className={styles.paginationArrow}
         >
@@ -4841,7 +4863,17 @@ const ProductsPage = () => {
       </header>
 
       <div className={styles.mainContent}>
-        <aside className={styles.filterPanel}>
+        {/* Filter Panel (matches first version) */}
+        <aside className={`${styles.filterPanel} ${mobileFilterOpen ? styles.mobileOpen : ''}`}>
+          <div className={styles.mobileFilterHeader}>
+            <h3>FILTER BY</h3>
+            <button 
+              className={styles.closeMobileFilter}
+              onClick={() => setMobileFilterOpen(false)}
+            >
+              ×
+            </button>
+          </div>
           <FilterSection
             filters={filters}
             onFilterChange={handleFilterChange}
@@ -4851,6 +4883,49 @@ const ProductsPage = () => {
         </aside>
 
         <main className={styles.productArea}>
+          {/* Mobile Filter/Sort Bar (matches first version) */}
+          <div className={styles.mobileFilterSortBar}>
+            <button 
+              onClick={() => setMobileFilterOpen(!mobileFilterOpen)} 
+              className={styles.mobileFilterButton}
+            >
+              <span>Filter By</span>
+              <span>{filteredProducts.length} products</span>
+            </button>
+            <button 
+              onClick={() => setMobileSortOpen(!mobileSortOpen)} 
+              className={styles.mobileSortButton}
+            >
+              <span>{sortLabels[selectedSort] || 'Newest to Oldest'}</span>
+            </button>
+          </div>
+
+          {/* Mobile Sort Panel (matches first version) */}
+          {mobileSortOpen && (
+            <div className={styles.mobileSortPanel}>
+              <div className={styles.mobileSortHeader}>
+                <h3>SORT BY</h3>
+                <button 
+                  className={styles.closeMobileSort} 
+                  onClick={() => setMobileSortOpen(false)}
+                >
+                  ×
+                </button>
+              </div>
+              <div className={styles.mobileSortOptions}>
+                {Object.keys(sortLabels).map(sort => (
+                  <button
+                    key={sort}
+                    onClick={() => handleSortChange(sort)}
+                    className={selectedSort === sort ? styles.activeSort : ''}
+                  >
+                    {sortLabels[sort]}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className={styles.desktopToolbar}>
             <div className={styles.resultsCount}>
               Showing {paginatedProducts.length} of {filteredProducts.length} products
@@ -4883,7 +4958,6 @@ const ProductsPage = () => {
 };
 
 export default ProductsPage;
-
 
 
 
