@@ -463,25 +463,60 @@
 
 
 
+import { useLocation } from 'react-router-dom'; // add this at the top
 import React, { useEffect } from 'react';
 import styles from '../style/FilterSection.module.css';
 
 const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }) => {
-  const uniqueBrands = [
-    'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel', 'Paco Rabanne',
-    'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian', 'Burberry', 'Nasomatto',
-    'Carolina Herrera', 'Bulgari', 'Lattafa', 'Tom Ford', 'Ralph Lauren', 'Hugo Boss', 'Joop!',
-    'Givenchy', 'Dolce & Gabbana', 'Dior', 'Dunhill', 'Cartier', 'Laura Biagiotti', 'Jacques Bogart',
-    'Nikos', 'Emporio Armani', 'Viktor & Rolf', 'Calvin Klein', 'oud guerlain', 'taif', 'sunamusk',
-    'Gucci', 'Nautica or Hermès', 'Ferrari', 'Fendi', 'Yves Saint Laurent', 'Issey Miyake', 'Creed',
-    'Kenzo', 'Louis Vuitton', 'Lacoste', 'happy touch', 'Ted Lapidus', 'misk', 'maa althahab',
-    'Mercedes-Benz', 'Montblanc', 'Police', 'Ajmal or Armaf', 'Roberto Cavalli', 'rave', 'Ajmal',
-    'Asdaaf', 'Afnan', 'Mousouf', 'شمس الامارات', 'Victoria’s Secret', 'Britney Spears',
-    'Jardin de Parfums', 'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Victoria secret',
-    'Mugler', 'Elie Saab', 'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez',
-    'Prada', 'Chloé', 'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic',
-    'sir', 'nasmat', 'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly'
-  ].sort((a, b) => a.localeCompare(b));
+  // const uniqueBrands = [
+  //   'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel', 'Paco Rabanne',
+  //   'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian', 'Burberry', 'Nasomatto',
+  //   'Carolina Herrera', 'Bulgari', 'Lattafa', 'Tom Ford', 'Ralph Lauren', 'Hugo Boss', 'Joop!',
+  //   'Givenchy', 'Dolce & Gabbana', 'Dior', 'Dunhill', 'Cartier', 'Laura Biagiotti', 'Jacques Bogart',
+  //   'Nikos', 'Emporio Armani', 'Viktor & Rolf', 'Calvin Klein', 'oud guerlain', 'taif', 'sunamusk',
+  //   'Gucci', 'Nautica or Hermès', 'Ferrari', 'Fendi', 'Yves Saint Laurent', 'Issey Miyake', 'Creed',
+  //   'Kenzo', 'Louis Vuitton', 'Lacoste', 'happy touch', 'Ted Lapidus', 'misk', 'maa althahab',
+  //   'Mercedes-Benz', 'Montblanc', 'Police', 'Ajmal or Armaf', 'Roberto Cavalli', 'rave', 'Ajmal',
+  //   'Asdaaf', 'Afnan', 'Mousouf', 'شمس الامارات', 'Victoria’s Secret', 'Britney Spears',
+  //   'Jardin de Parfums', 'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Victoria secret',
+  //   'Mugler', 'Elie Saab', 'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez',
+  //   'Prada', 'Chloé', 'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic',
+  //   'sir', 'nasmat', 'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly'
+  // ].sort((a, b) => a.localeCompare(b));
+
+
+
+
+// Inside the component
+const location = useLocation();
+
+const perfumeBrands = [
+  'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel',
+  'Paco Rabanne', 'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian',
+  'Burberry', 'Nasomatto', 'Carolina Herrera', 'Bulgari', 'Lattafa', 'Tom Ford',
+  'Ralph Lauren', 'Hugo Boss', 'Joop!', 'Givenchy', 'Dolce & Gabbana', 'Dior', 'Dunhill',
+  'Cartier', 'Laura Biagiotti', 'Jacques Bogart', 'Nikos', 'Emporio Armani', 'Viktor & Rolf',
+  'Calvin Klein', 'oud guerlain', 'taif', 'sunamusk', 'Gucci', 'Nautica or Hermès',
+  'Ferrari', 'Fendi', 'Yves Saint Laurent', 'Issey Miyake', 'Creed', 'Kenzo', 'Louis Vuitton',
+  'Lacoste', 'happy touch', 'Ted Lapidus', 'misk', 'maa althahab', 'Mercedes-Benz',
+  'Montblanc', 'Police', 'Ajmal or Armaf', 'Roberto Cavalli', 'rave', 'Ajmal', 'Asdaaf',
+  'Afnan', 'Mousouf', 'شمس الامارات', 'Victoria’s Secret', 'Britney Spears', 'Jardin de Parfums',
+  'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Victoria secret', 'Mugler', 'Elie Saab',
+  'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez', 'Prada', 'Chloé',
+  'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic', 'sir', 'nasmat',
+  'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly'
+];
+
+const makeupBrands = [
+  'Maybelline', 'Ruby Beauty', 'Samoa', 'dali', 'Ruby Rose'
+];
+
+const uniqueBrands = (location.pathname.includes('/makeup') ? makeupBrands : perfumeBrands)
+  .filter((value, index, self) => self.indexOf(value) === index) // remove duplicates
+  .sort((a, b) => a.localeCompare(b));
+
+
+
 
   const genres = [
     { value: 'Men', label: 'Men' },

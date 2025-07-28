@@ -4418,29 +4418,66 @@ const ProductsPage = () => {
     setMobileSortOpen(false);
   }, []);
 
-  const filteredProducts = useMemo(() => {
-    const { brands, genres, price } = filters;
-    return products.filter(product => {
-      const matchesPrice = product.price <= price;
+  // const filteredProducts = useMemo(() => {
+  //   const { brands, genres, price } = filters;
+  //   return products.filter(product => {
+  //     const matchesPrice = product.price <= price;
 
-      const matchesGenre =
-        routeFilters.genres
-          ? routeFilters.genres.includes(product.genre?.toLowerCase())
-          : genres.length === 0 || genres.includes(product.genre?.toLowerCase());
+  //     const matchesGenre =
+  //       routeFilters.genres
+  //         ? routeFilters.genres.includes(product.genre?.toLowerCase())
+  //         : genres.length === 0 || genres.includes(product.genre?.toLowerCase());
 
-      const matchesBrand =
-        routeFilters.brands
-          ? routeFilters.brands.includes(product.brand?.toLowerCase())
-          : brands.length === 0 || brands.includes(product.brand?.toLowerCase());
+  //     const matchesBrand =
+  //       routeFilters.brands
+  //         ? routeFilters.brands.includes(product.brand?.toLowerCase())
+  //         : brands.length === 0 || brands.includes(product.brand?.toLowerCase());
 
-      const matchesType =
-        routeFilters.type
-          ? product.type?.toLowerCase() === routeFilters.type
-          : true;
+  //     const matchesType =
+  //       routeFilters.type
+  //         ? product.type?.toLowerCase() === routeFilters.type
+  //         : true;
 
-      return matchesPrice && matchesGenre && matchesBrand && matchesType;
-    });
-  }, [products, filters, routeFilters]);
+  //     return matchesPrice && matchesGenre && matchesBrand && matchesType;
+  //   });
+  // }, [products, filters, routeFilters]);
+
+const filteredProducts = useMemo(() => {
+  const { brands, genres, price } = filters;
+  return products.filter(product => {
+    const matchesPrice = product.price <= price;
+
+    // Handle genre filtering - check both route filters and user-selected filters
+    const matchesGenre = 
+      routeFilters.genres?.length > 0 
+        ? routeFilters.genres.some(rg => 
+            product.genre?.toLowerCase() === rg.toLowerCase()
+          )
+        : genres.length === 0 || 
+          genres.some(fg => 
+            product.genre?.toLowerCase() === fg.toLowerCase()
+          );
+
+    const matchesBrand =
+      routeFilters.brands?.length > 0
+        ? routeFilters.brands.some(rb => 
+            product.brand?.toLowerCase() === rb.toLowerCase()
+          )
+        : brands.length === 0 || 
+          brands.some(fb => 
+            product.brand?.toLowerCase() === fb.toLowerCase()
+          );
+
+    const matchesType =
+      routeFilters.type
+        ? product.type?.toLowerCase() === routeFilters.type.toLowerCase()
+        : true;
+
+    return matchesPrice && matchesGenre && matchesBrand && matchesType;
+  });
+}, [products, filters, routeFilters]);
+
+
 
   const { totalPages, paginatedProducts } = useMemo(() => {
     const total = Math.ceil(filteredProducts.length / itemsPerPage);
