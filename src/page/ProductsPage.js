@@ -4358,7 +4358,7 @@ const ProductsPage = () => {
     } else if (location.pathname.includes('/makeup')) {
       return "Makeup Products";
     }
-    return "Discover Your Signature Scent";
+    return "All Perfumes";
   }, [location.pathname]);
 
   // Route-based filter logic
