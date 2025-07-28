@@ -4662,29 +4662,39 @@ const ProductsPage = () => {
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({ brands: [], genres: [], price: 500 });
   const [currentPage, setCurrentPage] = useState(1);
-  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
-  const [mobileSortOpen, setMobileSortOpen] = useState(false);
   const [selectedSort, setSelectedSort] = useState('newest');
   const itemsPerPage = 12;
 
   const API_URL = process.env.REACT_APP_API_URL;
 
-  const pageTitle = useMemo(() => {
-    if (location.pathname.includes('/perfumes/men')) return "Men's Perfumes";
-    if (location.pathname.includes('/perfumes/women')) return "Women's Perfumes";
-    if (location.pathname.includes('/lattafa-rasasi')) return "Lattafa & Rasasi Perfumes";
-    if (location.pathname.includes('/original')) return "Original Perfumes";
-    if (location.pathname.includes('/makeup')) return "Makeup Products";
-    return "All Perfumes";
+  const routeFilters = useMemo(() => {
+    if (location.pathname.includes('/perfumes/men')) {
+      return { genres: ['men'], type: 'multiple' };
+    } else if (location.pathname.includes('/perfumes/women')) {
+      return { genres: ['women'], type: 'multiple' };
+    } else if (location.pathname.includes('/lattafa-rasasi')) {
+      return { brands: ['lattafa', 'rasasi'] };
+    } else if (location.pathname.includes('/original')) {
+      return { type: 'single' };
+    } else if (location.pathname.includes('/makeup')) {
+      return { type: 'makeup' };
+    }
+    return {};
   }, [location.pathname]);
 
-  const routeFilters = useMemo(() => {
-    if (location.pathname.includes('/perfumes/men')) return { genres: ['men'], type: 'multiple' };
-    if (location.pathname.includes('/perfumes/women')) return { genres: ['women'], type: 'multiple' };
-    if (location.pathname.includes('/lattafa-rasasi')) return { brands: ['lattafa', 'rasasi'] };
-    if (location.pathname.includes('/original')) return { type: 'single' };
-    if (location.pathname.includes('/makeup')) return { type: 'makeup' };
-    return {};
+  const pageTitle = useMemo(() => {
+    if (location.pathname.includes('/perfumes/men')) {
+      return "Men's Perfumes";
+    } else if (location.pathname.includes('/perfumes/women')) {
+      return "Women's Perfumes";
+    } else if (location.pathname.includes('/lattafa-rasasi')) {
+      return "Lattafa & Rasasi Perfumes";
+    } else if (location.pathname.includes('/original')) {
+      return "Original Perfumes";
+    } else if (location.pathname.includes('/makeup')) {
+      return "Makeup Products";
+    }
+    return "All Perfumes";
   }, [location.pathname]);
 
   useEffect(() => {
@@ -4723,7 +4733,6 @@ const ProductsPage = () => {
     setSelectedSort(sortMethod);
     setProducts(prev => [...prev].sort(sortFunctions[sortMethod]));
     setCurrentPage(1);
-    setMobileSortOpen(false);
   }, []);
 
   const filteredProducts = useMemo(() => {
@@ -4731,17 +4740,30 @@ const ProductsPage = () => {
     return products.filter(product => {
       const matchesPrice = product.price <= price;
 
-      const matchesGenre = routeFilters.genres
-        ? routeFilters.genres.includes(product.genre?.toLowerCase())
-        : genres.length === 0 || genres.includes(product.genre?.toLowerCase());
+      const matchesGenre =
+        routeFilters.genres?.length > 0
+          ? routeFilters.genres.some(rg =>
+              product.genre?.toLowerCase() === rg.toLowerCase()
+            )
+          : genres.length === 0 ||
+            genres.some(fg =>
+              product.genre?.toLowerCase() === fg.toLowerCase()
+            );
 
-      const matchesBrand = routeFilters.brands
-        ? routeFilters.brands.includes(product.brand?.toLowerCase())
-        : brands.length === 0 || brands.includes(product.brand?.toLowerCase());
+      const matchesBrand =
+        routeFilters.brands?.length > 0
+          ? routeFilters.brands.some(rb =>
+              product.brand?.toLowerCase() === rb.toLowerCase()
+            )
+          : brands.length === 0 ||
+            brands.some(fb =>
+              product.brand?.toLowerCase() === fb.toLowerCase()
+            );
 
-      const matchesType = routeFilters.type
-        ? product.type?.toLowerCase() === routeFilters.type.toLowerCase()
-        : true;
+      const matchesType =
+        routeFilters.type
+          ? product.type?.toLowerCase() === routeFilters.type.toLowerCase()
+          : true;
 
       return matchesPrice && matchesGenre && matchesBrand && matchesType;
     });
@@ -4776,9 +4798,14 @@ const ProductsPage = () => {
 
     return (
       <div className={styles.paginationContainer}>
-        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className={styles.paginationArrow}>
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className={styles.paginationArrow}
+        >
           &lt;
         </button>
+
         {Array.from({ length: Math.min(maxVisible, totalPages) }).map((_, i) => {
           const page = startPage + i;
           return (
@@ -4791,7 +4818,12 @@ const ProductsPage = () => {
             </button>
           );
         })}
-        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className={styles.paginationArrow}>
+
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className={styles.paginationArrow}
+        >
           &gt;
         </button>
       </div>
@@ -4809,11 +4841,7 @@ const ProductsPage = () => {
       </header>
 
       <div className={styles.mainContent}>
-        <aside className={`${styles.filterPanel} ${mobileFilterOpen ? styles.mobileOpen : ''}`}>
-          <div className={styles.mobileFilterHeader}>
-            <h3>Filters</h3>
-            <button onClick={() => setMobileFilterOpen(false)}>×</button>
-          </div>
+        <aside className={styles.filterPanel}>
           <FilterSection
             filters={filters}
             onFilterChange={handleFilterChange}
@@ -4823,25 +4851,6 @@ const ProductsPage = () => {
         </aside>
 
         <main className={styles.productArea}>
-          <div className={styles.mobileFilterSortBar}>
-            <button onClick={() => setMobileFilterOpen(!mobileFilterOpen)}>
-              Filter • {filteredProducts.length} products
-            </button>
-            <button onClick={() => setMobileSortOpen(!mobileSortOpen)}>
-              {sortLabels[selectedSort]}
-            </button>
-          </div>
-
-          {mobileSortOpen && (
-            <div className={styles.mobileSortPanel}>
-              {Object.keys(sortLabels).map(sort => (
-                <button key={sort} onClick={() => handleSortChange(sort)}>
-                  {sortLabels[sort]}
-                </button>
-              ))}
-            </div>
-          )}
-
           <div className={styles.desktopToolbar}>
             <div className={styles.resultsCount}>
               Showing {paginatedProducts.length} of {filteredProducts.length} products
