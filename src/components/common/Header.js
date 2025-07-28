@@ -2281,12 +2281,25 @@ const Header = () => {
 
   const API_URL = process.env.REACT_APP_API_URL;
 
+  // const menuCategories = [
+  //   { id: 1, name: 'All Perfumes', path: '/perfumes' },
+  //   { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
+  //   { id: 3, name: 'Women Perfumes', path: '/perfumes/women' },
+  //   { id: 4, name: 'Sale', path: '/sale' },
+  // ];
+
+
   const menuCategories = [
-    { id: 1, name: 'All Perfumes', path: '/perfumes' },
-    { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
-    { id: 3, name: 'Women Perfumes', path: '/perfumes/women' },
-    { id: 4, name: 'Sale', path: '/sale' },
-  ];
+  { id: 1, name: 'All Perfumes', path: '/perfumes' },
+  { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
+  { id: 3, name: 'Women Perfumes', path: '/perfumes/women' },
+  { id: 4, name: 'Sale', path: '/sale' },
+  { id: 5, name: 'Lattafa & Rasasi Perfumes', path: '/lattafa-rasasi' },
+  { id: 6, name: 'Musk', path: '/musk' },
+  { id: 7, name: 'Air and Furniture Refresheners', path: '/refresheners' },
+  { id: 8, name: 'Watches', path: '/watches' },
+  { id: 9, name: 'Makeup and Cosmetics', path: '/makeup' },
+];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -2527,27 +2540,6 @@ const Header = () => {
           </div>
         </div>
       )}
-
-      {/* Mobile Menu */}
-      {/* {mobileMenuOpen && (
-        <div className="mobile-menu-container">
-          <nav className="mobile-menu-nav">
-            <ul className="mobile-menu-list">
-              {menuCategories.map((cat) => (
-                <li
-                  key={cat.id}
-                  className={`mobile-menu-item ${cat.name === 'Sale' ? 'sale-item' : ''}`}
-                  onClick={handleMenuItemClick}
-                >
-                  <Link to={cat.path} className="mobile-menu-link">
-                    {cat.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      )} */}
       {mobileMenuOpen && (
   <div className="mobile-menu-container">
     <button className="mobile-menu-close" onClick={handleMobileMenuClick}>
