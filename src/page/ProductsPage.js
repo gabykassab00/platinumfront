@@ -5191,7 +5191,16 @@ const ProductsPage = () => {
     );
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  // if (isLoading) return <p>Loading...</p>;
+  if (isLoading) {
+  return (
+    <div className={styles.loadingContainer}>
+      <div className={styles.spinner}></div>
+      <p className={styles.loadingText}>Loading products, please wait...</p>
+    </div>
+  );
+}
+
   if (error) return <p>{error}</p>;
 
   return (
@@ -5267,9 +5276,11 @@ const ProductsPage = () => {
               {renderPagination()}
             </>
           ) : (
-            <div className={styles.noResults}>
-              <p>No products match your filters.</p>
-            </div>
+<div className={styles.noResults}>
+  <img src="/images/empty-state.png" alt="No products" className={styles.noResultsImage} />
+  <p className={styles.noResultsText}>No products match your filters.</p>
+</div>
+
           )}
         </main>
       </div>
