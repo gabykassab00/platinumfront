@@ -256,6 +256,7 @@ const RouterRoutes = () => {
       <Route path="/lattafa-rasasi" element={<ProductsPage />} />
       <Route path="/original" element={<ProductsPage />} />
       <Route path="/makeup" element={<ProductsPage />} />
+      <Route path="/watches" element={<ProductsPage />} />
 
       {/* 🔍 Search results page */}
       <Route path="/search" element={<SearchResults />} />
