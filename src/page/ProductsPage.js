@@ -5277,7 +5277,6 @@ const ProductsPage = () => {
             </>
           ) : (
 <div className={styles.noResults}>
-  <img src="/images/empty-state.png" alt="No products" className={styles.noResultsImage} />
   <p className={styles.noResultsText}>No products match your filters.</p>
 </div>
 
