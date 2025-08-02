@@ -1700,3 +1700,25 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+
+.noResults {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.noResultsImage {
+  width: 120px;
+  height: auto;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.noResultsText {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #333;
+}
