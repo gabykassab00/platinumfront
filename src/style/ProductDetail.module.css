@@ -2478,7 +2478,7 @@
   } */
 .imageWrapper {
   height: 250px; /* 👈 smaller image box height */
-  margin-top: -2rem; /* optional: tweak based on final look */
+  margin-top: -5rem; /* optional: tweak based on final look */
 }
 
 }
