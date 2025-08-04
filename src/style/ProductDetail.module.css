@@ -2476,7 +2476,7 @@
 .imageWrapper {
   position: relative;
   height: 300px;
-  margin-top: 0;
+  margin-top: -5rem;
 }
 
 .infoContainer {
