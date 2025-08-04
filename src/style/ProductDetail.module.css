@@ -2477,7 +2477,7 @@
   }
 
   .detailsSection {
-    margin-top: 2.5rem !important; /* Reset if already has margin */
+    margin-top: 0rem !important; /* Reset if already has margin */
     padding-top: 1rem;        /* Add some visual gap */
   }
 
