@@ -2945,17 +2945,35 @@ const CheckoutPage = () => {
   const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleCompleteOrder = () => {
-    const templateParams = {
-      customer_email: emailRef.current.value,
-      first_name: firstNameRef.current.value,
-      last_name: lastNameRef.current.value,
-      delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
-      order_total: total.toFixed(2),
-      product_name: basketItems[0]?.name || 'N/A',
-      product_size: basketItems[0]?.size || 'N/A',
-      product_quantity: basketItems[0]?.quantity || 1,
-      product_price: (Number(basketItems[0]?.price || 0) * Number(basketItems[0]?.quantity || 1)).toFixed(2)
-    };
+
+// const orderDetails = basketItems
+//   .map((item, index) => {
+//     return `${index + 1}. ${item.name} (${item.size}) x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`;
+//   })
+//   .join('\n');
+
+// const templateParams = {
+//   customer_email: emailRef.current.value,
+//   first_name: firstNameRef.current.value,
+//   last_name: lastNameRef.current.value,
+//   delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
+//   order_total: total.toFixed(2),
+//   order_details: orderDetails
+// };
+const templateParams = {
+  customer_email: emailRef.current.value,
+  first_name: firstNameRef.current.value,
+  last_name: lastNameRef.current.value,
+  delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
+  order_total: total.toFixed(2),
+  items: basketItems.map((item, index) => ({
+    index: index + 1,
+    name: item.name,
+    size: item.size,
+    quantity: item.quantity,
+    price: (item.price * item.quantity).toFixed(2)
+  }))
+};
 
     emailjs
       .send(
