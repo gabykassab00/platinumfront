@@ -5035,33 +5035,16 @@ const ProductsPage = () => {
     return "All Perfumes";
   }, [location.pathname]);
 
-  // const routeFilters = useMemo(() => {
-  //   if (location.pathname.includes('/perfumes/men')) {
-  //     return { genres: ['men'], type: 'multiple' };
-  //   } else if (location.pathname.includes('/perfumes/women')) {
-  //     return { genres: ['women'], type: 'multiple' };
-  //   } else if (location.pathname.includes('/lattafa-rasasi')) {
-  //     return { brands: ['lattafa', 'rasasi'] };
-  //   } else if (location.pathname.includes('/original')) {
-  //     return { type: 'single' };
-  //   } else if (location.pathname.includes('/makeup')) {
-  //     return { type: 'makeup' };
-  //   } else if (location.pathname.includes('/watches')) {
-  //     return { type: 'watch' };
-  //   }
-  //   return {};
-  // }, [location.pathname]);
-
-
 
   const routeFilters = useMemo(() => {
   if (location.pathname.includes('/perfumes/men')) {
     return { genres: ['men'], type: 'multiple' };
   } else if (location.pathname.includes('/perfumes/women')) {
     return { genres: ['women'], type: 'multiple' };
-  } else if (location.pathname.includes('/lattafa-rasasi')) {
-    return { brands: ['lattafa', 'rasasi'] };
-  } else if (location.pathname.includes('/original')) {
+  }  else if (location.pathname.includes('/lattafa-rasasi')) {
+  return { brands: ['lattafa', 'rasasi'], type: 'single' };
+}
+ else if (location.pathname.includes('/original')) {
     return { type: 'single' };
   } else if (location.pathname.includes('/makeup')) {
     return { type: 'makeup' };
