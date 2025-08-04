@@ -2472,13 +2472,15 @@
   .productContainer {
     margin-top: 0;
   }
-
+/* 
   .imageWrapper {
-    margin-top: -8rem; /* Pull image upward */
-  }
-    .infoContainer {
-    margin-top: -3rem; /* 👈 reduces white space between image and title */
-  }
+    margin-top: -8rem; 
+  } */
+.imageWrapper {
+  height: 280px; /* 👈 smaller image box height */
+  margin-top: -2rem; /* optional: tweak based on final look */
+}
+
 }
 
 
