@@ -2476,6 +2476,10 @@
   .imageWrapper {
     margin-top: -8rem; /* Pull image upward */
   }
+    .productImage {
+    max-height: 250px; /* 👈 Add this line */
+    object-fit: contain;
+  }
 }
 
 
