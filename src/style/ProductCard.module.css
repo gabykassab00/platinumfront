@@ -1874,9 +1874,15 @@
   font-size: 0.9rem;
 }
 
-.current {
+/* .current {
   color: #FFD700;
   font-weight: bold;
+} */
+.current {
+  color: #000;
+  font-weight: 700;
+  font-size: 1.6rem;
+  letter-spacing: 0.5px;
 }
 
 .errorMessage {
