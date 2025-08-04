@@ -1731,7 +1731,7 @@
   border-radius: 14px;
   font-size: 1rem;
   background-color: transparent;
-  border: 2px solid black;
+  border: 1px solid black;
   color: black;
 }
 
@@ -1796,7 +1796,7 @@
 .priceButtons .flipFront,
 .priceButtons .flipBack {
   background-color: transparent;
-  border: 2px solid black;
+  border: 1px solid black;
   color: black;
 }
 
