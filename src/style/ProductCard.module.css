@@ -1731,7 +1731,8 @@
   border-radius: 14px;
   font-size: 1rem;
   background-color: transparent;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  border: 1px solid #999; /* or #ccc for lighter gray */
   color: black;
 }
 
