@@ -1809,16 +1809,24 @@
   box-shadow: 0 0 0 2px #FFD700, 0 0 0 4px #000;
 }
 
-.addToCartButton .flipFront,
+/* .addToCartButton .flipFront,
 .addToCartButton .flipBack {
   background-color: #FFD700;
   color: #000;
   font-size: 1rem;
+} */
+.addToCartButton .flipFront,
+.addToCartButton .flipBack {
+  background-color: transparent;
+  color: #000;
+  font-size: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.3); /* subtle black border */
 }
 
 .addToCartButton .flipFront:hover,
 .addToCartButton .flipBack:hover {
-  background-color: #FFD700;
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 .flipFront {
