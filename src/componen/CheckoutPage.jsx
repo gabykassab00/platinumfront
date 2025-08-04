@@ -2951,28 +2951,27 @@ const CheckoutPage = () => {
 //     return `${index + 1}. ${item.name} (${item.size}) x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`;
 //   })
 //   .join('\n');
+const orderDetails = basketItems
+  .map((item, index) => {
+    return `
+      <tr>
+        <td style="padding: 8px;">${index + 1}</td>
+        <td style="padding: 8px;">${item.name}</td>
+        <td style="padding: 8px;">${item.size}</td>
+        <td style="padding: 8px;">${item.quantity}</td>
+        <td style="padding: 8px;">$${(item.price * item.quantity).toFixed(2)}</td>
+      </tr>`;
+  })
+  .join('');
 
-// const templateParams = {
-//   customer_email: emailRef.current.value,
-//   first_name: firstNameRef.current.value,
-//   last_name: lastNameRef.current.value,
-//   delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
-//   order_total: total.toFixed(2),
-//   order_details: orderDetails
-// };
+
 const templateParams = {
   customer_email: emailRef.current.value,
   first_name: firstNameRef.current.value,
   last_name: lastNameRef.current.value,
   delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
   order_total: total.toFixed(2),
-  items: basketItems.map((item, index) => ({
-    index: index + 1,
-    name: item.name,
-    size: item.size,
-    quantity: item.quantity,
-    price: (item.price * item.quantity).toFixed(2)
-  }))
+  order_details: orderDetails
 };
 
     emailjs
