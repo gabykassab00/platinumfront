@@ -1718,11 +1718,21 @@
   margin: 10px 0 0;
 }
 
+/* .priceButtons .flipButton {
+  flex: 1;
+  height: 45px;
+  border-radius: 14px;
+  font-size: 1rem;
+} */
+
 .priceButtons .flipButton {
   flex: 1;
   height: 45px;
   border-radius: 14px;
   font-size: 1rem;
+  background-color: transparent;
+  border: 2px solid black;
+  color: black;
 }
 
 .footer {
@@ -1777,10 +1787,17 @@
   border: none;
 }
 
-.priceButtons .flipFront:hover,
+/* .priceButtons .flipFront:hover,
 .priceButtons .flipBack:hover {
   background-color: #FFD700;
   color: #000;
+} */
+
+.priceButtons .flipFront,
+.priceButtons .flipBack {
+  background-color: transparent;
+  border: 2px solid black;
+  color: black;
 }
 
 .priceButtons .selectedSize .flipFront,
