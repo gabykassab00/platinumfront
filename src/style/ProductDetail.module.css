@@ -2480,14 +2480,14 @@
 }
 
 .infoContainer {
-  margin-top: -60px; /* pull upward */
+  margin-top: -80px; /* pull upward */
   position: relative;
   z-index: 2;
 }
 
 .title {
   position: absolute;
-  top: 20px;
+  top: 10px;
   left: 15px;
   right: 15px;
   font-size: 1.5rem;
