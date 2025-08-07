@@ -3095,13 +3095,13 @@ const templateParams = {
                 required
               />
             </div>
-            <div className={styles.formGroup}>
+            {/* <div className={styles.formGroup}>
               <input
                 type="text"
                 placeholder="Postal code (optional)"
                 className={styles.textInput}
               />
-            </div>
+            </div> */}
           </div>
         </section>
 
