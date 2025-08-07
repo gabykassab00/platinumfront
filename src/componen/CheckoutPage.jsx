@@ -2945,12 +2945,6 @@ const CheckoutPage = () => {
   const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleCompleteOrder = () => {
-
-// const orderDetails = basketItems
-//   .map((item, index) => {
-//     return `${index + 1}. ${item.name} (${item.size}) x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`;
-//   })
-//   .join('\n');
 const orderDetails = basketItems
   .map((item, index) => {
     return `
