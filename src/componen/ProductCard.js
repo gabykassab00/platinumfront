@@ -1531,7 +1531,7 @@ const ProductCard = React.memo(({ product }) => {
     if (isMuskType) {
       // Pricing for musk products
       switch (size) {
-        case 6: return basePrice * 1; // 6ml price (30% of base price)
+        case 6: return basePrice * 0.5; // 6ml price (30% of base price)
         case 12: return basePrice * 1; // 12ml price (60% of base price)
         default: return basePrice;
       }
