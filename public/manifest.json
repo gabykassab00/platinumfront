@@ -1,6 +1,6 @@
 {
-  "short_name": "Platinum",
-  "name": "Platinum Perfumes",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",
@@ -23,4 +23,3 @@
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
-
