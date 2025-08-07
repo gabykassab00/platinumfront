@@ -3378,12 +3378,12 @@ const CheckoutPage = () => {
               ref={emailRef}
               required
             />
-            {errors.email && <p className={styles.errorText}>Please enter your email or phone number</p>}
+            {errors.email && <p className={styles.errorText}>Please enter your phone number</p>}
           </div>
           <label className={styles.checkboxLabel}>
             <input type="checkbox" className={styles.checkboxInput} />
             <span className={styles.customCheckbox}></span>
-            Email me with news and offers
+            Message me with news and offers
           </label>
         </section>
 
