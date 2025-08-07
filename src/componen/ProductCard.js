@@ -1621,7 +1621,7 @@ const ProductCard = React.memo(({ product }) => {
                     <div className={styles.flipBack}>
                       {isMuskType 
                         ? (size === 6 ? 'Small' : 'Large') // Musk size labels
-                        : (size === 50 ? 'Small' : size === 80 ? 'Medium' : 'Large')} // Default size labels
+                        : (size === 50 ? 'Small' : size === 80 ? 'Medium' : 'Large')} 
                     </div>
                   </div>
                 </div>
