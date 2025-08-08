@@ -2958,33 +2958,77 @@ const ProductDetails = () => {
     }
   }, [product]);
 
-  useEffect(() => {
-    if (!product) return;
+  // useEffect(() => {
+  //   if (!product) return;
 
-    const imagePath = product.image_path || '';
-    const genre = product.genre || '';
-    let baseImagePath = '';
+  //   const imagePath = product.image_path || '';
+  //   const genre = product.genre || '';
+  //   let baseImagePath = '';
 
-    if (imagePath.includes('images/terkibmen/')) {
-      baseImagePath = 'terkibmen';
-    } else if (imagePath.includes('images/terkibwomen/')) {
-      baseImagePath = 'terkibwomen';
-    } else if (imagePath.includes('images/jehiz/')) {
-      baseImagePath = 'jehiz';
-    }
+  //   if (imagePath.includes('images/terkibmen/')) {
+  //     baseImagePath = 'terkibmen';
+  //   } else if (imagePath.includes('images/terkibwomen/')) {
+  //     baseImagePath = 'terkibwomen';
+  //   } else if (imagePath.includes('images/jehiz/')) {
+  //     baseImagePath = 'jehiz';
+  //   }
 
-    if (baseImagePath) {
-      const genreQuery = baseImagePath === 'jehiz' ? `&genre=${genre}` : '';
-      const url = `${API_URL}/api/products/recommend?baseImagePath=${baseImagePath}${genreQuery}`;
+  //   if (baseImagePath) {
+  //     const genreQuery = baseImagePath === 'jehiz' ? `&genre=${genre}` : '';
+  //     const url = `${API_URL}/api/products/recommend?baseImagePath=${baseImagePath}${genreQuery}`;
 
-      fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-          setRelatedProducts(data.filter((p) => p.id !== product.id));
-        })
-        .catch((err) => console.error('Error fetching related products:', err));
-    }
-  }, [product, API_URL]);
+  //     fetch(url)
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setRelatedProducts(data.filter((p) => p.id !== product.id));
+  //       })
+  //       .catch((err) => console.error('Error fetching related products:', err));
+  //   }
+  // }, [product, API_URL]);
+
+
+
+
+
+
+
+useEffect(() => {
+  if (!product) return;
+
+  const genre = product.genre || '';
+  const type = product.type || '';
+  const imagePath = product.image_path || '';
+
+  let url = '';
+
+  if (
+    type === 'musk' ||
+    type === 'air' ||
+    type === 'furniture' ||
+    type === 'watch' ||
+    type === 'makeup'
+  ) {
+    url = `${API_URL}/api/products/recommend?type=${type}`;
+  } else if (imagePath.includes('images/terkibmen/')) {
+    url = `${API_URL}/api/products/recommend?baseImagePath=terkibmen`;
+  } else if (imagePath.includes('images/terkibwomen/')) {
+    url = `${API_URL}/api/products/recommend?baseImagePath=terkibwomen`;
+  } else if (imagePath.includes('images/jehiz/')) {
+    url = `${API_URL}/api/products/recommend?baseImagePath=jehiz&genre=${genre}`;
+  }
+
+  if (url) {
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setRelatedProducts(data.filter((p) => p.id !== product.id));
+      })
+      .catch((err) => console.error('Error fetching related products:', err));
+  }
+}, [product, API_URL]);
+
+
+
 
   const scrollRelated = (direction) => {
     if (relatedProductsRef.current && relatedProductsRef.current.children[0]) {
