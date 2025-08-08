@@ -2991,37 +2991,41 @@ const ProductDetails = () => {
 
 
 
-
 useEffect(() => {
   if (!product) return;
 
   const genre = product.genre || '';
-  const type = product.type || '';
-  const imagePath = product.image_path || '';
-
+  const type = product.type?.toLowerCase() || '';
+  const imagePath = product.image_path?.toLowerCase() || '';
   let url = '';
 
-  if (
-    type === 'musk' ||
-    type === 'air' ||
-    type === 'furniture' ||
-    type === 'watch' ||
-    type === 'makeup'
-  ) {
-    url = `${API_URL}/api/products/recommend?type=${type}`;
+  // Handle types that require matching by type
+  const typeBasedRecommendations = ['musk', 'air', 'furniture', 'watch', 'makeup'];
+
+  if (typeBasedRecommendations.includes(type)) {
+    url = `${API_URL}/api/products`;
   } else if (imagePath.includes('images/terkibmen/')) {
-    url = `${API_URL}/api/products/recommend?baseImagePath=terkibmen`;
+    url = `${API_URL}/api/products?baseImagePath=terkibmen`;
   } else if (imagePath.includes('images/terkibwomen/')) {
-    url = `${API_URL}/api/products/recommend?baseImagePath=terkibwomen`;
+    url = `${API_URL}/api/products?baseImagePath=terkibwomen`;
   } else if (imagePath.includes('images/jehiz/')) {
-    url = `${API_URL}/api/products/recommend?baseImagePath=jehiz&genre=${genre}`;
+    url = `${API_URL}/api/products?baseImagePath=jehiz&genre=${genre}`;
   }
 
   if (url) {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setRelatedProducts(data.filter((p) => p.id !== product.id));
+        let filtered = data;
+
+        // Filter by type for type-based products
+        if (typeBasedRecommendations.includes(type)) {
+          filtered = data.filter(p => p.type?.toLowerCase() === type && p.id !== product.id);
+        } else {
+          filtered = data.filter(p => p.id !== product.id);
+        }
+
+        setRelatedProducts(filtered);
       })
       .catch((err) => console.error('Error fetching related products:', err));
   }
