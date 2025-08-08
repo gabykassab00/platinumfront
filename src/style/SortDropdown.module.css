@@ -1051,6 +1051,25 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .sortContainer {
   position: relative;
   width: auto;
@@ -1233,7 +1252,7 @@
 
 
 .closeMobileSort {
-  font-size: 2.5rem;       /* ✅ Bigger size */
+  font-size: 2.5rem;      
   width: 48px;
   height: 48px;
   background: none;
