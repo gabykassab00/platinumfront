@@ -61,3 +61,19 @@
   font-size: 1.3rem;
   margin: 0;
 }
+
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.toggle-icon {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+}

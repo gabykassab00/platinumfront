@@ -1094,13 +1094,25 @@
 
 
 
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from '../style/FilterSection.module.css';
 
 const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }) => {
   const location = useLocation();
 
+  // Toggle state for dropdowns
+  const [openSections, setOpenSections] = useState({
+    brands: true,
+    genres: true,
+    price: true
+  });
+
+  const toggleSection = (section) => {
+    setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  // Brand/type options
   const perfumeBrands = [
     'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel',
     'Paco Rabanne', 'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian',
@@ -1129,7 +1141,7 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
   } else if (location.pathname.includes('/watches')) {
     filterOptions = ['Curren', 'Richard Mille'];
   } else if (location.pathname.includes('/musk')) {
-    showFilter = false; // hide all brand/type filters
+    showFilter = false; // hide brand filter for musk
   } else if (location.pathname.includes('/lattafa-rasasi')) {
     filterOptions = ['Lattafa', 'Rasasi'];
   } else if (location.pathname.includes('/refresheners')) {
@@ -1140,9 +1152,7 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
   }
 
   if (showFilter) {
-    filterOptions = filterOptions
-      .filter((value, index, self) => self.indexOf(value) === index)
-      .sort((a, b) => a.localeCompare(b));
+    filterOptions = [...new Set(filterOptions)].sort((a, b) => a.localeCompare(b));
   }
 
   const genres = [
@@ -1151,21 +1161,15 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
     { value: 'Unisex', label: 'Unisex' }
   ];
 
-  // Reset checkboxes in DOM when filters reset
   useEffect(() => {
     if (filters.brands.length === 0) {
-      document.querySelectorAll('input[type="checkbox"][name="brand"]').forEach(cb => {
-        cb.checked = false;
-      });
+      document.querySelectorAll('input[type="checkbox"][name="brand"]').forEach(cb => cb.checked = false);
     }
     if (filters.genres.length === 0) {
-      document.querySelectorAll('input[type="checkbox"][name="genre"]').forEach(cb => {
-        cb.checked = false;
-      });
+      document.querySelectorAll('input[type="checkbox"][name="genre"]').forEach(cb => cb.checked = false);
     }
   }, [filters]);
 
-  // Reset filters when route changes
   useEffect(() => {
     onFilterChange('resetAll');
   }, [location.pathname]);
@@ -1174,69 +1178,87 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
     <div className={styles['filter-section']}>
       <h3 className={styles['filter-title']}>Filter By</h3>
 
-      {/* Brand or Type Filter */}
+      {/* Brand / Type Dropdown */}
       {showFilter && (
         <div className={styles['filter-group']}>
-          <h4 className={styles['filter-subtitle']}>{filterLabel}:</h4>
-          <div className={styles['filter-options-container']}>
-            {filterOptions.map(option => (
-              <div key={option} className={styles['filter-option']}>
-                <input
-                  type="checkbox"
-                  id={`brand-${option}`}
-                  name="brand"
-                  checked={filters.brands.includes(option)}
-                  onChange={() => onFilterChange('brands', option)}
-                  className={styles['filter-checkbox']}
-                />
-                <label htmlFor={`brand-${option}`} className={styles['filter-label']}>
-                  {option}
-                </label>
-              </div>
-            ))}
+          <div className={styles['filter-header']} onClick={() => toggleSection('brands')}>
+            <h4 className={styles['filter-subtitle']}>{filterLabel}</h4>
+            <span className={styles['toggle-icon']}>{openSections.brands ? '−' : '+'}</span>
           </div>
+
+          {openSections.brands && (
+            <div className={styles['filter-options-container']}>
+              {filterOptions.map(option => (
+                <div key={option} className={styles['filter-option']}>
+                  <input
+                    type="checkbox"
+                    id={`brand-${option}`}
+                    name="brand"
+                    checked={filters.brands.includes(option)}
+                    onChange={() => onFilterChange('brands', option)}
+                    className={styles['filter-checkbox']}
+                  />
+                  <label htmlFor={`brand-${option}`} className={styles['filter-label']}>
+                    {option}
+                  </label>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
-      {/* Genre Filter */}
+      {/* Genre Dropdown */}
       {!hideGenreFilter && (
         <div className={styles['filter-group']}>
-          <h4 className={styles['filter-subtitle']}>Genre:</h4>
-          <div className={styles['filter-options-container']}>
-            {genres.map(genre => (
-              <div key={genre.value} className={styles['filter-option']}>
-                <input
-                  type="checkbox"
-                  id={`genre-${genre.value}`}
-                  name="genre"
-                  checked={filters.genres.includes(genre.value)}
-                  onChange={() => onFilterChange('genres', genre.value)}
-                  className={styles['filter-checkbox']}
-                />
-                <label htmlFor={`genre-${genre.value}`} className={styles['filter-label']}>
-                  {genre.label}
-                </label>
-              </div>
-            ))}
+          <div className={styles['filter-header']} onClick={() => toggleSection('genres')}>
+            <h4 className={styles['filter-subtitle']}>Genre</h4>
+            <span className={styles['toggle-icon']}>{openSections.genres ? '−' : '+'}</span>
           </div>
+
+          {openSections.genres && (
+            <div className={styles['filter-options-container']}>
+              {genres.map(genre => (
+                <div key={genre.value} className={styles['filter-option']}>
+                  <input
+                    type="checkbox"
+                    id={`genre-${genre.value}`}
+                    name="genre"
+                    checked={filters.genres.includes(genre.value)}
+                    onChange={() => onFilterChange('genres', genre.value)}
+                    className={styles['filter-checkbox']}
+                  />
+                  <label htmlFor={`genre-${genre.value}`} className={styles['filter-label']}>
+                    {genre.label}
+                  </label>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
-      {/* Price Filter */}
+      {/* Price Dropdown */}
       <div className={styles['filter-group']}>
-        <h4 className={styles['filter-subtitle']}>Price:</h4>
-        <div className={styles['price-filter-container']}>
-          <input
-            type="range"
-            min="0"
-            max="500"
-            step="10"
-            value={filters.price}
-            onChange={(e) => onFilterChange('price', parseFloat(e.target.value))}
-            className={styles['price-slider']}
-          />
-          <div className={styles['price-display']}>${filters.price.toFixed(2)}</div>
+        <div className={styles['filter-header']} onClick={() => toggleSection('price')}>
+          <h4 className={styles['filter-subtitle']}>Price</h4>
+          <span className={styles['toggle-icon']}>{openSections.price ? '−' : '+'}</span>
         </div>
+
+        {openSections.price && (
+          <div className={styles['price-filter-container']}>
+            <input
+              type="range"
+              min="0"
+              max="500"
+              step="10"
+              value={filters.price}
+              onChange={(e) => onFilterChange('price', parseFloat(e.target.value))}
+              className={styles['price-slider']}
+            />
+            <div className={styles['price-display']}>${filters.price.toFixed(2)}</div>
+          </div>
+        )}
       </div>
     </div>
   );
