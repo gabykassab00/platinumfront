@@ -153,9 +153,25 @@
 } */
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .sidebar {
   position: fixed;
-  top: 0;
+  top: 20;
   right: -100%;
   width: 350px;
   height: 100%;
