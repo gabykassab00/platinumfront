@@ -54,7 +54,7 @@ const productsData = [
             "/images/products/boat131-4.png",
         ],
         brand: "boAt",
-        title: "Unisex Perfumes",
+        title: "Lattafa And Rasasi Perfumes",
         info: "Wireless In-Ear Earbuds",
         category: "Earbuds",
         type: "In Ear",
