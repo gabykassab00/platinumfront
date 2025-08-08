@@ -2731,65 +2731,48 @@
 
 
 
-/* Fixed Top Container */
-.top-fixed-container {
+/* Promo Banner Styles */
+.promo-banner {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
-}
-
-/* Promotional Banner */
-.promo-banner {
+  height: 30px;
   background-color: #000;
   color: white;
-  padding: 10px 0;
-  text-align: center;
+  overflow: hidden;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+}
+
+.promo-content {
+  position: absolute;
+  white-space: nowrap;
+  animation: scrollText 15s linear infinite;
   font-size: 14px;
   font-weight: bold;
-  width: 100%;
+  padding-left: 100%;
 }
 
-/* Animated Line Container */
-.animated-line-container {
-  height: 4px;
-  width: 100%;
-  background-color: #f1f1f1;
-  overflow: hidden;
-  position: relative;
-}
-
-/* Animated Line */
-.animated-line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #000;
-  animation: slide 2s linear infinite;
-}
-
-@keyframes slide {
+@keyframes scrollText {
   0% {
-    transform: translateX(-100%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(100%);
+    transform: translateX(-100%);
   }
 }
 
-/* Header Positioning */
+/* Header Adjustments */
 header {
-  margin-top: 54px; /* Height of promo banner + line */
+  margin-top: 30px;
   
   &.sticky {
-    position: fixed;
-    top: 54px; /* Same as margin-top */
+    position: sticky;
+    top: 30px;
     width: 100%;
-    z-index: 999;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
   }
 }
 

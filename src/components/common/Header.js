@@ -2702,13 +2702,10 @@ const Header = () => {
 
   return (
     <>
-      {/* Fixed Top Section with Promo and Animated Line */}
-      <div className="top-fixed-container">
-        <div className="promo-banner">
+      {/* Always Visible Promo Banner with Scrolling Text */}
+      <div className="promo-banner">
+        <div className="promo-content">
           Enjoy a FREE 100ml Perfume with every purchase of 3 100ml Perfumes! (Choose it manually)
-        </div>
-        <div className="animated-line-container">
-          <div className="animated-line"></div>
         </div>
       </div>
 
