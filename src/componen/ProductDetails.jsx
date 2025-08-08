@@ -2999,7 +2999,6 @@ useEffect(() => {
   const imagePath = product.image_path?.toLowerCase() || '';
   let url = '';
 
-  // Handle types that require matching by type
   const typeBasedRecommendations = ['musk', 'air', 'furniture', 'watch', 'makeup'];
 
   if (typeBasedRecommendations.includes(type)) {
@@ -3016,16 +3015,15 @@ useEffect(() => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        let filtered = data;
+        let filtered;
 
-        // Filter by type for type-based products
         if (typeBasedRecommendations.includes(type)) {
           filtered = data.filter(p => p.type?.toLowerCase() === type && p.id !== product.id);
         } else {
           filtered = data.filter(p => p.id !== product.id);
         }
 
-        setRelatedProducts(filtered);
+        setRelatedProducts(filtered.slice(0, 4)); // 👈 Only take 4 products
       })
       .catch((err) => console.error('Error fetching related products:', err));
   }
