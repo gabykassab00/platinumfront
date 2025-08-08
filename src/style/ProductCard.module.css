@@ -1923,3 +1923,10 @@
 }
 
 
+.sizeText {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 8px 0 0;
+  text-align: center;
+  color: #333;
+}
