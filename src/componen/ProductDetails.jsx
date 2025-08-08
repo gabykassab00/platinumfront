@@ -2958,37 +2958,6 @@ const ProductDetails = () => {
     }
   }, [product]);
 
-  // useEffect(() => {
-  //   if (!product) return;
-
-  //   const imagePath = product.image_path || '';
-  //   const genre = product.genre || '';
-  //   let baseImagePath = '';
-
-  //   if (imagePath.includes('images/terkibmen/')) {
-  //     baseImagePath = 'terkibmen';
-  //   } else if (imagePath.includes('images/terkibwomen/')) {
-  //     baseImagePath = 'terkibwomen';
-  //   } else if (imagePath.includes('images/jehiz/')) {
-  //     baseImagePath = 'jehiz';
-  //   }
-
-  //   if (baseImagePath) {
-  //     const genreQuery = baseImagePath === 'jehiz' ? `&genre=${genre}` : '';
-  //     const url = `${API_URL}/api/products/recommend?baseImagePath=${baseImagePath}${genreQuery}`;
-
-  //     fetch(url)
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setRelatedProducts(data.filter((p) => p.id !== product.id));
-  //       })
-  //       .catch((err) => console.error('Error fetching related products:', err));
-  //   }
-  // }, [product, API_URL]);
-
-
-
-
 
 
 useEffect(() => {
@@ -3110,12 +3079,42 @@ useEffect(() => {
           {/* Moved Product Details ABOVE Size */}
           <div className={styles.detailsSection}>
             <h3 className={styles.sectionTitle}>Product Details</h3>
+          {product?.type === 'watch' && (
             <ul className={styles.bulletList}>
-              <li><strong>🏢 3rd French fragrance oil company agency in all over Lebanon</strong></li>
-              <li><strong>📜 ISO certification of quality scents</strong></li>
-              <li><strong>🧴 Bold. Precise. Aromatic.</strong></li>
-              <li><strong>💨 Stays long. Speaks loud.</strong></li>
+              <li><strong>⌚ Curated selection of 100% original Curren watches</strong></li>
+              <li><strong>🕴️ Designed for men and women who value elegance and affordability</strong></li>
+              <li><strong>🛠️ Modern design, durable materials, and precise movement</strong></li>
+              <li><strong>🎉 Perfect for everyday wear or special occasions</strong></li>
             </ul>
+          )}
+
+          {product?.type === 'makeup' && (
+            <ul className={styles.bulletList}>
+              <li><strong>💎 Discover authentic beauty with Platinum Perfumes</strong></li>
+              <li><strong>🧴 100% original, high-quality makeup brands</strong></li>
+              <li><strong>🌍 Featuring top international names</strong></li>
+              <li><strong>💄 Carefully selected beauty essentials you can trust</strong></li>
+            </ul>
+          )}
+
+          {product?.type === 'musk' && (
+            <ul className={styles.bulletList}>
+              <li><strong>🌿 Premium selection of rich, authentic musk perfumes</strong></li>
+              <li><strong>🧴 Long-lasting oil and spray formulas for every preference</strong></li>
+              <li><strong>🕊️ Soft, sensual, and clean scents that linger beautifully</strong></li>
+              <li><strong>🎁 Ideal for personal use or as a thoughtful gift</strong></li>
+            </ul>
+          )}
+
+          {(product?.type === 'air' || product?.type === 'furniture') && (
+            <ul className={styles.bulletList}>
+              <li><strong>🌬️ Instantly freshens your space with captivating scents</strong></li>
+              <li><strong>🛋️ Specially crafted for both air and fabric surfaces</strong></li>
+              <li><strong>🍃 Long-lasting formulas with elegant fragrance blends</strong></li>
+              <li><strong>🏠 Perfect for home, office, or car use</strong></li>
+            </ul>
+          )}
+
           </div>
 
           {isMultiple && (
