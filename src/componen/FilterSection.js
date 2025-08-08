@@ -802,9 +802,12 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
     uniqueBrands = ['Curren', 'Richard Mille'];
   } else if (location.pathname.includes('/musk')) {
     showBrandFilter = false; // ❌ hide brands on musk page
-  } else {
-    uniqueBrands = perfumeBrands;
-  }
+} else if (location.pathname.includes('/lattafa-rasasi')) {
+  uniqueBrands = ['Lattafa', 'Rasasi'];
+} else {
+  uniqueBrands = perfumeBrands;
+}
+
 
   if (showBrandFilter) {
     uniqueBrands = uniqueBrands
