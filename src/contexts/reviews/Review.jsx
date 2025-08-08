@@ -746,21 +746,22 @@ import "swiper/css/pagination";
 
 const reviews = [
   {
-    text: "Such a rich, warm aroma. I get compliments every time!",
-    name: "Emily Johnson",
+    text: "Riha ktir taybe w ghanniye! Kell ma b7otta byes2alouné sho heye.",
+    name: "Maya Haddad",
     rating: 5,
   },
   {
-    text: "The perfect balance of sweet and spicy. Love it!",
-    name: "David Lee",
+    text: "Ri7ta mazbouta, fiya 7aléwé w 7arara b nafs el wa2et. 7abayta!",
+    name: "Karim Choueiri",
     rating: 4,
   },
   {
-    text: "Fresh and subtle. Great for everyday wear.",
-    name: "Sophia Kim",
+    text: "Khafife w btrayyé7, menassebé lal nhar w la kol yawm.",
+    name: "Nour Abi Saab",
     rating: 5,
   },
 ];
+
 
 const StarRating = ({ rating }) => {
   const fullStars = "★".repeat(rating);
