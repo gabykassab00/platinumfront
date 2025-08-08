@@ -1101,18 +1101,20 @@ import styles from '../style/FilterSection.module.css';
 const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }) => {
   const location = useLocation();
 
-  // Toggle state for dropdowns
+  // 🔻 Start all sections collapsed
   const [openSections, setOpenSections] = useState({
-    brands: true,
-    genres: true,
-    price: true
+    brands: false,
+    genres: false,
+    price: false,
   });
 
   const toggleSection = (section) => {
-    setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
   };
 
-  // Brand/type options
   const perfumeBrands = [
     'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel',
     'Paco Rabanne', 'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian',
@@ -1127,7 +1129,7 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
     'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Victoria secret', 'Mugler', 'Elie Saab',
     'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez', 'Prada', 'Chloé',
     'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic', 'sir', 'nasmat',
-    'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly'
+    'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly',
   ];
 
   const makeupBrands = ['Maybelline', 'Ruby Beauty', 'Samoa', 'dali', 'Ruby Rose'];
@@ -1141,7 +1143,7 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
   } else if (location.pathname.includes('/watches')) {
     filterOptions = ['Curren', 'Richard Mille'];
   } else if (location.pathname.includes('/musk')) {
-    showFilter = false; // hide brand filter for musk
+    showFilter = false;
   } else if (location.pathname.includes('/lattafa-rasasi')) {
     filterOptions = ['Lattafa', 'Rasasi'];
   } else if (location.pathname.includes('/refresheners')) {
@@ -1158,15 +1160,15 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
   const genres = [
     { value: 'Men', label: 'Men' },
     { value: 'Women', label: 'Women' },
-    { value: 'Unisex', label: 'Unisex' }
+    { value: 'Unisex', label: 'Unisex' },
   ];
 
   useEffect(() => {
     if (filters.brands.length === 0) {
-      document.querySelectorAll('input[type="checkbox"][name="brand"]').forEach(cb => cb.checked = false);
+      document.querySelectorAll('input[type="checkbox"][name="brand"]').forEach((cb) => (cb.checked = false));
     }
     if (filters.genres.length === 0) {
-      document.querySelectorAll('input[type="checkbox"][name="genre"]').forEach(cb => cb.checked = false);
+      document.querySelectorAll('input[type="checkbox"][name="genre"]').forEach((cb) => (cb.checked = false));
     }
   }, [filters]);
 
@@ -1178,17 +1180,16 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
     <div className={styles['filter-section']}>
       <h3 className={styles['filter-title']}>Filter By</h3>
 
-      {/* Brand / Type Dropdown */}
+      {/* Brand/Type */}
       {showFilter && (
         <div className={styles['filter-group']}>
           <div className={styles['filter-header']} onClick={() => toggleSection('brands')}>
             <h4 className={styles['filter-subtitle']}>{filterLabel}</h4>
             <span className={styles['toggle-icon']}>{openSections.brands ? '−' : '+'}</span>
           </div>
-
           {openSections.brands && (
             <div className={styles['filter-options-container']}>
-              {filterOptions.map(option => (
+              {filterOptions.map((option) => (
                 <div key={option} className={styles['filter-option']}>
                   <input
                     type="checkbox"
@@ -1208,17 +1209,16 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
         </div>
       )}
 
-      {/* Genre Dropdown */}
+      {/* Genre */}
       {!hideGenreFilter && (
         <div className={styles['filter-group']}>
           <div className={styles['filter-header']} onClick={() => toggleSection('genres')}>
             <h4 className={styles['filter-subtitle']}>Genre</h4>
             <span className={styles['toggle-icon']}>{openSections.genres ? '−' : '+'}</span>
           </div>
-
           {openSections.genres && (
             <div className={styles['filter-options-container']}>
-              {genres.map(genre => (
+              {genres.map((genre) => (
                 <div key={genre.value} className={styles['filter-option']}>
                   <input
                     type="checkbox"
@@ -1238,13 +1238,12 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
         </div>
       )}
 
-      {/* Price Dropdown */}
+      {/* Price */}
       <div className={styles['filter-group']}>
         <div className={styles['filter-header']} onClick={() => toggleSection('price')}>
           <h4 className={styles['filter-subtitle']}>Price</h4>
           <span className={styles['toggle-icon']}>{openSections.price ? '−' : '+'}</span>
         </div>
-
         {openSections.price && (
           <div className={styles['price-filter-container']}>
             <input
