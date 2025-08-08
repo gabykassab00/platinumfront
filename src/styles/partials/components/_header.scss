@@ -2730,3 +2730,33 @@
 }
 
 
+
+// Add to your _header.scss file
+.animated-line-container {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background-color: #f1f1f1;
+  overflow: hidden;
+}
+
+.animated-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  transform: translateX(-100%);
+  animation: slideIn 0.5s forwards;
+}
+
+@keyframes slideIn {
+  to {
+    transform: translateX(0);
+  }
+}
+
+// Make sure to keep all your existing header styles below these new additions
+
+

@@ -2253,6 +2253,323 @@
 
 
 
+// import React, { useState, useEffect, useRef } from 'react';
+// import { Link } from 'react-router-dom';
+// import {
+//   AiOutlineShoppingCart,
+//   AiOutlineMenu,
+//   AiOutlineClose,
+//   AiOutlineSearch
+// } from 'react-icons/ai';
+// import { useBasket } from '../../context/BasketProvider';
+// import '../../../src/styles/partials/components/_header.scss';
+// const Header = () => {
+//   const [isSticky, setIsSticky] = useState(false);
+//   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+//   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [mobileSearchTerm, setMobileSearchTerm] = useState('');
+//   const [searchResults, setSearchResults] = useState([]);
+//   const [mobileSearchResults, setMobileSearchResults] = useState([]);
+//   const [showDropdown, setShowDropdown] = useState(false);
+
+//   const inputRef = useRef(null);
+//   const mobileInputRef = useRef(null);
+//   const cartRef = useRef(null);
+
+//   const { basketItems, openSidebar } = useBasket();
+
+//   const API_URL = process.env.REACT_APP_API_URL;
+
+//   const menuCategories = [
+//   { id: 1, name: 'All Perfumes', path: '/perfumes' },
+//   { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
+//   { id: 3, name: 'Women Perfumes', path: '/perfumes/women' },
+//   { id: 4, name: 'Lattafa & Rasasi Perfumes', path: '/lattafa-rasasi' },
+//   { id: 5, name: 'Original and others perfumes', path: '/original' },
+//   { id: 6, name: 'Musk', path: '/musk' },
+//   { id: 7, name: 'Air and Furniture Refresheners', path: '/refresheners' },
+//   { id: 8, name: 'Watches', path: '/watches' },
+//   { id: 9, name: 'Makeup and Cosmetics', path: '/makeup' },
+// ];
+
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       setIsSticky(window.scrollY >= 50);
+//     };
+//     window.addEventListener('scroll', handleScroll);
+//     return () => window.removeEventListener('scroll', handleScroll);
+//   }, []);
+
+//   useEffect(() => {
+//     const fetchSearchResults = async () => {
+//       if (searchTerm.trim()) {
+//         try {
+//           const response = await fetch(
+//             `${API_URL}/api/products/search?q=${encodeURIComponent(searchTerm)}`
+//           );
+//           const data = await response.json();
+//           setSearchResults(data);
+//           setShowDropdown(true);
+//         } catch {
+//           setShowDropdown(false);
+//         }
+//       } else {
+//         setShowDropdown(false);
+//       }
+//     };
+
+//     const timer = setTimeout(fetchSearchResults, 300);
+//     return () => clearTimeout(timer);
+//   }, [searchTerm, API_URL]);
+
+//   useEffect(() => {
+//     const fetchMobileSearchResults = async () => {
+//       if (mobileSearchTerm.trim()) {
+//         try {
+//           const response = await fetch(
+//             `${API_URL}/api/products/search?q=${encodeURIComponent(mobileSearchTerm)}`
+//           );
+//           const data = await response.json();
+//           setMobileSearchResults(data);
+//         } catch {
+//           setMobileSearchResults([]);
+//         }
+//       } else {
+//         setMobileSearchResults([]);
+//       }
+//     };
+
+//     const timer = setTimeout(fetchMobileSearchResults, 300);
+//     return () => clearTimeout(timer);
+//   }, [mobileSearchTerm, API_URL]);
+
+//   const handleMobileMenuClick = (e) => {
+//     e.stopPropagation();
+//     setMobileMenuOpen(!mobileMenuOpen);
+//     setMobileSearchOpen(false);
+//   };
+
+//   const handleMobileSearchClick = (e) => {
+//     e.stopPropagation();
+//     setMobileSearchOpen(true);
+//     setMobileMenuOpen(false);
+//     setTimeout(() => mobileInputRef.current?.focus(), 100);
+//   };
+
+//   const closeMobileSearch = (e) => {
+//     e?.stopPropagation();
+//     setMobileSearchOpen(false);
+//     setMobileSearchTerm('');
+//   };
+
+//   const handleMenuItemClick = () => {
+//     setMobileMenuOpen(false);
+//     setMobileSearchOpen(false);
+//   };
+
+//   const handleBasketClick = (e) => {
+//     e.stopPropagation();
+//     openSidebar();
+//     setMobileSearchOpen(false);
+//     setMobileMenuOpen(false);
+//   };
+
+//   const handleSearchItemClick = () => {
+//     setSearchTerm('');
+//     setMobileSearchTerm('');
+//     setShowDropdown(false);
+//     setMobileSearchOpen(false);
+//   };
+
+//   return (
+//     <header id="header" className={isSticky ? 'sticky' : ''}>
+//       <div className="container">
+//         <div className="navbar">
+//           {/* Hamburger */}
+//           <div className="hamburger" onClick={handleMobileMenuClick}>
+//             {mobileMenuOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
+//           </div>
+
+// <div className="nav_logo">
+//   <Link to="/" onClick={handleMenuItemClick}>
+//     <img
+//       src="/images/products/platinum.png"
+//       alt="Platinum Perfumes Logo"
+//       className="logo-img"
+//     />
+//   </Link>
+// </div>
+
+
+//           {/* Desktop Search */}
+//           <div className="search-container">
+//             <input
+//               type="text"
+//               placeholder="Search perfumes..."
+//               value={searchTerm}
+//               onChange={(e) => setSearchTerm(e.target.value)}
+//               ref={inputRef}
+//               className="search-input"
+//             />
+//             {showDropdown && (
+//               <div className="search-dropdown">
+//                 {searchResults.length > 0 ? (
+//                   searchResults.slice(0, 6).map((item) => (
+//                     <Link
+//                       key={item.id}
+//                       to={`/product-details/${item.id}`}
+//                       className="dropdown-item"
+//                       onClick={handleSearchItemClick}
+//                     >
+//                       <img
+//                         src={`${API_URL}/${item.image_path}`}
+//                         alt={item.name}
+//                         className="dropdown-img"
+//                         onError={(e) => {
+//                           e.target.src = 'https://via.placeholder.com/60';
+//                         }}
+//                       />
+//                       <div className="dropdown-text">
+//                         <p>{item.name}</p>
+//                         <span className="dropdown-price">${parseFloat(item.price).toFixed(2)}</span>
+//                       </div>
+//                     </Link>
+//                   ))
+//                 ) : (
+//                   <div className="dropdown-item no-result">
+//                     <span className="no-result-icon">🔍</span>
+//                     <span>No results found for "{searchTerm}"</span>
+//                   </div>
+//                 )}
+//               </div>
+//             )}
+//           </div>
+
+//           {/* Mobile Search Icon */}
+//           <div className="nav-search-mobile" onClick={handleMobileSearchClick}>
+//             <AiOutlineSearch />
+//           </div>
+
+//           {/* Cart Icon */}
+//           <div className="nav_cart" onClick={handleBasketClick} ref={cartRef}>
+//             <AiOutlineShoppingCart />
+//             {basketItems.length > 0 && (
+//               <span className="cart-badge">{basketItems.length}</span>
+//             )}
+//           </div>
+//         </div>
+
+//         {/* Desktop Nav */}
+//         <div className="desktop-menu-container">
+//           <nav className="menu-nav">
+//             <ul className="menu-list">
+//               {menuCategories.map((cat) => (
+//                 <li key={cat.id} className={`menu-item ${cat.name === 'Sale' ? 'sale-item' : ''}`}>
+//                   <Link to={cat.path} onClick={handleMenuItemClick} className="menu-link">
+//                     {cat.name}
+//                   </Link>
+//                 </li>
+//               ))}
+//             </ul>
+//           </nav>
+//         </div>
+//       </div>
+
+//       {/* Mobile Search Sidebar */}
+//       {mobileSearchOpen && (
+//         <div className="mobile-search-sidebar">
+//           <div className="search-header">
+//             <h2>Search Products</h2>
+//             <button className="close-search" onClick={closeMobileSearch}>
+//               <AiOutlineClose />
+//             </button>
+//           </div>
+//           <input
+//             type="text"
+//             placeholder="Search perfumes..."
+//             value={mobileSearchTerm}
+//             onChange={(e) => setMobileSearchTerm(e.target.value)}
+//             ref={mobileInputRef}
+//             className="mobile-search-input"
+//           />
+//           <div className="mobile-search-results">
+//             {mobileSearchResults.length > 0 ? (
+//               mobileSearchResults.slice(0, 6).map((item) => (
+//                 <Link
+//                   key={item.id}
+//                   to={`/product-details/${item.id}`}
+//                   className="mobile-dropdown-item"
+//                   onClick={handleSearchItemClick}
+//                 >
+//                   <img
+//                     src={`${API_URL}/${item.image_path}`}
+//                     alt={item.name}
+//                     className="mobile-dropdown-img"
+//                     onError={(e) => {
+//                       e.target.src = 'https://via.placeholder.com/60';
+//                     }}
+//                   />
+//                   <div className="mobile-dropdown-text">
+//                     <p>{item.name}</p>
+//                     <span className="mobile-dropdown-price">${parseFloat(item.price).toFixed(2)}</span>
+//                   </div>
+//                 </Link>
+//               ))
+//             ) : (
+//               mobileSearchTerm && (
+//                 <div className="mobile-no-results">
+//                   <span className="no-results-icon">🔍</span>
+//                   <span>No results found for "{mobileSearchTerm}"</span>
+//                 </div>
+//               )
+//             )}
+//           </div>
+//         </div>
+//       )}
+//       {mobileMenuOpen && (
+//   <div className="mobile-menu-container">
+//     <button className="mobile-menu-close" onClick={handleMobileMenuClick}>
+//       <AiOutlineClose />
+//     </button>
+//     <nav className="mobile-menu-nav">
+//       <ul className="mobile-menu-list">
+//         {menuCategories.map((cat) => (
+//           <li
+//             key={cat.id}
+//             className={`mobile-menu-item ${cat.name === 'Sale' ? 'sale-item' : ''}`}
+//             onClick={handleMenuItemClick}
+//           >
+//             <Link to={cat.path} className="mobile-menu-link">
+//               {cat.name}
+//             </Link>
+//           </li>
+//         ))}
+//       </ul>
+//     </nav>
+//   </div>
+// )}
+
+//     </header>
+//   );
+// };
+
+// export default Header;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -2263,6 +2580,7 @@ import {
 } from 'react-icons/ai';
 import { useBasket } from '../../context/BasketProvider';
 import '../../../src/styles/partials/components/_header.scss';
+
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -2272,26 +2590,28 @@ const Header = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [mobileSearchResults, setMobileSearchResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [animationProgress, setAnimationProgress] = useState(0);
 
   const inputRef = useRef(null);
   const mobileInputRef = useRef(null);
   const cartRef = useRef(null);
+  const animationRef = useRef();
 
   const { basketItems, openSidebar } = useBasket();
 
   const API_URL = process.env.REACT_APP_API_URL;
 
   const menuCategories = [
-  { id: 1, name: 'All Perfumes', path: '/perfumes' },
-  { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
-  { id: 3, name: 'Women Perfumes', path: '/perfumes/women' },
-  { id: 4, name: 'Lattafa & Rasasi Perfumes', path: '/lattafa-rasasi' },
-  { id: 5, name: 'Original and others perfumes', path: '/original' },
-  { id: 6, name: 'Musk', path: '/musk' },
-  { id: 7, name: 'Air and Furniture Refresheners', path: '/refresheners' },
-  { id: 8, name: 'Watches', path: '/watches' },
-  { id: 9, name: 'Makeup and Cosmetics', path: '/makeup' },
-];
+    { id: 1, name: 'All Perfumes', path: '/perfumes' },
+    { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
+    { id: 3, name: 'Women Perfumes', path: '/perfumes/women' },
+    { id: 4, name: 'Lattafa & Rasasi Perfumes', path: '/lattafa-rasasi' },
+    { id: 5, name: 'Original and others perfumes', path: '/original' },
+    { id: 6, name: 'Musk', path: '/musk' },
+    { id: 7, name: 'Air and Furniture Refresheners', path: '/refresheners' },
+    { id: 8, name: 'Watches', path: '/watches' },
+    { id: 9, name: 'Makeup and Cosmetics', path: '/makeup' },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -2299,6 +2619,22 @@ const Header = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const animateLine = () => {
+      setAnimationProgress(prev => {
+        if (prev >= 100) return 0;
+        return prev + 0.5;
+      });
+    };
+
+    animationRef.current = requestAnimationFrame(function animate() {
+      animateLine();
+      animationRef.current = requestAnimationFrame(animate);
+    });
+
+    return () => cancelAnimationFrame(animationRef.current);
   }, []);
 
   useEffect(() => {
@@ -2383,174 +2719,176 @@ const Header = () => {
   };
 
   return (
-    <header id="header" className={isSticky ? 'sticky' : ''}>
-      <div className="container">
-        <div className="navbar">
-          {/* Hamburger */}
-          <div className="hamburger" onClick={handleMobileMenuClick}>
-            {mobileMenuOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
+    <>
+      <div className="animated-line-container">
+        <div 
+          className="animated-line" 
+          style={{ transform: `translateX(${animationProgress}%)` }}
+        ></div>
+      </div>
+      
+      <header id="header" className={isSticky ? 'sticky' : ''}>
+        <div className="container">
+          <div className="navbar">
+            <div className="hamburger" onClick={handleMobileMenuClick}>
+              {mobileMenuOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
+            </div>
+
+            <div className="nav_logo">
+              <Link to="/" onClick={handleMenuItemClick}>
+                <img
+                  src="/images/products/platinum.png"
+                  alt="Platinum Perfumes Logo"
+                  className="logo-img"
+                />
+              </Link>
+            </div>
+
+            <div className="search-container">
+              <input
+                type="text"
+                placeholder="Search perfumes..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                ref={inputRef}
+                className="search-input"
+              />
+              {showDropdown && (
+                <div className="search-dropdown">
+                  {searchResults.length > 0 ? (
+                    searchResults.slice(0, 6).map((item) => (
+                      <Link
+                        key={item.id}
+                        to={`/product-details/${item.id}`}
+                        className="dropdown-item"
+                        onClick={handleSearchItemClick}
+                      >
+                        <img
+                          src={`${API_URL}/${item.image_path}`}
+                          alt={item.name}
+                          className="dropdown-img"
+                          onError={(e) => {
+                            e.target.src = 'https://via.placeholder.com/60';
+                          }}
+                        />
+                        <div className="dropdown-text">
+                          <p>{item.name}</p>
+                          <span className="dropdown-price">${parseFloat(item.price).toFixed(2)}</span>
+                        </div>
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="dropdown-item no-result">
+                      <span className="no-result-icon">🔍</span>
+                      <span>No results found for "{searchTerm}"</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="nav-search-mobile" onClick={handleMobileSearchClick}>
+              <AiOutlineSearch />
+            </div>
+
+            <div className="nav_cart" onClick={handleBasketClick} ref={cartRef}>
+              <AiOutlineShoppingCart />
+              {basketItems.length > 0 && (
+                <span className="cart-badge">{basketItems.length}</span>
+              )}
+            </div>
           </div>
 
-<div className="nav_logo">
-  <Link to="/" onClick={handleMenuItemClick}>
-    <img
-      src="/images/products/platinum.png"
-      alt="Platinum Perfumes Logo"
-      className="logo-img"
-    />
-  </Link>
-</div>
+          <div className="desktop-menu-container">
+            <nav className="menu-nav">
+              <ul className="menu-list">
+                {menuCategories.map((cat) => (
+                  <li key={cat.id} className={`menu-item ${cat.name === 'Sale' ? 'sale-item' : ''}`}>
+                    <Link to={cat.path} onClick={handleMenuItemClick} className="menu-link">
+                      {cat.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        </div>
 
-
-          {/* Desktop Search */}
-          <div className="search-container">
+        {mobileSearchOpen && (
+          <div className="mobile-search-sidebar">
+            <div className="search-header">
+              <h2>Search Products</h2>
+              <button className="close-search" onClick={closeMobileSearch}>
+                <AiOutlineClose />
+              </button>
+            </div>
             <input
               type="text"
               placeholder="Search perfumes..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              ref={inputRef}
-              className="search-input"
+              value={mobileSearchTerm}
+              onChange={(e) => setMobileSearchTerm(e.target.value)}
+              ref={mobileInputRef}
+              className="mobile-search-input"
             />
-            {showDropdown && (
-              <div className="search-dropdown">
-                {searchResults.length > 0 ? (
-                  searchResults.slice(0, 6).map((item) => (
-                    <Link
-                      key={item.id}
-                      to={`/product-details/${item.id}`}
-                      className="dropdown-item"
-                      onClick={handleSearchItemClick}
-                    >
-                      <img
-                        src={`${API_URL}/${item.image_path}`}
-                        alt={item.name}
-                        className="dropdown-img"
-                        onError={(e) => {
-                          e.target.src = 'https://via.placeholder.com/60';
-                        }}
-                      />
-                      <div className="dropdown-text">
-                        <p>{item.name}</p>
-                        <span className="dropdown-price">${parseFloat(item.price).toFixed(2)}</span>
-                      </div>
-                    </Link>
-                  ))
-                ) : (
-                  <div className="dropdown-item no-result">
-                    <span className="no-result-icon">🔍</span>
-                    <span>No results found for "{searchTerm}"</span>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Mobile Search Icon */}
-          <div className="nav-search-mobile" onClick={handleMobileSearchClick}>
-            <AiOutlineSearch />
-          </div>
-
-          {/* Cart Icon */}
-          <div className="nav_cart" onClick={handleBasketClick} ref={cartRef}>
-            <AiOutlineShoppingCart />
-            {basketItems.length > 0 && (
-              <span className="cart-badge">{basketItems.length}</span>
-            )}
-          </div>
-        </div>
-
-        {/* Desktop Nav */}
-        <div className="desktop-menu-container">
-          <nav className="menu-nav">
-            <ul className="menu-list">
-              {menuCategories.map((cat) => (
-                <li key={cat.id} className={`menu-item ${cat.name === 'Sale' ? 'sale-item' : ''}`}>
-                  <Link to={cat.path} onClick={handleMenuItemClick} className="menu-link">
-                    {cat.name}
+            <div className="mobile-search-results">
+              {mobileSearchResults.length > 0 ? (
+                mobileSearchResults.slice(0, 6).map((item) => (
+                  <Link
+                    key={item.id}
+                    to={`/product-details/${item.id}`}
+                    className="mobile-dropdown-item"
+                    onClick={handleSearchItemClick}
+                  >
+                    <img
+                      src={`${API_URL}/${item.image_path}`}
+                      alt={item.name}
+                      className="mobile-dropdown-img"
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/60';
+                      }}
+                    />
+                    <div className="mobile-dropdown-text">
+                      <p>{item.name}</p>
+                      <span className="mobile-dropdown-price">${parseFloat(item.price).toFixed(2)}</span>
+                    </div>
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      </div>
+                ))
+              ) : (
+                mobileSearchTerm && (
+                  <div className="mobile-no-results">
+                    <span className="no-results-icon">🔍</span>
+                    <span>No results found for "{mobileSearchTerm}"</span>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        )}
 
-      {/* Mobile Search Sidebar */}
-      {mobileSearchOpen && (
-        <div className="mobile-search-sidebar">
-          <div className="search-header">
-            <h2>Search Products</h2>
-            <button className="close-search" onClick={closeMobileSearch}>
+        {mobileMenuOpen && (
+          <div className="mobile-menu-container">
+            <button className="mobile-menu-close" onClick={handleMobileMenuClick}>
               <AiOutlineClose />
             </button>
+            <nav className="mobile-menu-nav">
+              <ul className="mobile-menu-list">
+                {menuCategories.map((cat) => (
+                  <li
+                    key={cat.id}
+                    className={`mobile-menu-item ${cat.name === 'Sale' ? 'sale-item' : ''}`}
+                    onClick={handleMenuItemClick}
+                  >
+                    <Link to={cat.path} className="mobile-menu-link">
+                      {cat.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
-          <input
-            type="text"
-            placeholder="Search perfumes..."
-            value={mobileSearchTerm}
-            onChange={(e) => setMobileSearchTerm(e.target.value)}
-            ref={mobileInputRef}
-            className="mobile-search-input"
-          />
-          <div className="mobile-search-results">
-            {mobileSearchResults.length > 0 ? (
-              mobileSearchResults.slice(0, 6).map((item) => (
-                <Link
-                  key={item.id}
-                  to={`/product-details/${item.id}`}
-                  className="mobile-dropdown-item"
-                  onClick={handleSearchItemClick}
-                >
-                  <img
-                    src={`${API_URL}/${item.image_path}`}
-                    alt={item.name}
-                    className="mobile-dropdown-img"
-                    onError={(e) => {
-                      e.target.src = 'https://via.placeholder.com/60';
-                    }}
-                  />
-                  <div className="mobile-dropdown-text">
-                    <p>{item.name}</p>
-                    <span className="mobile-dropdown-price">${parseFloat(item.price).toFixed(2)}</span>
-                  </div>
-                </Link>
-              ))
-            ) : (
-              mobileSearchTerm && (
-                <div className="mobile-no-results">
-                  <span className="no-results-icon">🔍</span>
-                  <span>No results found for "{mobileSearchTerm}"</span>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-      )}
-      {mobileMenuOpen && (
-  <div className="mobile-menu-container">
-    <button className="mobile-menu-close" onClick={handleMobileMenuClick}>
-      <AiOutlineClose />
-    </button>
-    <nav className="mobile-menu-nav">
-      <ul className="mobile-menu-list">
-        {menuCategories.map((cat) => (
-          <li
-            key={cat.id}
-            className={`mobile-menu-item ${cat.name === 'Sale' ? 'sale-item' : ''}`}
-            onClick={handleMenuItemClick}
-          >
-            <Link to={cat.path} className="mobile-menu-link">
-              {cat.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  </div>
-)}
-
-    </header>
+        )}
+      </header>
+    </>
   );
 };
 
