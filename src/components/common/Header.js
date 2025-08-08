@@ -2590,12 +2590,10 @@ const Header = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [mobileSearchResults, setMobileSearchResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [animationProgress, setAnimationProgress] = useState(0);
 
   const inputRef = useRef(null);
   const mobileInputRef = useRef(null);
   const cartRef = useRef(null);
-  const animationRef = useRef();
 
   const { basketItems, openSidebar } = useBasket();
 
@@ -2619,22 +2617,6 @@ const Header = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const animateLine = () => {
-      setAnimationProgress(prev => {
-        if (prev >= 100) return 0;
-        return prev + 0.5;
-      });
-    };
-
-    animationRef.current = requestAnimationFrame(function animate() {
-      animateLine();
-      animationRef.current = requestAnimationFrame(animate);
-    });
-
-    return () => cancelAnimationFrame(animationRef.current);
   }, []);
 
   useEffect(() => {
@@ -2720,13 +2702,17 @@ const Header = () => {
 
   return (
     <>
-      <div className="animated-line-container">
-        <div 
-          className="animated-line" 
-          style={{ transform: `translateX(${animationProgress}%)` }}
-        ></div>
+      {/* Promotional Banner */}
+      <div className="promo-banner">
+        <div className="promo-content">
+          Enjoy a FREE 100ml Perfume with every purchase of 3 100ml Perfumes! (Choose it manually)
+        </div>
       </div>
-      
+
+      {/* Animated Black Line */}
+      <div className="animated-line"></div>
+
+      {/* Main Header */}
       <header id="header" className={isSticky ? 'sticky' : ''}>
         <div className="container">
           <div className="navbar">
