@@ -1118,29 +1118,29 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
     'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly'
   ];
 
-  const makeupBrands = [
-    'Maybelline', 'Ruby Beauty', 'Samoa', 'dali', 'Ruby Rose'
-  ];
+  const makeupBrands = ['Maybelline', 'Ruby Beauty', 'Samoa', 'dali', 'Ruby Rose'];
 
-  let showBrandFilter = true;
-  let uniqueBrands = [];
+  let showFilter = true;
+  let filterLabel = 'Brands';
+  let filterOptions = [];
 
   if (location.pathname.includes('/makeup')) {
-    uniqueBrands = makeupBrands;
+    filterOptions = makeupBrands;
   } else if (location.pathname.includes('/watches')) {
-    uniqueBrands = ['Curren', 'Richard Mille'];
+    filterOptions = ['Curren', 'Richard Mille'];
   } else if (location.pathname.includes('/musk')) {
-    showBrandFilter = false; // ❌ hide brands on musk page
+    showFilter = false; // hide all brand/type filters
   } else if (location.pathname.includes('/lattafa-rasasi')) {
-    uniqueBrands = ['Lattafa', 'Rasasi'];
+    filterOptions = ['Lattafa', 'Rasasi'];
   } else if (location.pathname.includes('/refresheners')) {
-    uniqueBrands = ['air', 'furniture']; // ✅ Only show refresheners
+    filterLabel = 'Type';
+    filterOptions = ['air', 'furniture'];
   } else {
-    uniqueBrands = perfumeBrands;
+    filterOptions = perfumeBrands;
   }
 
-  if (showBrandFilter) {
-    uniqueBrands = uniqueBrands
+  if (showFilter) {
+    filterOptions = filterOptions
       .filter((value, index, self) => self.indexOf(value) === index)
       .sort((a, b) => a.localeCompare(b));
   }
@@ -1151,7 +1151,7 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
     { value: 'Unisex', label: 'Unisex' }
   ];
 
-  // ✅ Clear checkboxes when filters reset
+  // Reset checkboxes in DOM when filters reset
   useEffect(() => {
     if (filters.brands.length === 0) {
       document.querySelectorAll('input[type="checkbox"][name="brand"]').forEach(cb => {
@@ -1165,7 +1165,7 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
     }
   }, [filters]);
 
-  // ✅ Reset filters on route change
+  // Reset filters when route changes
   useEffect(() => {
     onFilterChange('resetAll');
   }, [location.pathname]);
@@ -1174,23 +1174,23 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
     <div className={styles['filter-section']}>
       <h3 className={styles['filter-title']}>Filter By</h3>
 
-      {/* Brand Filter */}
-      {showBrandFilter && (
+      {/* Brand or Type Filter */}
+      {showFilter && (
         <div className={styles['filter-group']}>
-          <h4 className={styles['filter-subtitle']}>Brands:</h4>
+          <h4 className={styles['filter-subtitle']}>{filterLabel}:</h4>
           <div className={styles['filter-options-container']}>
-            {uniqueBrands.map(brand => (
-              <div key={brand} className={styles['filter-option']}>
+            {filterOptions.map(option => (
+              <div key={option} className={styles['filter-option']}>
                 <input
                   type="checkbox"
-                  id={`brand-${brand}`}
+                  id={`brand-${option}`}
                   name="brand"
-                  checked={filters.brands.includes(brand)}
-                  onChange={() => onFilterChange('brands', brand)}
+                  checked={filters.brands.includes(option)}
+                  onChange={() => onFilterChange('brands', option)}
                   className={styles['filter-checkbox']}
                 />
-                <label htmlFor={`brand-${brand}`} className={styles['filter-label']}>
-                  {brand}
+                <label htmlFor={`brand-${option}`} className={styles['filter-label']}>
+                  {option}
                 </label>
               </div>
             ))}
