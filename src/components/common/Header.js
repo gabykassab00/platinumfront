@@ -2705,7 +2705,7 @@ const Header = () => {
       {/* Always Visible Promo Banner with Scrolling Text */}
       <div className="promo-banner">
         <div className="promo-content">
-          Enjoy a FREE 100ml Perfume with every purchase of 3 100ml Perfumes! (Choose it manually)
+          Buy any 2 100ml perfumes get 50ml perfume from your choice for free
         </div>
       </div>
 
