@@ -765,6 +765,166 @@
 
 
 
+// import React, { useEffect } from 'react';
+// import { useLocation } from 'react-router-dom';
+// import styles from '../style/FilterSection.module.css';
+
+// const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }) => {
+//   const location = useLocation();
+
+//   const perfumeBrands = [
+//     'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel',
+//     'Paco Rabanne', 'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian',
+//     'Burberry', 'Nasomatto', 'Carolina Herrera', 'Bulgari', 'Lattafa', 'Tom Ford',
+//     'Ralph Lauren', 'Hugo Boss', 'Joop!', 'Givenchy', 'Dolce & Gabbana', 'Dior', 'Dunhill',
+//     'Cartier', 'Laura Biagiotti', 'Jacques Bogart', 'Nikos', 'Emporio Armani', 'Viktor & Rolf',
+//     'Calvin Klein', 'oud guerlain', 'taif', 'sunamusk', 'Gucci', 'Nautica or Hermès',
+//     'Ferrari', 'Fendi', 'Yves Saint Laurent', 'Issey Miyake', 'Creed', 'Kenzo', 'Louis Vuitton',
+//     'Lacoste', 'happy touch', 'Ted Lapidus', 'misk', 'maa althahab', 'Mercedes-Benz',
+//     'Montblanc', 'Police', 'Ajmal or Armaf', 'Roberto Cavalli', 'rave', 'Ajmal', 'Asdaaf',
+//     'Afnan', 'Mousouf', 'شمس الامارات', 'Victoria’s Secret', 'Britney Spears', 'Jardin de Parfums',
+//     'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Victoria secret', 'Mugler', 'Elie Saab',
+//     'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez', 'Prada', 'Chloé',
+//     'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic', 'sir', 'nasmat',
+//     'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly'
+//   ];
+
+//   const makeupBrands = [
+//     'Maybelline', 'Ruby Beauty', 'Samoa', 'dali', 'Ruby Rose'
+//   ];
+
+//   let showBrandFilter = true;
+//   let uniqueBrands = [];
+
+//   if (location.pathname.includes('/makeup')) {
+//     uniqueBrands = makeupBrands;
+//   } else if (location.pathname.includes('/watches')) {
+//     uniqueBrands = ['Curren', 'Richard Mille'];
+//   } else if (location.pathname.includes('/musk')) {
+//     showBrandFilter = false; // ❌ hide brands on musk page
+// } else if (location.pathname.includes('/lattafa-rasasi')) {
+//   uniqueBrands = ['Lattafa', 'Rasasi'];
+// } else {
+//   uniqueBrands = perfumeBrands;
+// }
+
+
+//   if (showBrandFilter) {
+//     uniqueBrands = uniqueBrands
+//       .filter((value, index, self) => self.indexOf(value) === index)
+//       .sort((a, b) => a.localeCompare(b));
+//   }
+
+//   const genres = [
+//     { value: 'Men', label: 'Men' },
+//     { value: 'Women', label: 'Women' },
+//     { value: 'Unisex', label: 'Unisex' }
+//   ];
+
+//   useEffect(() => {
+//     if (filters.brands.length === 0) {
+//       document.querySelectorAll('input[type="checkbox"][name="brand"]').forEach(checkbox => {
+//         checkbox.checked = false;
+//       });
+//     }
+//     if (filters.genres.length === 0) {
+//       document.querySelectorAll('input[type="checkbox"][name="genre"]').forEach(checkbox => {
+//         checkbox.checked = false;
+//       });
+//     }
+//   }, [filters]);
+
+//   return (
+//     <div className={styles['filter-section']}>
+//       <h3 className={styles['filter-title']}>Filter By</h3>
+
+//       {/* Brand Filter */}
+//       {showBrandFilter && (
+//         <div className={styles['filter-group']}>
+//           <h4 className={styles['filter-subtitle']}>Brands:</h4>
+//           <div className={styles['filter-options-container']}>
+//             {uniqueBrands.map(brand => (
+//               <div key={brand} className={styles['filter-option']}>
+//                 <input
+//                   type="checkbox"
+//                   id={`brand-${brand}`}
+//                   name="brand"
+//                   checked={filters.brands.includes(brand)}
+//                   onChange={() => onFilterChange('brands', brand)}
+//                   className={styles['filter-checkbox']}
+//                 />
+//                 <label htmlFor={`brand-${brand}`} className={styles['filter-label']}>
+//                   {brand}
+//                 </label>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Genre Filter */}
+//       {!hideGenreFilter && (
+//         <div className={styles['filter-group']}>
+//           <h4 className={styles['filter-subtitle']}>Genre:</h4>
+//           <div className={styles['filter-options-container']}>
+//             {genres.map(genre => (
+//               <div key={genre.value} className={styles['filter-option']}>
+//                 <input
+//                   type="checkbox"
+//                   id={`genre-${genre.value}`}
+//                   name="genre"
+//                   checked={filters.genres.includes(genre.value)}
+//                   onChange={() => onFilterChange('genres', genre.value)}
+//                   className={styles['filter-checkbox']}
+//                 />
+//                 <label htmlFor={`genre-${genre.value}`} className={styles['filter-label']}>
+//                   {genre.label}
+//                 </label>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Price Filter */}
+//       <div className={styles['filter-group']}>
+//         <h4 className={styles['filter-subtitle']}>Price:</h4>
+//         <div className={styles['price-filter-container']}>
+//           <input
+//             type="range"
+//             min="0"
+//             max="500"
+//             step="10"
+//             value={filters.price}
+//             onChange={(e) => onFilterChange('price', parseFloat(e.target.value))}
+//             className={styles['price-slider']}
+//           />
+//           <div className={styles['price-display']}>${filters.price.toFixed(2)}</div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default FilterSection;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from '../style/FilterSection.module.css';
@@ -802,12 +962,11 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
     uniqueBrands = ['Curren', 'Richard Mille'];
   } else if (location.pathname.includes('/musk')) {
     showBrandFilter = false; // ❌ hide brands on musk page
-} else if (location.pathname.includes('/lattafa-rasasi')) {
-  uniqueBrands = ['Lattafa', 'Rasasi'];
-} else {
-  uniqueBrands = perfumeBrands;
-}
-
+  } else if (location.pathname.includes('/lattafa-rasasi')) {
+    uniqueBrands = ['Lattafa', 'Rasasi'];
+  } else {
+    uniqueBrands = perfumeBrands;
+  }
 
   if (showBrandFilter) {
     uniqueBrands = uniqueBrands
@@ -821,18 +980,24 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
     { value: 'Unisex', label: 'Unisex' }
   ];
 
+  // ✅ Clear selected checkboxes from DOM when filters reset
   useEffect(() => {
     if (filters.brands.length === 0) {
-      document.querySelectorAll('input[type="checkbox"][name="brand"]').forEach(checkbox => {
-        checkbox.checked = false;
+      document.querySelectorAll('input[type="checkbox"][name="brand"]').forEach(cb => {
+        cb.checked = false;
       });
     }
     if (filters.genres.length === 0) {
-      document.querySelectorAll('input[type="checkbox"][name="genre"]').forEach(checkbox => {
-        checkbox.checked = false;
+      document.querySelectorAll('input[type="checkbox"][name="genre"]').forEach(cb => {
+        cb.checked = false;
       });
     }
   }, [filters]);
+
+  // ✅ Reset filters when path changes
+  useEffect(() => {
+    onFilterChange('resetAll');
+  }, [location.pathname]);
 
   return (
     <div className={styles['filter-section']}>
