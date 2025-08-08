@@ -2702,15 +2702,15 @@ const Header = () => {
 
   return (
     <>
-      {/* Promotional Banner */}
-      <div className="promo-banner">
-        <div className="promo-content">
+      {/* Fixed Top Section with Promo and Animated Line */}
+      <div className="top-fixed-container">
+        <div className="promo-banner">
           Enjoy a FREE 100ml Perfume with every purchase of 3 100ml Perfumes! (Choose it manually)
         </div>
+        <div className="animated-line-container">
+          <div className="animated-line"></div>
+        </div>
       </div>
-
-      {/* Animated Black Line */}
-      <div className="animated-line"></div>
 
       {/* Main Header */}
       <header id="header" className={isSticky ? 'sticky' : ''}>
