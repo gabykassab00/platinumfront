@@ -1230,3 +1230,17 @@
     white-space: normal;
   }
 }
+
+
+.closeMobileSort {
+  font-size: 2rem;       /* Make it bigger */
+  font-weight: bold;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 9999;
+}
