@@ -5306,6 +5306,368 @@
 
 
 
+// import React, { useState, useEffect, useMemo, useCallback } from 'react';
+// import { useLocation } from 'react-router-dom';
+// import FilterSection from '../componen/FilterSection';
+// import ProductCard from '../componen/ProductCard';
+// import SortDropdown from '../componen/SortDropdown';
+// import axios from 'axios';
+// import styles from '../../src/style/ProductsPage.module.css';
+
+// const MemoizedProductCard = React.memo(ProductCard);
+
+// const sortFunctions = {
+//   'a-z': (a, b) => a.name.localeCompare(b.name),
+//   'z-a': (a, b) => b.name.localeCompare(a.name),
+//   'price-low': (a, b) => a.price - b.price,
+//   'price-high': (a, b) => b.price - a.price,
+//   'newest': (a, b) => b.id - a.id,
+//   'oldest': (a, b) => a.id - b.id,
+// };
+
+// const sortLabels = {
+//   'newest': 'Newest to Oldest',
+//   'oldest': 'Oldest to Newest',
+//   'price-low': 'Price: Low to High',
+//   'price-high': 'Price: High to Low',
+//   'a-z': 'A-Z',
+//   'z-a': 'Z-A',
+// };
+
+// const ProductsPage = () => {
+//   const location = useLocation();
+//   const [products, setProducts] = useState([]);
+//   const [isLoading, setIsLoading] = useState(true);
+//   const [error, setError] = useState(null);
+//   const [filters, setFilters] = useState({ brands: [], genres: [], price: 500 });
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+//   const [mobileSortOpen, setMobileSortOpen] = useState(false);
+//   const [selectedSort, setSelectedSort] = useState('newest');
+//   const itemsPerPage = 12;
+
+//   const API_URL = process.env.REACT_APP_API_URL;
+
+//   const pageTitle = useMemo(() => {
+//     if (location.pathname.includes('/perfumes/men')) return "Men's Perfumes";
+//     if (location.pathname.includes('/perfumes/women')) return "Women's Perfumes";
+//     if (location.pathname.includes('/lattafa-rasasi')) return "Lattafa & Rasasi Perfumes";
+//     if (location.pathname.includes('/original')) return "Original Perfumes";
+//     if (location.pathname.includes('/makeup')) return "Makeup Products";
+//     if (location.pathname.includes('/watches')) return "Watches";
+//     if (location.pathname.includes('/musk')) return "Musk Products";
+//     return "All Perfumes";
+//   }, [location.pathname]);
+
+//   const routeFilters = useMemo(() => {
+//     if (location.pathname.includes('/perfumes/men')) {
+//       return { genres: ['men'], type: 'multiple' };
+//     } else if (location.pathname.includes('/perfumes/women')) {
+//       return { genres: ['women'], type: 'multiple' };
+//     } else if (location.pathname.includes('/lattafa-rasasi')) {
+//       return { brands: ['lattafa', 'rasasi'], type: 'single' };
+//     } else if (location.pathname.includes('/original')) {
+//       return { 
+//         type: 'single',
+//         excludeBrands: ['lattafa', 'rasasi'] 
+//       };
+//     } else if (location.pathname.includes('/makeup')) {
+//       return { type: 'makeup' };
+//     } else if (location.pathname.includes('/watches')) {
+//       return { type: 'watch' };
+//     } else if (location.pathname.includes('/musk')) {
+//       return { type: 'musk' };
+//     }
+//     else if (location.pathname.includes('/refresheners')) {
+//   return { types: ['air', 'furniture'] };
+//     }
+
+//     return {};
+//   }, [location.pathname]);
+
+//   useEffect(() => {
+//     setCurrentPage(1);
+//   }, [location.pathname]);
+
+//   useEffect(() => {
+//     const fetchProducts = async () => {
+//       try {
+//         setIsLoading(true);
+//         const res = await axios.get(`${API_URL}/api/products`);
+//         setProducts(res.data);
+//         setError(null);
+//       } catch (err) {
+//         setError('Failed to fetch products.');
+//       } finally {
+//         setIsLoading(false);
+//       }
+//     };
+//     fetchProducts();
+//   }, [API_URL]);
+
+//   const handleFilterChange = useCallback((filterType, value) => {
+//     setFilters(prev => {
+//       if (filterType === 'price') return { ...prev, price: Number(value) };
+//       const current = prev[filterType];
+//       const updated = current.includes(value)
+//         ? current.filter(item => item !== value)
+//         : [...current, value];
+//       return { ...prev, [filterType]: updated };
+//     });
+//     setCurrentPage(1);
+//   }, []);
+
+//   const handleSortChange = useCallback((sortMethod) => {
+//     setSelectedSort(sortMethod);
+//     setCurrentPage(1);
+//     setMobileSortOpen(false);
+//   }, []);
+
+//   const filteredProducts = useMemo(() => {
+//     const { brands, genres, price } = filters;
+//     let result = [...products];
+
+//     // Apply price filter
+//     result = result.filter(product => product.price <= price);
+
+//     // Apply route genre filters
+//     if (routeFilters.genres?.length > 0) {
+//       result = result.filter(product =>
+//         routeFilters.genres.some(rg =>
+//           product.genre?.toLowerCase() === rg.toLowerCase()
+//         )
+//       );
+//     }
+
+//     // Apply route brand filters (inclusion)
+//     if (routeFilters.brands?.length > 0) {
+//       result = result.filter(product =>
+//         routeFilters.brands.some(rb =>
+//           product.brand?.toLowerCase() === rb.toLowerCase()
+//         )
+//       );
+//     }
+
+//     // Apply route brand filters (exclusion)
+//     if (routeFilters.excludeBrands?.length > 0) {
+//       result = result.filter(product =>
+//         !routeFilters.excludeBrands.some(eb =>
+//           product.brand?.toLowerCase() === eb.toLowerCase()
+//         )
+//       );
+//     }
+
+//     // Apply route type filter (single or multiple)
+// if (routeFilters.type) {
+//   result = result.filter(product =>
+//     product.type?.toLowerCase() === routeFilters.type.toLowerCase()
+//   );
+// } else if (routeFilters.types?.length > 0) {
+//   result = result.filter(product =>
+//     routeFilters.types.some(rt =>
+//       product.type?.toLowerCase() === rt.toLowerCase()
+//     )
+//   );
+// }
+
+//     // Apply user-selected genre filters
+//     if (genres.length > 0) {
+//       result = result.filter(product =>
+//         genres.some(fg => product.genre?.toLowerCase() === fg.toLowerCase())
+//       );
+//     }
+
+//     // Apply user-selected brand filters
+//     if (brands.length > 0) {
+//       result = result.filter(product =>
+//         brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
+//       );
+//     }
+
+//     // Apply sorting
+//     const sortFunction = sortFunctions[selectedSort] || sortFunctions.newest;
+//     return result.sort(sortFunction);
+//   }, [products, filters, routeFilters, selectedSort]);
+
+//   const { totalPages, paginatedProducts } = useMemo(() => {
+//     const total = Math.ceil(filteredProducts.length / itemsPerPage);
+//     const start = (currentPage - 1) * itemsPerPage;
+//     return {
+//       totalPages: total,
+//       paginatedProducts: filteredProducts.slice(start, start + itemsPerPage),
+//     };
+//   }, [filteredProducts, currentPage]);
+
+//   const handlePageChange = (page) => {
+//     setCurrentPage(page);
+//     window.scrollTo({ top: 0, behavior: 'smooth' });
+//   };
+
+//   const renderPagination = () => {
+//     if (totalPages <= 1) return null;
+//     const maxVisible = 5;
+//     let startPage = 1;
+//     if (totalPages > maxVisible) {
+//       startPage = Math.min(
+//         Math.max(1, currentPage - Math.floor(maxVisible / 2)),
+//         totalPages - maxVisible + 1
+//       );
+//     }
+
+//     return (
+//       <div className={styles.paginationContainer}>
+//         <button
+//           onClick={() => handlePageChange(currentPage - 1)}
+//           disabled={currentPage === 1}
+//           className={styles.paginationArrow}
+//         >
+//           &lt;
+//         </button>
+//         {Array.from({ length: Math.min(maxVisible, totalPages) }).map((_, i) => {
+//           const page = startPage + i;
+//           return (
+//             <button
+//               key={page}
+//               onClick={() => handlePageChange(page)}
+//               className={`${styles.paginationNumber} ${currentPage === page ? styles.active : ''}`}
+//             >
+//               {page}
+//             </button>
+//           );
+//         })}
+//         <button
+//           onClick={() => handlePageChange(currentPage + 1)}
+//           disabled={currentPage === totalPages}
+//           className={styles.paginationArrow}
+//         >
+//           &gt;
+//         </button>
+//       </div>
+//     );
+//   };
+
+//   if (isLoading) {
+//     return (
+//       <div className={styles.loadingContainer}>
+//         <div className={styles.spinner}></div>
+//         <p className={styles.loadingText}>Loading products, please wait...</p>
+//       </div>
+//     );
+//   }
+
+//   if (error) return <p>{error}</p>;
+
+//   return (
+//     <div className={styles.container}>
+//       <header className={styles.pageHeader}>
+//         <h1 className={styles.title}>{pageTitle}</h1>
+//         <p className={styles.subtitle}>Discover your signature scent</p>
+//       </header>
+
+//       <div className={styles.mainContent}>
+//         <aside className={`${styles.filterPanel} ${mobileFilterOpen ? styles.mobileOpen : ''}`}>
+//           <div className={styles.mobileFilterHeader}>
+//             <h3>FILTER BY</h3>
+//             <button className={styles.closeMobileFilter} onClick={() => setMobileFilterOpen(false)}>×</button>
+//           </div>
+//           <FilterSection
+//             filters={filters}
+//             onFilterChange={handleFilterChange}
+//             activeGenre={filters.genres[0]}
+//             hideGenreFilter={!!routeFilters.genres}
+//           />
+//         </aside>
+
+//         <main className={styles.productArea}>
+//           <div className={styles.mobileFilterSortBar}>
+//             <button onClick={() => setMobileFilterOpen(!mobileFilterOpen)} className={styles.mobileFilterButton}>
+//               <span>Filter By</span>
+//               <span>{filteredProducts.length} products</span>
+//             </button>
+//             <button onClick={() => setMobileSortOpen(!mobileSortOpen)} className={styles.mobileSortButton}>
+//               <span>{sortLabels[selectedSort] || 'Newest to Oldest'}</span>
+//             </button>
+//           </div>
+
+//           {mobileSortOpen && (
+//             <div className={styles.mobileSortPanel}>
+//               <div className={styles.mobileSortHeader}>
+//                 <h3>SORT BY</h3>
+//                 <button className={styles.closeMobileSort} onClick={() => setMobileSortOpen(false)}>×</button>
+//               </div>
+//               <div className={styles.mobileSortOptions}>
+//                 {Object.keys(sortLabels).map(sort => (
+//                   <button
+//                     key={sort}
+//                     onClick={() => handleSortChange(sort)}
+//                     className={selectedSort === sort ? styles.activeSort : ''}
+//                   >
+//                     {sortLabels[sort]}
+//                   </button>
+//                 ))}
+//               </div>
+//             </div>
+//           )}
+
+//           <div className={styles.desktopToolbar}>
+//             <div className={styles.resultsCount}>
+//               Showing {paginatedProducts.length} of {filteredProducts.length} products
+//             </div>
+//             <SortDropdown
+//               onSortChange={handleSortChange}
+//               selectedSort={selectedSort}
+//               sortLabels={sortLabels}
+//             />
+//           </div>
+
+//           {filteredProducts.length > 0 ? (
+//             <>
+//               <div className={styles.productsGrid}>
+//                 {paginatedProducts.map(product => (
+//                   <MemoizedProductCard key={product.id} product={product} />
+//                 ))}
+//               </div>
+//               {renderPagination()}
+//             </>
+//           ) : (
+//             <div className={styles.noResults}>
+//               <p className={styles.noResultsText}>No products match your filters.</p>
+//             </div>
+//           )}
+//         </main>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ProductsPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import FilterSection from '../componen/FilterSection';
@@ -5339,13 +5701,15 @@ const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const [filters, setFilters] = useState({ brands: [], genres: [], price: 500 });
+
   const [currentPage, setCurrentPage] = useState(1);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [mobileSortOpen, setMobileSortOpen] = useState(false);
   const [selectedSort, setSelectedSort] = useState('newest');
-  const itemsPerPage = 12;
 
+  const itemsPerPage = 12;
   const API_URL = process.env.REACT_APP_API_URL;
 
   const pageTitle = useMemo(() => {
@@ -5367,26 +5731,24 @@ const ProductsPage = () => {
     } else if (location.pathname.includes('/lattafa-rasasi')) {
       return { brands: ['lattafa', 'rasasi'], type: 'single' };
     } else if (location.pathname.includes('/original')) {
-      return { 
-        type: 'single',
-        excludeBrands: ['lattafa', 'rasasi'] 
-      };
+      return { type: 'single', excludeBrands: ['lattafa', 'rasasi'] };
     } else if (location.pathname.includes('/makeup')) {
       return { type: 'makeup' };
     } else if (location.pathname.includes('/watches')) {
       return { type: 'watch' };
     } else if (location.pathname.includes('/musk')) {
       return { type: 'musk' };
-    }
-    else if (location.pathname.includes('/refresheners')) {
-  return { types: ['air', 'furniture'] };
+    } else if (location.pathname.includes('/refresheners')) {
+      return { types: ['air', 'furniture'] };
     }
 
     return {};
   }, [location.pathname]);
 
+  // ✅ Reset filters when location changes
   useEffect(() => {
     setCurrentPage(1);
+    setFilters({ brands: [], genres: [], price: 500 });
   }, [location.pathname]);
 
   useEffect(() => {
@@ -5405,13 +5767,21 @@ const ProductsPage = () => {
     fetchProducts();
   }, [API_URL]);
 
+  // ✅ Update filter change handler to support 'resetAll'
   const handleFilterChange = useCallback((filterType, value) => {
+    if (filterType === 'resetAll') {
+      setFilters({ brands: [], genres: [], price: 500 });
+      return;
+    }
+
     setFilters(prev => {
       if (filterType === 'price') return { ...prev, price: Number(value) };
+
       const current = prev[filterType];
       const updated = current.includes(value)
         ? current.filter(item => item !== value)
         : [...current, value];
+
       return { ...prev, [filterType]: updated };
     });
     setCurrentPage(1);
@@ -5427,10 +5797,8 @@ const ProductsPage = () => {
     const { brands, genres, price } = filters;
     let result = [...products];
 
-    // Apply price filter
     result = result.filter(product => product.price <= price);
 
-    // Apply route genre filters
     if (routeFilters.genres?.length > 0) {
       result = result.filter(product =>
         routeFilters.genres.some(rg =>
@@ -5439,7 +5807,6 @@ const ProductsPage = () => {
       );
     }
 
-    // Apply route brand filters (inclusion)
     if (routeFilters.brands?.length > 0) {
       result = result.filter(product =>
         routeFilters.brands.some(rb =>
@@ -5448,7 +5815,6 @@ const ProductsPage = () => {
       );
     }
 
-    // Apply route brand filters (exclusion)
     if (routeFilters.excludeBrands?.length > 0) {
       result = result.filter(product =>
         !routeFilters.excludeBrands.some(eb =>
@@ -5457,34 +5823,30 @@ const ProductsPage = () => {
       );
     }
 
-    // Apply route type filter (single or multiple)
-if (routeFilters.type) {
-  result = result.filter(product =>
-    product.type?.toLowerCase() === routeFilters.type.toLowerCase()
-  );
-} else if (routeFilters.types?.length > 0) {
-  result = result.filter(product =>
-    routeFilters.types.some(rt =>
-      product.type?.toLowerCase() === rt.toLowerCase()
-    )
-  );
-}
+    if (routeFilters.type) {
+      result = result.filter(product =>
+        product.type?.toLowerCase() === routeFilters.type.toLowerCase()
+      );
+    } else if (routeFilters.types?.length > 0) {
+      result = result.filter(product =>
+        routeFilters.types.some(rt =>
+          product.type?.toLowerCase() === rt.toLowerCase()
+        )
+      );
+    }
 
-    // Apply user-selected genre filters
     if (genres.length > 0) {
       result = result.filter(product =>
         genres.some(fg => product.genre?.toLowerCase() === fg.toLowerCase())
       );
     }
 
-    // Apply user-selected brand filters
     if (brands.length > 0) {
       result = result.filter(product =>
         brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
       );
     }
 
-    // Apply sorting
     const sortFunction = sortFunctions[selectedSort] || sortFunctions.newest;
     return result.sort(sortFunction);
   }, [products, filters, routeFilters, selectedSort]);
@@ -5641,13 +6003,6 @@ if (routeFilters.type) {
 };
 
 export default ProductsPage;
-
-
-
-
-
-
-
 
 
 
