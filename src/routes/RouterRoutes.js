@@ -258,6 +258,7 @@ const RouterRoutes = () => {
       <Route path="/makeup" element={<ProductsPage />} />
       <Route path="/watches" element={<ProductsPage />} />
       <Route path="/musk" element={<ProductsPage />} />
+      <Route path="/refresheners" element={<ProductsPage />} />
 
       {/* 🔍 Search results page */}
       <Route path="/search" element={<SearchResults />} />

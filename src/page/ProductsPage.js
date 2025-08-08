@@ -5378,6 +5378,10 @@ const ProductsPage = () => {
     } else if (location.pathname.includes('/musk')) {
       return { type: 'musk' };
     }
+    else if (location.pathname.includes('/refresheners')) {
+  return { types: ['air', 'furniture'] };
+    }
+
     return {};
   }, [location.pathname]);
 
@@ -5454,11 +5458,24 @@ const ProductsPage = () => {
     }
 
     // Apply route type filter
-    if (routeFilters.type) {
-      result = result.filter(product =>
-        product.type?.toLowerCase() === routeFilters.type.toLowerCase()
-      );
-    }
+    // if (routeFilters.type) {
+    //   result = result.filter(product =>
+    //     product.type?.toLowerCase() === routeFilters.type.toLowerCase()
+    //   );
+    // }
+
+    // Apply route type filter (single or multiple)
+if (routeFilters.type) {
+  result = result.filter(product =>
+    product.type?.toLowerCase() === routeFilters.type.toLowerCase()
+  );
+} else if (routeFilters.types?.length > 0) {
+  result = result.filter(product =>
+    routeFilters.types.some(rt =>
+      product.type?.toLowerCase() === rt.toLowerCase()
+    )
+  );
+}
 
     // Apply user-selected genre filters
     if (genres.length > 0) {
