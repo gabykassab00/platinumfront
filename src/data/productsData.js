@@ -64,7 +64,7 @@ const productsData = [
         quantity: 1,
         ratings: 1244,
         rateCount: 5,
-        path: "/product-details/",
+        path: "/lattafa-rasasi",
     },
     {
         id: 4,
