@@ -1507,6 +1507,192 @@
 
 
 
+// import React, { useState, useMemo, useCallback } from 'react';
+// import styles from '../style/ProductCard.module.css';
+// import { FaShoppingCart } from 'react-icons/fa';
+// import { useBasket } from '../context/BasketProvider';
+// import { useNavigate } from 'react-router-dom';
+
+// const ProductCard = React.memo(({ product }) => {
+//   const { addItem, openSidebar } = useBasket();
+//   const [selectedSize, setSelectedSize] = useState(null);
+//   const [sizeError, setSizeError] = useState(false);
+//   const navigate = useNavigate();
+
+//   const API_URL = process.env.REACT_APP_API_URL;
+//   const imageUrl = useMemo(() => `${API_URL}/${product.image_path}`, [product.image_path, API_URL]);
+
+//   const basePrice = useMemo(() => parseFloat(product.price), [product.price]);
+//   const discount = product.discount || 0;
+//   const isMultipleType = product.type === 'multiple';
+//   const isMuskType = product.type === 'musk'; // Check if product type is musk
+
+//   const getPriceForSize = useCallback((size) => {
+//     if (isMuskType) {
+//       // Pricing for musk products
+//       switch (size) {
+//         case 6: return basePrice * 0.5; // 6ml price (30% of base price)
+//         case 12: return basePrice * 1; // 12ml price (60% of base price)
+//         default: return basePrice;
+//       }
+//     } else {
+//       // Pricing for regular multiple-type products
+//       switch (size) {
+//         case 50: return 10;
+//         case 80: return 15;
+//         case 100: return basePrice;
+//         default: return basePrice;
+//       }
+//     }
+//   }, [basePrice, isMuskType]);
+
+//   const currentPrice = selectedSize ? getPriceForSize(selectedSize) : basePrice;
+//   const originalPrice = useMemo(() => (
+//     discount > 0 ? (basePrice / (1 - discount)).toFixed(2) : basePrice.toFixed(2)
+//   ), [basePrice, discount]);
+
+//   const handleAddToBasket = () => {
+//     if ((isMultipleType || isMuskType) && !selectedSize) {
+//       setSizeError(true);
+//       return;
+//     }
+
+//     const productToAdd = {
+//       ...product,
+//       price: (isMultipleType || isMuskType) ? currentPrice.toFixed(2) : basePrice.toFixed(2),
+//       ...((isMultipleType || isMuskType) && { size: `${selectedSize}ml`, sizeValue: selectedSize }),
+//     };
+
+//     addItem(productToAdd);
+//     openSidebar();
+//     setSizeError(false);
+//   };
+
+//   const handleSizeSelect = (size) => {
+//     setSelectedSize(size);
+//     setSizeError(false);
+//   };
+
+//   const handleImageClick = () => {
+//     navigate(`/product-details/${product.id}`);
+//   };
+
+//   // Determine which sizes to display based on product type
+//   const getSizeOptions = () => {
+//     if (isMuskType) {
+//       return [6, 12]; // Musk product sizes
+//     }
+//     return [50, 80, 100]; // Default sizes for multiple-type products
+//   };
+
+//   const sizeOptions = getSizeOptions();
+
+//   return (
+//     <div className={styles.card}>
+//       <div className={styles.imageContainer} onClick={handleImageClick}>
+//         <img
+//           src={imageUrl}
+//           alt={product.name}
+//           loading="lazy"
+//           onError={(e) => {
+//             e.target.onerror = null;
+//             e.target.src = 'https://via.placeholder.com/150';
+//           }}
+//         />
+//         {discount > 0 && (
+//           <div className={styles.discountBadge}>
+//             -{Math.round(discount * 100)}%
+//           </div>
+//         )}
+//       </div>
+
+//       <div className={styles.cardContent}>
+//         {(isMultipleType || isMuskType) && (
+//           <div className={styles.sizeSection}>
+//             <div className={styles.priceButtons}>
+//               {sizeOptions.map((size) => (
+//                 <div
+//                   key={size}
+//                   className={`${styles.flipButton} ${selectedSize === size ? styles.selectedSize : ''}`}
+//                   onClick={() => handleSizeSelect(size)}
+//                 >
+//                   <div className={styles.flipInner}>
+//                     <div className={styles.flipFront}>{size}ml</div>
+//                     <div className={styles.flipBack}>
+//                       {isMuskType 
+//                         ? (size === 6 ? 'Small' : 'Large') // Musk size labels
+//                         : (size === 50 ? 'Small' : size === 80 ? 'Medium' : 'Large')} 
+//                     </div>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//             {sizeError && (
+//               <div className={styles.errorMessage}>
+//                 Please select a size before adding to cart
+//               </div>
+//             )}
+//           </div>
+//         )}
+
+//         <div className={styles.footer}>
+//           <div className={styles.details}>
+//             <h3 className={styles.name}>{product.name}</h3>
+//             <div className={styles.price}>
+//               {discount > 0 && (
+//                 <span className={styles.original}>${originalPrice}</span>
+//               )}
+//               <span className={styles.current}>
+//                 ${(isMultipleType || isMuskType) && selectedSize
+//                   ? currentPrice.toFixed(2)
+//                   : basePrice.toFixed(2)}
+//               </span>
+//             </div>
+//           </div>
+
+//           <div className={styles.addToCartButton}>
+//             <div className={styles.flipButton} onClick={handleAddToBasket}>
+//               <div className={styles.flipInner}>
+//                 <div className={styles.flipFront}>Add to Cart</div>
+//                 <div className={styles.flipBack}>
+//                   <FaShoppingCart />
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// });
+
+// export default ProductCard;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState, useMemo, useCallback } from 'react';
 import styles from '../style/ProductCard.module.css';
 import { FaShoppingCart } from 'react-icons/fa';
@@ -1525,18 +1711,16 @@ const ProductCard = React.memo(({ product }) => {
   const basePrice = useMemo(() => parseFloat(product.price), [product.price]);
   const discount = product.discount || 0;
   const isMultipleType = product.type === 'multiple';
-  const isMuskType = product.type === 'musk'; // Check if product type is musk
+  const isMuskType = product.type === 'musk';
 
   const getPriceForSize = useCallback((size) => {
     if (isMuskType) {
-      // Pricing for musk products
       switch (size) {
-        case 6: return basePrice * 0.5; // 6ml price (30% of base price)
-        case 12: return basePrice * 1; // 12ml price (60% of base price)
+        case 6: return basePrice * 0.5;
+        case 12: return basePrice * 1;
         default: return basePrice;
       }
     } else {
-      // Pricing for regular multiple-type products
       switch (size) {
         case 50: return 10;
         case 80: return 15;
@@ -1547,6 +1731,7 @@ const ProductCard = React.memo(({ product }) => {
   }, [basePrice, isMuskType]);
 
   const currentPrice = selectedSize ? getPriceForSize(selectedSize) : basePrice;
+
   const originalPrice = useMemo(() => (
     discount > 0 ? (basePrice / (1 - discount)).toFixed(2) : basePrice.toFixed(2)
   ), [basePrice, discount]);
@@ -1577,12 +1762,9 @@ const ProductCard = React.memo(({ product }) => {
     navigate(`/product-details/${product.id}`);
   };
 
-  // Determine which sizes to display based on product type
   const getSizeOptions = () => {
-    if (isMuskType) {
-      return [6, 12]; // Musk product sizes
-    }
-    return [50, 80, 100]; // Default sizes for multiple-type products
+    if (isMuskType) return [6, 12];
+    return [50, 80, 100];
   };
 
   const sizeOptions = getSizeOptions();
@@ -1619,9 +1801,9 @@ const ProductCard = React.memo(({ product }) => {
                   <div className={styles.flipInner}>
                     <div className={styles.flipFront}>{size}ml</div>
                     <div className={styles.flipBack}>
-                      {isMuskType 
-                        ? (size === 6 ? 'Small' : 'Large') // Musk size labels
-                        : (size === 50 ? 'Small' : size === 80 ? 'Medium' : 'Large')} 
+                      {isMuskType
+                        ? (size === 6 ? 'Small' : 'Large')
+                        : (size === 50 ? 'Small' : size === 80 ? 'Medium' : 'Large')}
                     </div>
                   </div>
                 </div>
@@ -1635,6 +1817,14 @@ const ProductCard = React.memo(({ product }) => {
           </div>
         )}
 
+        {(product.type === 'furniture' || product.type === 'air') && (
+          <div className={styles.sizeSection}>
+            <p className={styles.sizeText}>
+              {product.type === 'furniture' ? '320 ml' : '500 ml'}
+            </p>
+          </div>
+        )}
+
         <div className={styles.footer}>
           <div className={styles.details}>
             <h3 className={styles.name}>{product.name}</h3>
@@ -1643,9 +1833,9 @@ const ProductCard = React.memo(({ product }) => {
                 <span className={styles.original}>${originalPrice}</span>
               )}
               <span className={styles.current}>
-                ${(isMultipleType || isMuskType) && selectedSize
-                  ? currentPrice.toFixed(2)
-                  : basePrice.toFixed(2)}
+                {(isMultipleType || isMuskType) && selectedSize
+                  ? `$${currentPrice.toFixed(2)}`
+                  : `$${basePrice.toFixed(2)}`}
               </span>
             </div>
           </div>

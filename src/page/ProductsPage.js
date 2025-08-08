@@ -5457,13 +5457,6 @@ const ProductsPage = () => {
       );
     }
 
-    // Apply route type filter
-    // if (routeFilters.type) {
-    //   result = result.filter(product =>
-    //     product.type?.toLowerCase() === routeFilters.type.toLowerCase()
-    //   );
-    // }
-
     // Apply route type filter (single or multiple)
 if (routeFilters.type) {
   result = result.filter(product =>
