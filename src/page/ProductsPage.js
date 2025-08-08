@@ -5841,11 +5841,26 @@ const ProductsPage = () => {
       );
     }
 
-    if (brands.length > 0) {
-      result = result.filter(product =>
-        brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
-      );
-    }
+    // if (brands.length > 0) {
+    //   result = result.filter(product =>
+    //     brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
+    //   );
+    // }
+
+if (brands.length > 0) {
+  if (location.pathname.includes('/refresheners')) {
+    // brands used to store types for refresheners
+    result = result.filter(product =>
+      brands.some(fb => product.type?.toLowerCase() === fb.toLowerCase())
+    );
+  } else {
+    result = result.filter(product =>
+      brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
+    );
+  }
+}
+
+
 
     const sortFunction = sortFunctions[selectedSort] || sortFunctions.newest;
     return result.sort(sortFunction);
