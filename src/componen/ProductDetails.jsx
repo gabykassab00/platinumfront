@@ -3123,15 +3123,15 @@ useEffect(() => {
 <div className={styles.detailsSection}>
   <h3 className={styles.sectionTitle}>Product Details</h3>
 
-  {/* ✅ Always show this original list */}
-  <ul className={styles.bulletList}>
-    <li><strong>🏢 3rd French fragrance oil company agency in all over Lebanon</strong></li>
-    <li><strong>📜 ISO certification of quality scents</strong></li>
-    <li><strong>🧴 Bold. Precise. Aromatic.</strong></li>
-    <li><strong>💨 Stays long. Speaks loud.</strong></li>
-  </ul>
+  {(product?.type === 'multiple' || product?.type === 'single') && (
+    <ul className={styles.bulletList}>
+      <li><strong>🏢 3rd French fragrance oil company agency in all over Lebanon</strong></li>
+      <li><strong>📜 ISO certification of quality scents</strong></li>
+      <li><strong>🧴 Bold. Precise. Aromatic.</strong></li>
+      <li><strong>💨 Stays long. Speaks loud.</strong></li>
+    </ul>
+  )}
 
-  {/* ✅ Conditionally show additional lists based on type */}
   {product?.type === 'watch' && (
     <ul className={styles.bulletList}>
       <li><strong>⌚ Curated selection of 100% original Curren watches</strong></li>
