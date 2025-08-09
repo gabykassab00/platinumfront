@@ -5720,6 +5720,7 @@ const ProductsPage = () => {
     if (location.pathname.includes('/makeup')) return "Makeup Products";
     if (location.pathname.includes('/watches')) return "Watches";
     if (location.pathname.includes('/musk')) return "Musk Products";
+    if (location.pathname.includes('/refresheners')) return "Air and Furniture Refresheners Products";
     return "All Perfumes";
   }, [location.pathname]);
 

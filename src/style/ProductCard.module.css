@@ -2408,15 +2408,15 @@
 .addToCartButton .flipFront,
 .addToCartButton .flipBack {
   background-color: transparent;
-  color: #000;
+  color: black;
   font-size: 1rem;
-  border: 1px solid rgba(0, 0, 0, 0.3); /* Kept original style */
+  border: 1px solid black; /* Kept original style */
 }
 
 .addToCartButton .flipFront:hover,
 .addToCartButton .flipBack:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.5); /* Kept original style */
+  background-color: black;
+  border: 1px solid black; /* Kept original style */
 }
 
 .flipFront {
