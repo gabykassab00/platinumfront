@@ -2334,7 +2334,7 @@
   border-radius: 14px;
   font-size: 1rem;
   background-color: transparent;
-  border: 1px solid #000; /* Changed to solid black */
+  border: 2px solid #000; /* Changed to solid black */
   color: black;
 }
 
@@ -2393,7 +2393,7 @@
 .priceButtons .flipFront,
 .priceButtons .flipBack {
   background-color: transparent;
-  border: 1px solid #000; /* Changed to solid black */
+  border: none; /* Changed to solid black */
   color: black;
 }
 
@@ -2401,7 +2401,7 @@
 .priceButtons .selectedSize .flipBack {
   background-color: black;
   color: white;
-  border: 1px solid #000; /* Changed to solid black */
+  border: none; /* Changed to solid black */
   box-shadow: none;
 }
 
