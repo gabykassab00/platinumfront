@@ -2512,7 +2512,13 @@
   }
 
   .priceButtons .flipButton {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
+        padding: 0 3px; /* Add this small padding */
+    min-width: 0; /* Add this to allow text shrinking */
+  }
+    .priceButtons .flipButton:nth-child(2) {
+    font-size: 0.75rem; /* Make medium size slightly smaller */
+    padding: 0 2px; /* Tighter padding for medium size */
   }
 
   .flipFront {
