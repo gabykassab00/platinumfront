@@ -1948,6 +1948,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 .card {
   position: relative;
   background: #fff;
@@ -1958,6 +1970,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  border: 1px solid #000; /* Added single black border */
 }
 
 .card:hover {
@@ -2015,14 +2028,6 @@
   padding: 0;
 }
 
-.sizeText {
-  font-size: 0.95rem;
-  font-weight: 500;
-  margin: 8px 0 0;
-  text-align: center;
-  color: #333;
-}
-
 .priceButtons {
   display: flex;
   justify-content: space-between;
@@ -2030,23 +2035,16 @@
   margin: 10px 0 0;
 }
 
-/* Consistent black border for all flip buttons */
-.flipButton {
-  border: 1px solid #000;
-  background-color: transparent;
-}
+
 
 .priceButtons .flipButton {
   flex: 1;
   height: 45px;
   border-radius: 14px;
   font-size: 1rem;
-  color: #000;
-}
-
-.priceButtons .selectedSize {
-  background-color: #000;
-  color: #fff;
+  background-color: transparent;
+  border: 1px solid black; 
+  color: black;
 }
 
 .footer {
@@ -2058,6 +2056,17 @@
   margin: 12px 0;
   height: 45px;
   perspective: 1000px;
+}
+
+.addToCartButton .flipButton {
+  height: 45px;
+}
+
+.flipButton {
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+  cursor: pointer;
 }
 
 .flipInner {
@@ -2085,8 +2094,43 @@
   font-weight: bold;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
+  background-color: #FFD700;
+  color: #000;
+  border: none;
+}
+
+
+
+.priceButtons .flipFront,
+.priceButtons .flipBack {
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.3); 
+  color: black;
+}
+
+
+
+.priceButtons .selectedSize .flipFront,
+.priceButtons .selectedSize .flipBack {
+  background-color: black;
+  color: white;
+  border: 2px solid #000;
+  box-shadow: none;
+}
+
+
+.addToCartButton .flipFront,
+.addToCartButton .flipBack {
   background-color: transparent;
   color: #000;
+  font-size: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.3); 
+}
+
+.addToCartButton .flipFront:hover,
+.addToCartButton .flipBack:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 .flipFront {
@@ -2096,11 +2140,6 @@
 .flipBack {
   transform: rotateY(180deg);
   font-size: 1rem;
-}
-
-.addToCartButton .flipFront:hover,
-.addToCartButton .flipBack:hover {
-  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .details {
@@ -2130,6 +2169,7 @@
   color: #6b7280;
   font-size: 0.9rem;
 }
+
 
 .current {
   color: #000;
@@ -2197,4 +2237,13 @@
   .flipBack {
     font-size: 0.9rem;
   }
+}
+
+
+.sizeText {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 8px 0 0;
+  text-align: center;
+  color: #333;
 }
