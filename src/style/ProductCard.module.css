@@ -2030,9 +2030,10 @@
   margin: 10px 0 0;
 }
 
-/* Consistent border styles */
+/* Consistent black border for all flip buttons */
 .flipButton {
-  border: 1px solid #333 !important; /* Changed to consistent dark gray */
+  border: 1px solid #000;
+  background-color: transparent;
 }
 
 .priceButtons .flipButton {
@@ -2040,15 +2041,12 @@
   height: 45px;
   border-radius: 14px;
   font-size: 1rem;
-  background-color: transparent;
-  color: black;
+  color: #000;
 }
 
-.priceButtons .selectedSize .flipFront,
-.priceButtons .selectedSize .flipBack {
-  background-color: black;
-  color: white;
-  box-shadow: none;
+.priceButtons .selectedSize {
+  background-color: #000;
+  color: #fff;
 }
 
 .footer {
@@ -2060,17 +2058,6 @@
   margin: 12px 0;
   height: 45px;
   perspective: 1000px;
-}
-
-.addToCartButton .flipButton {
-  height: 45px;
-}
-
-.flipButton {
-  width: 100%;
-  height: 100%;
-  perspective: 1000px;
-  cursor: pointer;
 }
 
 .flipInner {
@@ -2098,7 +2085,7 @@
   font-weight: bold;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
-  background-color: #FFD700;
+  background-color: transparent;
   color: #000;
 }
 
@@ -2108,13 +2095,6 @@
 
 .flipBack {
   transform: rotateY(180deg);
-  font-size: 1rem;
-}
-
-.addToCartButton .flipFront,
-.addToCartButton .flipBack {
-  background-color: transparent;
-  color: #000;
   font-size: 1rem;
 }
 
