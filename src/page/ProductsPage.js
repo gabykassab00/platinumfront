@@ -5720,7 +5720,7 @@ const ProductsPage = () => {
     if (location.pathname.includes('/makeup')) return "Makeup Products";
     if (location.pathname.includes('/watches')) return "Watches";
     if (location.pathname.includes('/musk')) return "Musk Products";
-    if (location.pathname.includes('/refresheners')) return "Air and Furniture Refresheners Products";
+    if (location.pathname.includes('/refresheners')) return "Air and Furniture Refresheners";
     return "All Perfumes";
   }, [location.pathname]);
 
@@ -5842,6 +5842,11 @@ const ProductsPage = () => {
       );
     }
 
+    // if (brands.length > 0) {
+    //   result = result.filter(product =>
+    //     brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
+    //   );
+    // }
 
 if (brands.length > 0) {
   if (location.pathname.includes('/refresheners')) {
