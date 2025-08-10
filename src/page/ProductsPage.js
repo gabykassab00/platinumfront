@@ -5752,21 +5752,56 @@ const ProductsPage = () => {
     setFilters({ brands: [], genres: [], price: 500 });
   }, [location.pathname]);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true);
-        const res = await axios.get(`${API_URL}/api/products`);
-        setProducts(res.data);
-        setError(null);
-      } catch (err) {
-        setError('Failed to fetch products.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchProducts();
-  }, [API_URL]);
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     try {
+  //       setIsLoading(true);
+  //       const res = await axios.get(`${API_URL}/api/products`);
+  //       setProducts(res.data);
+  //       setError(null);
+  //     } catch (err) {
+  //       setError('Failed to fetch products.');
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchProducts();
+  // }, [API_URL]);
+
+
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      setIsLoading(true);
+      console.log('Fetching from:', `${API_URL}/api/products`); // Debug log
+      
+      const res = await axios.get(`${API_URL}/api/products`, {
+        timeout: 10000,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      console.log('Received data:', res.data); // Debug log
+      setProducts(res.data);
+      setError(null);
+    } catch (err) {
+      console.error('API Error Details:', {
+        message: err.message,
+        url: err.config?.url,
+        status: err.response?.status,
+        data: err.response?.data
+      });
+      setError(`Failed to load products. ${err.response?.data?.message || ''}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, [API_URL]);
+
 
   // ✅ Update filter change handler to support 'resetAll'
   const handleFilterChange = useCallback((filterType, value) => {
