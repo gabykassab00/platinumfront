@@ -5724,29 +5724,6 @@ const ProductsPage = () => {
     return "All Perfumes";
   }, [location.pathname]);
 
-  // const routeFilters = useMemo(() => {
-  //   if (location.pathname.includes('/perfumes/men')) {
-  //     return { genres: ['men'], type: 'multiple' };
-  //   } else if (location.pathname.includes('/perfumes/women')) {
-  //     return { genres: ['women'], type: 'multiple' };
-  //   } else if (location.pathname.includes('/lattafa-rasasi')) {
-  //     return { brands: ['lattafa', 'rasasi'], type: 'single' };
-  //   } else if (location.pathname.includes('/original')) {
-  //     return { type: 'single', excludeBrands: ['lattafa', 'rasasi'] };
-  //   } else if (location.pathname.includes('/makeup')) {
-  //     return { type: 'makeup' };
-  //   } else if (location.pathname.includes('/watches')) {
-  //     return { type: 'watch' };
-  //   } else if (location.pathname.includes('/musk')) {
-  //     return { type: 'musk' };
-  //   } else if (location.pathname.includes('/refresheners')) {
-  //     return { types: ['air', 'furniture'] };
-  //   }else if (location.pathname.includes('/perfumes')) {
-  //   return { type: ['single', 'multiple'] }; // Explicitly allow both
-  // }
-
-  //   return {};
-  // }, [location.pathname]);
 
   const routeFilters = useMemo(() => {
   if (location.pathname.includes('/perfumes/men')) {
@@ -5780,23 +5757,6 @@ const ProductsPage = () => {
     setCurrentPage(1);
     setFilters({ brands: [], genres: [], price: 500 });
   }, [location.pathname]);
-
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     try {
-  //       setIsLoading(true);
-  //       const res = await axios.get(`${API_URL}/api/products`);
-  //       setProducts(res.data);
-  //       setError(null);
-  //     } catch (err) {
-  //       setError('Failed to fetch products.');
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchProducts();
-  // }, [API_URL]);
-
 
 useEffect(() => {
   const fetchProducts = async () => {
@@ -5858,78 +5818,144 @@ useEffect(() => {
     setMobileSortOpen(false);
   }, []);
 
-  const filteredProducts = useMemo(() => {
-    const { brands, genres, price } = filters;
-    let result = [...products];
+//   const filteredProducts = useMemo(() => {
+//     const { brands, genres, price } = filters;
+//     let result = [...products];
 
-    result = result.filter(product => product.price <= price);
+//     result = result.filter(product => product.price <= price);
 
-    if (routeFilters.genres?.length > 0) {
-      result = result.filter(product =>
-        routeFilters.genres.some(rg =>
-          product.genre?.toLowerCase() === rg.toLowerCase()
-        )
-      );
-    }
+//     if (routeFilters.genres?.length > 0) {
+//       result = result.filter(product =>
+//         routeFilters.genres.some(rg =>
+//           product.genre?.toLowerCase() === rg.toLowerCase()
+//         )
+//       );
+//     }
 
-    if (routeFilters.brands?.length > 0) {
-      result = result.filter(product =>
-        routeFilters.brands.some(rb =>
-          product.brand?.toLowerCase() === rb.toLowerCase()
-        )
-      );
-    }
+//     if (routeFilters.brands?.length > 0) {
+//       result = result.filter(product =>
+//         routeFilters.brands.some(rb =>
+//           product.brand?.toLowerCase() === rb.toLowerCase()
+//         )
+//       );
+//     }
 
-    if (routeFilters.excludeBrands?.length > 0) {
-      result = result.filter(product =>
-        !routeFilters.excludeBrands.some(eb =>
-          product.brand?.toLowerCase() === eb.toLowerCase()
-        )
-      );
-    }
+//     if (routeFilters.excludeBrands?.length > 0) {
+//       result = result.filter(product =>
+//         !routeFilters.excludeBrands.some(eb =>
+//           product.brand?.toLowerCase() === eb.toLowerCase()
+//         )
+//       );
+//     }
 
-    if (routeFilters.type) {
+//     if (routeFilters.type) {
+//       result = result.filter(product =>
+//         product.type?.toLowerCase() === routeFilters.type.toLowerCase()
+//       );
+//     } else if (routeFilters.types?.length > 0) {
+//       result = result.filter(product =>
+//         routeFilters.types.some(rt =>
+//           product.type?.toLowerCase() === rt.toLowerCase()
+//         )
+//       );
+//     }
+
+//     if (genres.length > 0) {
+//       result = result.filter(product =>
+//         genres.some(fg => product.genre?.toLowerCase() === fg.toLowerCase())
+//       );
+//     }
+
+// if (brands.length > 0) {
+//   if (location.pathname.includes('/refresheners')) {
+//     // brands used to store types for refresheners
+//     result = result.filter(product =>
+//       brands.some(fb => product.type?.toLowerCase() === fb.toLowerCase())
+//     );
+//   } else {
+//     result = result.filter(product =>
+//       brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
+//     );
+//   }
+// }
+
+
+
+//     const sortFunction = sortFunctions[selectedSort] || sortFunctions.newest;
+//     return result.sort(sortFunction);
+//   }, [products, filters, routeFilters, selectedSort]);
+
+
+
+const filteredProducts = useMemo(() => {
+  const { brands, genres, price } = filters;
+  let result = [...products];
+
+  result = result.filter(product => product.price <= price);
+
+  // Apply route filters
+  if (routeFilters.genres?.length > 0) {
+    result = result.filter(product =>
+      routeFilters.genres.some(rg =>
+        product.genre?.toLowerCase() === rg.toLowerCase()
+      )
+    );
+  }
+
+  if (routeFilters.brands?.length > 0) {
+    result = result.filter(product =>
+      routeFilters.brands.some(rb =>
+        product.brand?.toLowerCase() === rb.toLowerCase()
+      )
+    );
+  }
+
+  if (routeFilters.excludeBrands?.length > 0) {
+    result = result.filter(product =>
+      !routeFilters.excludeBrands.some(eb =>
+        product.brand?.toLowerCase() === eb.toLowerCase()
+      )
+    );
+  }
+
+  // Modified type filtering to handle both array and string cases
+  if (routeFilters.type) {
+    if (Array.isArray(routeFilters.type)) {
       result = result.filter(product =>
-        product.type?.toLowerCase() === routeFilters.type.toLowerCase()
-      );
-    } else if (routeFilters.types?.length > 0) {
-      result = result.filter(product =>
-        routeFilters.types.some(rt =>
+        routeFilters.type.some(rt =>
           product.type?.toLowerCase() === rt.toLowerCase()
         )
       );
-    }
-
-    if (genres.length > 0) {
+    } else {
       result = result.filter(product =>
-        genres.some(fg => product.genre?.toLowerCase() === fg.toLowerCase())
+        product.type?.toLowerCase() === routeFilters.type.toLowerCase()
       );
     }
+  }
 
-    // if (brands.length > 0) {
-    //   result = result.filter(product =>
-    //     brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
-    //   );
-    // }
-
-if (brands.length > 0) {
-  if (location.pathname.includes('/refresheners')) {
-    // brands used to store types for refresheners
+  // Apply user filters
+  if (genres.length > 0) {
     result = result.filter(product =>
-      brands.some(fb => product.type?.toLowerCase() === fb.toLowerCase())
-    );
-  } else {
-    result = result.filter(product =>
-      brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
+      genres.some(fg => product.genre?.toLowerCase() === fg.toLowerCase())
     );
   }
-}
 
+  if (brands.length > 0) {
+    if (location.pathname.includes('/refresheners')) {
+      // brands used to store types for refresheners
+      result = result.filter(product =>
+        brands.some(fb => product.type?.toLowerCase() === fb.toLowerCase())
+      );
+    } else {
+      result = result.filter(product =>
+        brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
+      );
+    }
+  }
 
-
-    const sortFunction = sortFunctions[selectedSort] || sortFunctions.newest;
-    return result.sort(sortFunction);
-  }, [products, filters, routeFilters, selectedSort]);
+  const sortFunction = sortFunctions[selectedSort] || sortFunctions.newest;
+  return result.sort(sortFunction);
+}, [products, filters, routeFilters, selectedSort, location.pathname]);
 
   const { totalPages, paginatedProducts } = useMemo(() => {
     const total = Math.ceil(filteredProducts.length / itemsPerPage);
