@@ -5724,30 +5724,57 @@ const ProductsPage = () => {
     return "All Perfumes";
   }, [location.pathname]);
 
+  // const routeFilters = useMemo(() => {
+  //   if (location.pathname.includes('/perfumes/men')) {
+  //     return { genres: ['men'], type: 'multiple' };
+  //   } else if (location.pathname.includes('/perfumes/women')) {
+  //     return { genres: ['women'], type: 'multiple' };
+  //   } else if (location.pathname.includes('/lattafa-rasasi')) {
+  //     return { brands: ['lattafa', 'rasasi'], type: 'single' };
+  //   } else if (location.pathname.includes('/original')) {
+  //     return { type: 'single', excludeBrands: ['lattafa', 'rasasi'] };
+  //   } else if (location.pathname.includes('/makeup')) {
+  //     return { type: 'makeup' };
+  //   } else if (location.pathname.includes('/watches')) {
+  //     return { type: 'watch' };
+  //   } else if (location.pathname.includes('/musk')) {
+  //     return { type: 'musk' };
+  //   } else if (location.pathname.includes('/refresheners')) {
+  //     return { types: ['air', 'furniture'] };
+  //   }else if (location.pathname.includes('/perfumes')) {
+  //   return { type: ['single', 'multiple'] }; // Explicitly allow both
+  // }
+
+  //   return {};
+  // }, [location.pathname]);
+
   const routeFilters = useMemo(() => {
-    if (location.pathname.includes('/perfumes/men')) {
-      return { genres: ['men'], type: 'multiple' };
-    } else if (location.pathname.includes('/perfumes/women')) {
-      return { genres: ['women'], type: 'multiple' };
-    } else if (location.pathname.includes('/lattafa-rasasi')) {
-      return { brands: ['lattafa', 'rasasi'], type: 'single' };
-    } else if (location.pathname.includes('/original')) {
-      return { type: 'single', excludeBrands: ['lattafa', 'rasasi'] };
-    } else if (location.pathname.includes('/makeup')) {
-      return { type: 'makeup' };
-    } else if (location.pathname.includes('/watches')) {
-      return { type: 'watch' };
-    } else if (location.pathname.includes('/musk')) {
-      return { type: 'musk' };
-    } else if (location.pathname.includes('/refresheners')) {
-      return { types: ['air', 'furniture'] };
-    }else if (location.pathname.includes('/perfumes')) {
+  if (location.pathname.includes('/perfumes/men')) {
+    return { genres: ['men'], type: 'multiple' };
+  } else if (location.pathname.includes('/perfumes/women')) {
+    return { genres: ['women'], type: 'multiple' };
+  } else if (location.pathname.includes('/lattafa-rasasi')) {
+    return { brands: ['lattafa', 'rasasi'], type: 'single' };
+  } else if (location.pathname.includes('/original')) {
+    return { type: 'single', excludeBrands: ['lattafa', 'rasasi'] };
+  } 
+  // Non-perfume routes (unchanged)
+  else if (location.pathname.includes('/makeup')) {
+    return { type: 'makeup' };
+  } else if (location.pathname.includes('/watches')) {
+    return { type: 'watch' };
+  } else if (location.pathname.includes('/musk')) {
+    return { type: 'musk' };
+  } else if (location.pathname.includes('/refresheners')) {
+    return { type: ['air', 'furniture'] }; // Changed to `type` for consistency
+  }
+  // General '/perfumes' route (allows both single & multiple)
+  else if (location.pathname.includes('/perfumes')) {
     return { type: ['single', 'multiple'] }; // Explicitly allow both
   }
 
-    return {};
-  }, [location.pathname]);
-
+  return {}; // Fallback for unknown routes
+}, [location.pathname]);
   // ✅ Reset filters when location changes
   useEffect(() => {
     setCurrentPage(1);
