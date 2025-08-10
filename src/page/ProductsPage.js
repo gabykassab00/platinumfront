@@ -5741,7 +5741,9 @@ const ProductsPage = () => {
       return { type: 'musk' };
     } else if (location.pathname.includes('/refresheners')) {
       return { types: ['air', 'furniture'] };
-    }
+    }else if (location.pathname.includes('/perfumes')) {
+    return { type: ['single', 'multiple'] }; // Explicitly allow both
+  }
 
     return {};
   }, [location.pathname]);
