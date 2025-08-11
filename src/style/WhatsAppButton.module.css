@@ -1,7 +1,7 @@
 /* WhatsApp Float Button Styles */
 .whatsappFloat {
   position: fixed;
-  right: 40px; /* Moved further right on desktop */
+  right: 60px; /* Moved further right on desktop */
   bottom: 80px; /* Lifted up from original position */
   z-index: 1000;
   animation: pulse 2s infinite;
@@ -30,13 +30,13 @@
 /* Mobile responsiveness - smaller and adjusted position */
 @media (max-width: 768px) {
   .whatsappFloat {
-    right: 25px; /* Moved slightly left from desktop position */
+    right: 45px; /* Moved slightly left from desktop position */
     bottom: 70px; /* Higher than desktop for better thumb reach */
   }
   
   .whatsappIcon {
-    width: 48px; /* More compact size */
-    height: 48px;
+    width: 35px; /* More compact size */
+    height: 35px;
     padding: 10px;
     font-size: 28px; /* Smaller icon proportionally */
   }
