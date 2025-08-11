@@ -31,7 +31,7 @@
 @media (max-width: 768px) {
   .whatsappFloat {
     right: 5px; /* Moved slightly left from desktop position */
-    bottom: 20px; /* Higher than desktop for better thumb reach */
+    bottom: 40px; /* Higher than desktop for better thumb reach */
   }
   
   .whatsappIcon {
