@@ -237,6 +237,7 @@ import BackTop from './components/common/BackTop';
 import SidebarBasket from './componen/SidebarBasket';
 import WhatsAppButton from './componen/WhatsAppButton'; // Import the WhatsApp button
 
+
 const AppLayout = () => {
   const location = useLocation();
   const isCheckout = location.pathname.startsWith('/checkout');
@@ -247,12 +248,8 @@ const AppLayout = () => {
       {!isCheckout && <SidebarBasket />}
       <RouterRoutes />
       {!isCheckout && <Footer />}
-      {!isCheckout && (
-        <>
-          <WhatsAppButton />
-          <BackTop />
-        </>
-      )}
+      {!isCheckout && <WhatsAppButton />} {/* Moved outside BackTop fragment */}
+      {!isCheckout && <BackTop />}
     </>
   );
 };
