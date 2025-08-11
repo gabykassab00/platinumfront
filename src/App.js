@@ -151,6 +151,80 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+// import { useLocation } from 'react-router-dom';
+// import { CommonProvider } from './contexts/common/commonContext';
+// import { CartProvider } from './contexts/cart/cartContext';
+// import { BasketProvider } from './context/BasketProvider';
+// import { FiltersProvider } from './contexts/filters/filtersContext';
+// import Header from './components/common/Header';
+// import Footer from './components/common/Footer';
+// import RouterRoutes from './routes/RouterRoutes';
+// import BackTop from './components/common/BackTop';
+// import SidebarBasket from './componen/SidebarBasket';
+
+// const AppLayout = () => {
+//   const location = useLocation();
+//   const isCheckout = location.pathname.startsWith('/checkout');
+
+//   return (
+//     <>
+//       {!isCheckout && <Header />}
+//       {!isCheckout && <SidebarBasket />}
+//       <RouterRoutes />
+//       {!isCheckout && <Footer />}
+//       {!isCheckout && <BackTop />}
+//     </>
+//   );
+// };
+
+// const App = () => {
+//   return (
+//     <CommonProvider>
+//       <FiltersProvider>
+//         <CartProvider>
+//           <BasketProvider>
+//             <AppLayout />
+//           </BasketProvider>
+//         </CartProvider>
+//       </FiltersProvider>
+//     </CommonProvider>
+//   );
+// };
+
+// export default App
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { useLocation } from 'react-router-dom';
 import { CommonProvider } from './contexts/common/commonContext';
 import { CartProvider } from './contexts/cart/cartContext';
@@ -161,6 +235,7 @@ import Footer from './components/common/Footer';
 import RouterRoutes from './routes/RouterRoutes';
 import BackTop from './components/common/BackTop';
 import SidebarBasket from './componen/SidebarBasket';
+import WhatsAppButton from './componen/WhatsAppButton'; // Import the WhatsApp button
 
 const AppLayout = () => {
   const location = useLocation();
@@ -172,7 +247,12 @@ const AppLayout = () => {
       {!isCheckout && <SidebarBasket />}
       <RouterRoutes />
       {!isCheckout && <Footer />}
-      {!isCheckout && <BackTop />}
+      {!isCheckout && (
+        <>
+          <WhatsAppButton />
+          <BackTop />
+        </>
+      )}
     </>
   );
 };
@@ -191,4 +271,4 @@ const App = () => {
   );
 };
 
-export default App
+export default App;
