@@ -1,7 +1,7 @@
 // WhatsAppButton.js
 import React from 'react';
 import { FaWhatsapp } from 'react-icons/fa'; // Using react-icons library
-import './WhatsAppButton.css'; // We'll create this next
+import '../style/WhatsAppButton.module.css'; // We'll create this next
 
 const WhatsAppButton = () => {
   // Replace with your actual WhatsApp number (without +, spaces, or special characters)
