@@ -1,7 +1,7 @@
 /* WhatsApp Float Button Styles */
 .whatsappFloat {
   position: fixed;
-  right: 60px; /* Moved further right on desktop */
+  right: 20px; /* Moved further right on desktop */
   bottom: 80px; /* Lifted up from original position */
   z-index: 1000;
   animation: pulse 2s infinite;
