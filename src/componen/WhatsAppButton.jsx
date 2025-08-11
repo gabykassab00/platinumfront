@@ -1,26 +1,23 @@
 // WhatsAppButton.js
 import React from 'react';
-import { FaWhatsapp } from 'react-icons/fa'; // Using react-icons library
-import '../style/WhatsAppButton.module.css'; // We'll create this next
+import { FaWhatsapp } from 'react-icons/fa';
+import styles from '../style/WhatsAppButton.module.css'; // Import as styles object
 
 const WhatsAppButton = () => {
-  // Replace with your actual WhatsApp number (without +, spaces, or special characters)
-  const phoneNumber = '1234567890'; 
-  // Optional pre-filled message
+  const phoneNumber = '1234567890'; // Replace with your number
   const message = 'Hello! I need help with my order...';
   
-  // Generate the WhatsApp URL
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   return (
-    <div className="whatsapp-float">
+    <div className={styles.whatsappFloat}>
       <a
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with us on WhatsApp"
       >
-        <FaWhatsapp className="whatsapp-icon" />
+        <FaWhatsapp className={styles.whatsappIcon} />
       </a>
     </div>
   );
