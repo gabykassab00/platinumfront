@@ -1,9 +1,10 @@
+/* WhatsApp Float Button Styles */
 .whatsappFloat {
   position: fixed;
-  bottom: 30px;
   right: 30px;
+  bottom: 80px; /* Lifted up by 10px from original 90px */
   z-index: 1000;
-  animation: pulse 2s infinite; /* optional pulse animation */
+  animation: pulse 2s infinite;
 }
 
 .whatsappIcon {
@@ -16,6 +17,9 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .whatsappIcon:hover {
@@ -23,8 +27,24 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .whatsappFloat {
+    bottom: 60px; /* Slightly higher on mobile */
+    right: 20px; /* Closer to edge on mobile */
+  }
+  
+  .whatsappIcon {
+    width: 50px; /* Smaller on mobile */
+    height: 50px;
+    padding: 10px;
+    font-size: 30px; /* Smaller icon */
+  }
+}
+
+/* Animation */
 @keyframes pulse {
   0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  50% { transform: scale(1.05); } /* More subtle pulse */
   100% { transform: scale(1); }
 }
