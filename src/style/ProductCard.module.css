@@ -2732,16 +2732,16 @@
 
 .addToCartButton .flipFront,
 .addToCartButton .flipBack {
-  background-color: black; /* Black background */
-  color: white;            /* White text/icon */
+  background-color: transparent; /* Black background */
+  color: black;            /* White text/icon */
   font-size: 1rem;
   border: 1px solid black;
 }
 
 .addToCartButton .flipFront:hover,
 .addToCartButton .flipBack:hover {
-  background-color: white; /* Invert on hover */
-  color: black;            /* Black text on white */
+  background-color: black; /* Invert on hover */
+  color: white;            /* Black text on white */
   border: 1px solid black;
 }
 
