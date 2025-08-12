@@ -2711,19 +2711,47 @@
   box-shadow: none;
 }
 
-.addToCartButton .flipFront,
+/* .addToCartButton .flipFront,
 .addToCartButton .flipBack {
   background-color: transparent;
   color: black;
   font-size: 1rem;
-  border: 1px solid black; /* Kept original style */
+  border: 1px solid black; 
 }
 
 .addToCartButton .flipFront:hover,
 .addToCartButton .flipBack:hover {
   background-color: black;
-  border: 1px solid black; /* Kept original style */
+  border: 1px solid black; 
+} */
+
+
+
+
+
+
+.addToCartButton .flipFront,
+.addToCartButton .flipBack {
+  background-color: black; /* Black background */
+  color: white;            /* White text/icon */
+  font-size: 1rem;
+  border: 1px solid black;
 }
+
+.addToCartButton .flipFront:hover,
+.addToCartButton .flipBack:hover {
+  background-color: white; /* Invert on hover */
+  color: black;            /* Black text on white */
+  border: 1px solid black;
+}
+
+
+
+
+
+
+
+
 
 .flipFront {
   font-size: 1rem;
