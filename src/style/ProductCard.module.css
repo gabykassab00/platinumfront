@@ -2821,15 +2821,14 @@
     font-size: 0.8rem;
   }
 
-  /* Keep your original tweak for the 2nd (Medium) button container if desired */
+  /* Keep container tweak if you still want it */
   .priceButtons .flipButton:nth-child(2) {
-    font-size: 0.2rem;
+    font-size: 0.8rem; /* Match others so 80ml stays same size */
   }
 
-  /* NEW: Ensure the 2nd button's text ("80ml" / "Medium") is smaller and fits */
-  .priceButtons .flipButton:nth-child(2) .flipFront,
+  /* Only shrink the "Medium" back face text */
   .priceButtons .flipButton:nth-child(2) .flipBack {
-    font-size: 0.65rem; /* adjust as needed (0.6–0.7 works well) */
+    font-size: 0.65rem;
   }
 
   .flipFront {
