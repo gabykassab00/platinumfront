@@ -2532,3 +2532,25 @@
   position: relative;
   padding-left: 0.5rem;
 }
+
+/* A fixed portrait box that everything must fit inside */
+.imageViewport {
+  position: relative;
+  width: 100%;
+  max-width: 480px;          /* tweak for your layout */
+  aspect-ratio: 3 / 4;       /* portrait frame (e.g., 3:4) */
+  overflow: hidden;          /* hide overflow */
+  border-radius: 12px;       /* optional */
+  background: #fff;          /* invisible on white pages; keep or remove */
+  display: grid;
+  place-items: center;       /* perfectly center the image */
+}
+
+/* Make any image conform to the viewport without distortion */
+.imageViewport img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;       /* letterbox inside the frame */
+  object-position: center;
+}
+
