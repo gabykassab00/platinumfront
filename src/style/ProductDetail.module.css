@@ -2495,7 +2495,7 @@
 
 .title {
   position: absolute;
-  top: 50px;
+  top: 80px;
   left: 15px;
   right: 15px;
   font-size: 1.5rem;
@@ -2506,7 +2506,7 @@
 
 .priceRow {
   position: absolute;
-  top: 110px;
+  top: 140px;
   left: 15px;
   font-size: 1.2rem;
   font-weight: bold;
