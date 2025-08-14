@@ -3283,52 +3283,103 @@ const CheckoutPage = () => {
     return !Object.values(newErrors).some(error => error);
   };
 
-  const handleCompleteOrder = () => {
-    const isValid = validateInputs();
+  // const handleCompleteOrder = () => {
+  //   const isValid = validateInputs();
     
-    if (!isValid) {
-      return; // Don't proceed if validation fails
+  //   if (!isValid) {
+  //     return; // Don't proceed if validation fails
+  //   }
+
+  //   const orderDetails = basketItems
+  //     .map((item, index) => {
+  //       return `
+  //         <tr>
+  //           <td style="padding: 8px;">${index + 1}</td>
+  //           <td style="padding: 8px;">${item.name}</td>
+  //           <td style="padding: 8px;">${item.size}</td>
+  //           <td style="padding: 8px;">${item.quantity}</td>
+  //           <td style="padding: 8px;">$${(item.price * item.quantity).toFixed(2)}</td>
+  //         </tr>`;
+  //     })
+  //     .join('');
+
+  //   const templateParams = {
+  //     customer_email: emailRef.current.value,
+  //     first_name: firstNameRef.current.value,
+  //     last_name: lastNameRef.current.value,
+  //     delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
+  //     order_total: total.toFixed(2),
+  //     order_details: orderDetails
+  //   };
+
+  //   emailjs
+  //     .send(
+  //       process.env.REACT_APP_EMAILJS_SERVICE_ID,
+  //       process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+  //       templateParams,
+  //       process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+  //     )
+  //     .then((result) => {
+  //       console.log('✅ Email sent', result.text);
+  //       clearCart();
+  //       setShowPopup(true);
+  //     })
+  //     .catch((error) => {
+  //       console.error('❌ Email send failed:', error);
+  //       alert('Order submitted but email failed to send.');
+  //     });
+  // };
+
+  const handleCompleteOrder = () => {
+  const isValid = validateInputs();
+  
+  if (!isValid) {
+    // If screen is small, scroll to top
+    if (window.innerWidth <= 768) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    return; // Don't proceed if validation fails
+  }
 
-    const orderDetails = basketItems
-      .map((item, index) => {
-        return `
-          <tr>
-            <td style="padding: 8px;">${index + 1}</td>
-            <td style="padding: 8px;">${item.name}</td>
-            <td style="padding: 8px;">${item.size}</td>
-            <td style="padding: 8px;">${item.quantity}</td>
-            <td style="padding: 8px;">$${(item.price * item.quantity).toFixed(2)}</td>
-          </tr>`;
-      })
-      .join('');
+  const orderDetails = basketItems
+    .map((item, index) => {
+      return `
+        <tr>
+          <td style="padding: 8px;">${index + 1}</td>
+          <td style="padding: 8px;">${item.name}</td>
+          <td style="padding: 8px;">${item.size}</td>
+          <td style="padding: 8px;">${item.quantity}</td>
+          <td style="padding: 8px;">$${(item.price * item.quantity).toFixed(2)}</td>
+        </tr>`;
+    })
+    .join('');
 
-    const templateParams = {
-      customer_email: emailRef.current.value,
-      first_name: firstNameRef.current.value,
-      last_name: lastNameRef.current.value,
-      delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
-      order_total: total.toFixed(2),
-      order_details: orderDetails
-    };
-
-    emailjs
-      .send(
-        process.env.REACT_APP_EMAILJS_SERVICE_ID,
-        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
-        templateParams,
-        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
-      )
-      .then((result) => {
-        console.log('✅ Email sent', result.text);
-        clearCart();
-        setShowPopup(true);
-      })
-      .catch((error) => {
-        console.error('❌ Email send failed:', error);
-        alert('Order submitted but email failed to send.');
-      });
+  const templateParams = {
+    customer_email: emailRef.current.value,
+    first_name: firstNameRef.current.value,
+    last_name: lastNameRef.current.value,
+    delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
+    order_total: total.toFixed(2),
+    order_details: orderDetails
   };
+
+  emailjs
+    .send(
+      process.env.REACT_APP_EMAILJS_SERVICE_ID,
+      process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+      templateParams,
+      process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+    )
+    .then((result) => {
+      console.log('✅ Email sent', result.text);
+      clearCart();
+      setShowPopup(true);
+    })
+    .catch((error) => {
+      console.error('❌ Email send failed:', error);
+      alert('Order submitted but email failed to send.');
+    });
+};
 
   useEffect(() => {
     if (showPopup) {
