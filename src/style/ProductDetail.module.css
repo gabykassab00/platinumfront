@@ -2553,4 +2553,11 @@
   object-fit: contain;       /* letterbox inside the frame */
   object-position: center;
 }
+/* Only in the Related (You may also like) area, only on small screens,
+   only the back face of the 2nd size button ("Medium") */
+@media (max-width: 576px) {
+  :global(.relatedGrid .priceButtons .flipButton:nth-child(2) .flipBack) {
+    font-size: 0.65rem; /* tweak as needed */
+  }
+}
 
