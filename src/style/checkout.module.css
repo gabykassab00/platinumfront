@@ -1502,3 +1502,27 @@ input[type="radio"] {
   font-size: 0.8rem;
   margin-top: 0.25rem;
 }
+
+
+
+.promoNotice {
+  margin-bottom: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  background: #ecfdf5;          /* soft green */
+  color: #065f46;                /* deep green text */
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #a7f3d0;
+}
+
+/* Optional: make it a bit tighter on mobile */
+@media (max-width: 768px) {
+  .promoNotice {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.7rem;
+  }
+}
