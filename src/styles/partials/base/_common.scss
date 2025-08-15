@@ -45,18 +45,6 @@
     overflow: hidden;
 }
 
-// .btn {
-//     display: inline-block;
-//     background-color: rgba($color: grey, $alpha: 0.8);
-//     color: #fff;
-//     padding: 0.8rem 1.5rem;
-//     border-radius: 3px;
-//     @include transition(background-color, 0.2s, ease-out);
-
-//     &:hover {
-//         background-color: var(--main-color);
-//     }
-// }
 
 
 .btn {
@@ -260,5 +248,27 @@
 
   @include devices(sm) {
     width: 220px;
+  }
+}
+
+
+/* Tighten hero spacing on small screens */
+@include devices(sm) {
+  /* Pull the dots up & remove extra bottom padding from the slide */
+  #hero .swiper,
+  #hero-swiper {
+    padding-bottom: 0.25rem !important;        // instead of the 3rem
+    --swiper-pagination-bottom: 6px;           // works with Swiper v8+
+  }
+
+  /* Fallback if the CSS var is ignored */
+  #hero .swiper .swiper-pagination {
+    bottom: 6px !important;
+  }
+
+  /* Reduce extra space introduced by the button rule */
+  #hero .shop-btn {
+    margin-top: 0.75rem !important;            // was 2rem from the global .btn
+    margin-bottom: 0 !important;               // ensure no extra space below
   }
 }
