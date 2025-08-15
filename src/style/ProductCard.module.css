@@ -2775,14 +2775,16 @@
 }
 
 .current {
-  color: #000000;              /* gold */
+  color: #000000; /* Darkest black */
   font-size: 1.6rem;
-  font-weight: bold;
+  font-weight: normal; /* Removed bold */
   font-style: italic;
-  font-family: 'Roboto', sans-serif;
+  font-family: Arial Narrow, sans-serif; /* Condensed look */
+  font-stretch: condensed;
   letter-spacing: 0.5px;
   text-shadow: 0.5px 0.5px 0 rgba(0, 0, 0, 0.1);
 }
+
 
 .errorMessage {
   color: #ef4444;
