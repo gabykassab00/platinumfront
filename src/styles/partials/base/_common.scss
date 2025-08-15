@@ -275,7 +275,7 @@
 
 @include devices(sm) {
   #hero .swiper-pagination {
-    bottom: 40px !important; // lift closer to the button
+    bottom: 80px !important; // lift closer to the button
   }
 
   // Reduce extra gap below the button
