@@ -2804,7 +2804,7 @@ header {
 
   /* keep the close button clear of the notch */
   .mobile-menu-close {
-    top: calc(env(safe-area-inset-top, 0) + 8px);
+    top: calc(env(safe-area-inset-top, 0) + 15px);
     right: 8px;
   }
 
