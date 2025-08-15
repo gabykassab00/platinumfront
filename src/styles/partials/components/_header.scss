@@ -2776,6 +2776,55 @@ header {
   }
 }
 
-/* Rest of your existing header styles remain unchanged */
+/* iPhone 11-ish widths */
+@media (max-width: 414px) {
+  /* tighter navbar grid so items don’t collide */
+  .navbar {
+    grid-template-columns: auto 1fr auto auto;  /* ☰ | logo flex | search | cart */
+    gap: .25rem;
+    padding: .25rem 0;
+  }
+
+  .nav_logo a { font-size: 1.2rem; }
+  .nav_logo .logo-img { height: 64px; }
+
+  .hamburger,
+  .nav-search-mobile,
+  .nav_cart {
+    font-size: 1.8rem;
+    padding: .25rem;
+  }
+
+  /* mobile drawer sizing + safe-area */
+  .mobile-menu-container {
+    width: 70vw;                         /* a bit wider than 50vw for iPhone 11 */
+    height: 100dvh;                      /* fixes Safari 100vh bug */
+    padding-top: calc(env(safe-area-inset-top, 0) + 8px);
+  }
+
+  /* keep the close button clear of the notch */
+  .mobile-menu-close {
+    top: calc(env(safe-area-inset-top, 0) + 8px);
+    right: 8px;
+  }
+
+  /* push first list items below the header area */
+  .mobile-menu-nav .mobile-menu-list {
+    padding-top: calc(env(safe-area-inset-top, 0) + 56px);
+  }
+}
+
+/* If you keep the promo banner, make sure sticky header + drawer respect it */
+.promo-banner { padding-top: env(safe-area-inset-top, 0); }
+
+header.sticky { top: calc(30px + env(safe-area-inset-top, 0)); }
+
+/* Fallback for browsers without dynamic viewport units */
+@supports not (height: 100dvh) {
+  @media (max-width: 414px) {
+    .mobile-menu-container { height: calc(100vh - env(safe-area-inset-top, 0)); }
+  }
+}
+
 
 
