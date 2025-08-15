@@ -2839,6 +2839,6 @@ header.sticky { top: calc(30px + env(safe-area-inset-top, 0)); }
 /* (Optional) if the X is too high under the notch, push it down a bit more on 414px screens */
 @media (max-width: 414px) {
   .mobile-menu-close {
-    top: calc(env(safe-area-inset-top, 0) + 20px); // adjust to taste
+    top: calc(env(safe-area-inset-top, 0) + 25px); // adjust to taste
   }
 }
