@@ -107,3 +107,8 @@
         width: 75%;
     }
 }
+@include devices(sm) {
+    .swiper-pagination {
+        bottom: 15px; // or even 10px
+    }
+}
