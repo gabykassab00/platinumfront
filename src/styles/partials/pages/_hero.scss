@@ -112,3 +112,30 @@
         bottom: 15px; // or even 10px
     }
 }
+
+@include devices(sm) {
+  #hero {
+    .swiper {
+      // Reduce bottom padding to pull dots up
+      padding-bottom: 0.75rem;
+    }
+
+    .swiper-pagination {
+      // Move dots closer to button
+      bottom: 8px;
+    }
+  }
+
+  .hero_item_txt {
+    .hero_price {
+      // Less gap under "Shop Now"
+      margin-bottom: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .hero_price .btn,
+    .hero_price button {
+      margin-bottom: 0;
+    }
+  }
+}
