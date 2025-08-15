@@ -225,7 +225,7 @@
 @media (max-width: 480px) {
   .platformSection {
     padding: 1.5rem 1rem; /* even less space on very small screens */
-    margin-top: -3rem; /* pull video section closer to hero */
+    margin-top: -2rem; /* pull video section closer to hero */
   }
 
   .platformTitle {

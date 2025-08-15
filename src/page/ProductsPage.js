@@ -5818,75 +5818,6 @@ useEffect(() => {
     setMobileSortOpen(false);
   }, []);
 
-//   const filteredProducts = useMemo(() => {
-//     const { brands, genres, price } = filters;
-//     let result = [...products];
-
-//     result = result.filter(product => product.price <= price);
-
-//     if (routeFilters.genres?.length > 0) {
-//       result = result.filter(product =>
-//         routeFilters.genres.some(rg =>
-//           product.genre?.toLowerCase() === rg.toLowerCase()
-//         )
-//       );
-//     }
-
-//     if (routeFilters.brands?.length > 0) {
-//       result = result.filter(product =>
-//         routeFilters.brands.some(rb =>
-//           product.brand?.toLowerCase() === rb.toLowerCase()
-//         )
-//       );
-//     }
-
-//     if (routeFilters.excludeBrands?.length > 0) {
-//       result = result.filter(product =>
-//         !routeFilters.excludeBrands.some(eb =>
-//           product.brand?.toLowerCase() === eb.toLowerCase()
-//         )
-//       );
-//     }
-
-//     if (routeFilters.type) {
-//       result = result.filter(product =>
-//         product.type?.toLowerCase() === routeFilters.type.toLowerCase()
-//       );
-//     } else if (routeFilters.types?.length > 0) {
-//       result = result.filter(product =>
-//         routeFilters.types.some(rt =>
-//           product.type?.toLowerCase() === rt.toLowerCase()
-//         )
-//       );
-//     }
-
-//     if (genres.length > 0) {
-//       result = result.filter(product =>
-//         genres.some(fg => product.genre?.toLowerCase() === fg.toLowerCase())
-//       );
-//     }
-
-// if (brands.length > 0) {
-//   if (location.pathname.includes('/refresheners')) {
-//     // brands used to store types for refresheners
-//     result = result.filter(product =>
-//       brands.some(fb => product.type?.toLowerCase() === fb.toLowerCase())
-//     );
-//   } else {
-//     result = result.filter(product =>
-//       brands.some(fb => product.brand?.toLowerCase() === fb.toLowerCase())
-//     );
-//   }
-// }
-
-
-
-//     const sortFunction = sortFunctions[selectedSort] || sortFunctions.newest;
-//     return result.sort(sortFunction);
-//   }, [products, filters, routeFilters, selectedSort]);
-
-
-
 const filteredProducts = useMemo(() => {
   const { brands, genres, price } = filters;
   let result = [...products];
@@ -5953,7 +5884,7 @@ const filteredProducts = useMemo(() => {
     }
   }
 
-  const sortFunction = sortFunctions[selectedSort] || sortFunctions.newest;
+  const sortFunction = sortFunctions[selectedSort] || sortFunctions.priceLowToHigh;
   return result.sort(sortFunction);
 }, [products, filters, routeFilters, selectedSort, location.pathname]);
 
