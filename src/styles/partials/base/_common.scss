@@ -272,3 +272,14 @@
     margin-bottom: 0 !important;               // ensure no extra space below
   }
 }
+
+@include devices(sm) {
+  #hero .swiper-pagination {
+    bottom: 40px !important; // lift closer to the button
+  }
+
+  // Reduce extra gap below the button
+  #hero .shop-btn {
+    margin-bottom: 0.5rem !important;
+  }
+}
