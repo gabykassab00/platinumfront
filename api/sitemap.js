@@ -1,6 +1,6 @@
-// /api/sitemap.js  (Vercel Serverless Function)
-const SITE_URL = 'https://platinumperfumeslb.com';
-const API_URL = process.env.API_URL || 'https://platinumperfumeslb.com';
+// api/sitemap.js
+const SITE_URL = process.env.REACT_APP_SITE_URL || 'https://platinumperfumeslb.com';
+const API_URL = SITE_URL; // same as site URL unless you change it later
 
 // XML escape helper
 const esc = (s) =>
@@ -21,9 +21,8 @@ const urlEntry = ({ path, changefreq = 'weekly', priority = '0.7', lastmod }) =>
 
 module.exports = async (req, res) => {
   try {
-    // Static pages
     const staticPages = [
-      { path: '/', changefreq: 'daily',  priority: '1.0' },
+      { path: '/', changefreq: 'daily', priority: '1.0' },
       { path: '/about', changefreq: 'monthly', priority: '0.8' },
       { path: '/contact', changefreq: 'monthly', priority: '0.8' },
       { path: '/perfumes', changefreq: 'weekly', priority: '0.8' },
@@ -37,7 +36,6 @@ module.exports = async (req, res) => {
       { path: '/makeup', changefreq: 'weekly', priority: '0.6' },
     ];
 
-    // Products -> product detail URLs
     const resp = await fetch(`${API_URL}/api/products`);
     const products = resp.ok ? await resp.json() : [];
 
@@ -60,9 +58,9 @@ module.exports = async (req, res) => {
       `</urlset>`;
 
     res.setHeader('Content-Type', 'application/xml; charset=UTF-8');
-    res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=43200'); // 12h edge cache
+    res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=43200'); // 12h
     res.status(200).send(xml);
-  } catch (err) {
+  } catch (e) {
     res.status(500).send('<!-- sitemap generation error -->');
   }
 };
