@@ -2828,3 +2828,17 @@ header.sticky { top: calc(30px + env(safe-area-inset-top, 0)); }
 
 
 
+/* Overlay behind mobile drawers */
+.scrim-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  z-index: 1000; // just below .mobile-menu-container (1001) and search (1002)
+}
+
+/* (Optional) if the X is too high under the notch, push it down a bit more on 414px screens */
+@media (max-width: 414px) {
+  .mobile-menu-close {
+    top: calc(env(safe-area-inset-top, 0) + 20px); // adjust to taste
+  }
+}
