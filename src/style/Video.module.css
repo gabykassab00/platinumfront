@@ -172,7 +172,8 @@
 
 @media (max-width: 768px) {
   .platformSection {
-    padding: 3rem 1.5rem;
+    padding: 2rem 1.5rem;
+    margin-top: -1rem;
   }
   
   .platformContainer {
@@ -201,7 +202,32 @@
   }
 }
 
+/* @media (max-width: 480px) {
+  .platformTitle {
+    font-size: 2rem;
+  }
+  
+  .platformSubtitle {
+    font-size: 1.2rem;
+  }
+  
+  .statsContainer {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .statBox {
+    width: 100%;
+    min-width: auto;
+  }
+} */
+
 @media (max-width: 480px) {
+  .platformSection {
+    padding: 1.5rem 1rem; /* even less space on very small screens */
+    margin-top: -1.5rem; /* pull video section closer to hero */
+  }
+
   .platformTitle {
     font-size: 2rem;
   }
