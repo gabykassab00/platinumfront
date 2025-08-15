@@ -1693,48 +1693,259 @@
 
 
 
+// import React, { useState, useMemo, useCallback } from 'react';
+// import styles from '../style/ProductCard.module.css';
+// import { FaShoppingCart } from 'react-icons/fa';
+// import { useBasket } from '../context/BasketProvider';
+// import { useNavigate } from 'react-router-dom';
+
+// const ProductCard = React.memo(({ product }) => {
+//   const { addItem, openSidebar } = useBasket();
+//   const [selectedSize, setSelectedSize] = useState(null);
+//   const [sizeError, setSizeError] = useState(false);
+//   const navigate = useNavigate();
+
+//   const API_URL = process.env.REACT_APP_API_URL;
+//   const imageUrl = useMemo(() => `${API_URL}/${product.image_path}`, [product.image_path, API_URL]);
+
+//   const basePrice = useMemo(() => parseFloat(product.price), [product.price]);
+//   const discount = product.discount || 0;
+//   const isMultipleType = product.type === 'multiple';
+//   const isMuskType = product.type === 'musk';
+
+//   const getPriceForSize = useCallback((size) => {
+//     if (isMuskType) {
+//       switch (size) {
+//         case 6: return basePrice * 0.5;
+//         case 12: return basePrice * 1;
+//         default: return basePrice;
+//       }
+//     } else {
+//       switch (size) {
+//         case 50: return 10;
+//         case 80: return 15;
+//         case 100: return basePrice;
+//         default: return basePrice;
+//       }
+//     }
+//   }, [basePrice, isMuskType]);
+
+//   const currentPrice = selectedSize ? getPriceForSize(selectedSize) : basePrice;
+
+//   const originalPrice = useMemo(() => (
+//     discount > 0 ? (basePrice / (1 - discount)).toFixed(2) : basePrice.toFixed(2)
+//   ), [basePrice, discount]);
+
+//   const handleAddToBasket = () => {
+//     if ((isMultipleType || isMuskType) && !selectedSize) {
+//       setSizeError(true);
+//       return;
+//     }
+
+//     const productToAdd = {
+//       ...product,
+//       price: (isMultipleType || isMuskType) ? currentPrice.toFixed(2) : basePrice.toFixed(2),
+//       ...((isMultipleType || isMuskType) && { size: `${selectedSize}ml`, sizeValue: selectedSize }),
+//     };
+
+//     addItem(productToAdd);
+//     openSidebar();
+//     setSizeError(false);
+//   };
+
+//   const handleSizeSelect = (size) => {
+//     setSelectedSize(size);
+//     setSizeError(false);
+//   };
+
+//   const handleImageClick = () => {
+//     navigate(`/product-details/${product.id}`);
+//   };
+
+//   const getSizeOptions = () => {
+//     if (isMuskType) return [6, 12];
+//     return [50, 80, 100];
+//   };
+
+//   const sizeOptions = getSizeOptions();
+
+//   return (
+//     <div className={styles.card}>
+//       <div className={styles.imageContainer} onClick={handleImageClick}>
+//         <img
+//           src={imageUrl}
+//           alt={product.name}
+//           loading="lazy"
+//           onError={(e) => {
+//             e.target.onerror = null;
+//             e.target.src = 'https://via.placeholder.com/150';
+//           }}
+//         />
+//         {discount > 0 && (
+//           <div className={styles.discountBadge}>
+//             -{Math.round(discount * 100)}%
+//           </div>
+//         )}
+//       </div>
+
+//       <div className={styles.cardContent}>
+//         {(isMultipleType || isMuskType) && (
+//           <div className={styles.sizeSection}>
+//             <div className={styles.priceButtons}>
+//               {sizeOptions.map((size) => (
+//                 <div
+//                   key={size}
+//                   className={`${styles.flipButton} ${selectedSize === size ? styles.selectedSize : ''}`}
+//                   onClick={() => handleSizeSelect(size)}
+//                 >
+//                   <div className={styles.flipInner}>
+//                     <div className={styles.flipFront}>{size}ml</div>
+//                     <div className={styles.flipBack}>
+//                       {isMuskType
+//                         ? (size === 6 ? 'Small' : 'Large')
+//                         : (size === 50 ? 'Small' : size === 80 ? 'Medium' : 'Large')}
+//                     </div>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//             {sizeError && (
+//               <div className={styles.errorMessage}>
+//                 Please select a size before adding to cart
+//               </div>
+//             )}
+//           </div>
+//         )}
+
+//         {(product.type === 'furniture' || product.type === 'air') && (
+//           <div className={styles.sizeSection}>
+//             <p className={styles.sizeText}>
+//               {product.type === 'furniture' ? '320 ml' : '500 ml'}
+//             </p>
+//           </div>
+//         )}
+
+//         <div className={styles.footer}>
+//           <div className={styles.details}>
+//             <h3 className={styles.name}>{product.name}</h3>
+//             <div className={styles.price}>
+//               {discount > 0 && (
+//                 <span className={styles.original}>${originalPrice}</span>
+//               )}
+//               <span className={styles.current}>
+//                 {(isMultipleType || isMuskType) && selectedSize
+//                   ? `$${currentPrice.toFixed(2)}`
+//                   : `$${basePrice.toFixed(2)}`}
+//               </span>
+//             </div>
+//           </div>
+
+//           <div className={styles.addToCartButton}>
+//             <div className={styles.flipButton} onClick={handleAddToBasket}>
+//               <div className={styles.flipInner}>
+//                 <div className={styles.flipFront}>Add to Cart</div>
+//                 <div className={styles.flipBack}>
+//                   <FaShoppingCart />
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// });
+
+// export default ProductCard;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// src/componen/ProductCard.jsx
+
 import React, { useState, useMemo, useCallback } from 'react';
 import styles from '../style/ProductCard.module.css';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useBasket } from '../context/BasketProvider';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const ProductCard = React.memo(({ product }) => {
   const { addItem, openSidebar } = useBasket();
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeError, setSizeError] = useState(false);
-  const navigate = useNavigate();
 
   const API_URL = process.env.REACT_APP_API_URL;
-  const imageUrl = useMemo(() => `${API_URL}/${product.image_path}`, [product.image_path, API_URL]);
+  const SITE_URL = process.env.REACT_APP_SITE_URL || '';
+
+  const imageUrl = useMemo(
+    () => `${API_URL}/${product.image_path}`,
+    [product.image_path, API_URL]
+  );
+
+  const productUrl = useMemo(
+    () => `/product-details/${product.id}`,
+    [product.id]
+  );
 
   const basePrice = useMemo(() => parseFloat(product.price), [product.price]);
   const discount = product.discount || 0;
   const isMultipleType = product.type === 'multiple';
   const isMuskType = product.type === 'musk';
 
-  const getPriceForSize = useCallback((size) => {
-    if (isMuskType) {
-      switch (size) {
-        case 6: return basePrice * 0.5;
-        case 12: return basePrice * 1;
-        default: return basePrice;
+  const getPriceForSize = useCallback(
+    (size) => {
+      if (isMuskType) {
+        switch (size) {
+          case 6:
+            return basePrice * 0.5;
+          case 12:
+            return basePrice * 1;
+          default:
+            return basePrice;
+        }
+      } else {
+        switch (size) {
+          case 50:
+            return 10;
+          case 80:
+            return 15;
+          case 100:
+            return basePrice;
+          default:
+            return basePrice;
+        }
       }
-    } else {
-      switch (size) {
-        case 50: return 10;
-        case 80: return 15;
-        case 100: return basePrice;
-        default: return basePrice;
-      }
-    }
-  }, [basePrice, isMuskType]);
+    },
+    [basePrice, isMuskType]
+  );
 
   const currentPrice = selectedSize ? getPriceForSize(selectedSize) : basePrice;
 
-  const originalPrice = useMemo(() => (
-    discount > 0 ? (basePrice / (1 - discount)).toFixed(2) : basePrice.toFixed(2)
-  ), [basePrice, discount]);
+  const originalPrice = useMemo(
+    () => (discount > 0 ? (basePrice / (1 - discount)).toFixed(2) : basePrice.toFixed(2)),
+    [basePrice, discount]
+  );
 
   const handleAddToBasket = () => {
     if ((isMultipleType || isMuskType) && !selectedSize) {
@@ -1758,10 +1969,6 @@ const ProductCard = React.memo(({ product }) => {
     setSizeError(false);
   };
 
-  const handleImageClick = () => {
-    navigate(`/product-details/${product.id}`);
-  };
-
   const getSizeOptions = () => {
     if (isMuskType) return [6, 12];
     return [50, 80, 100];
@@ -1769,16 +1976,27 @@ const ProductCard = React.memo(({ product }) => {
 
   const sizeOptions = getSizeOptions();
 
+  const finalDisplayPrice =
+    (isMultipleType || isMuskType) && selectedSize
+      ? `$${currentPrice.toFixed(2)}`
+      : `$${basePrice.toFixed(2)}`;
+
   return (
-    <div className={styles.card}>
-      <div className={styles.imageContainer} onClick={handleImageClick}>
+    <article
+      className={styles.card}
+      itemScope
+      itemType="https://schema.org/Product"
+    >
+      {/* Image links to product detail for better internal linking */}
+      <Link to={productUrl} className={styles.imageContainer} aria-label={`View details for ${product.name}`}>
         <img
           src={imageUrl}
-          alt={product.name}
+          alt={`${product.name} by ${product.brand || 'Platinum'}`}
           loading="lazy"
+          itemProp="image"
           onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = 'https://via.placeholder.com/150';
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = 'https://via.placeholder.com/150';
           }}
         />
         {discount > 0 && (
@@ -1786,17 +2004,20 @@ const ProductCard = React.memo(({ product }) => {
             -{Math.round(discount * 100)}%
           </div>
         )}
-      </div>
+      </Link>
 
       <div className={styles.cardContent}>
         {(isMultipleType || isMuskType) && (
           <div className={styles.sizeSection}>
-            <div className={styles.priceButtons}>
+            <div className={styles.priceButtons} role="group" aria-label="Select size">
               {sizeOptions.map((size) => (
-                <div
+                <button
                   key={size}
+                  type="button"
                   className={`${styles.flipButton} ${selectedSize === size ? styles.selectedSize : ''}`}
                   onClick={() => handleSizeSelect(size)}
+                  aria-pressed={selectedSize === size}
+                  aria-label={`Select ${size} milliliters`}
                 >
                   <div className={styles.flipInner}>
                     <div className={styles.flipFront}>{size}ml</div>
@@ -1806,11 +2027,11 @@ const ProductCard = React.memo(({ product }) => {
                         : (size === 50 ? 'Small' : size === 80 ? 'Medium' : 'Large')}
                     </div>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
             {sizeError && (
-              <div className={styles.errorMessage}>
+              <div className={styles.errorMessage} role="alert">
                 Please select a size before adding to cart
               </div>
             )}
@@ -1827,32 +2048,47 @@ const ProductCard = React.memo(({ product }) => {
 
         <div className={styles.footer}>
           <div className={styles.details}>
-            <h3 className={styles.name}>{product.name}</h3>
+            {/* Name links to detail too (extra crawl path) */}
+            <h3 className={styles.name} itemProp="name">
+              <Link to={productUrl}>{product.name}</Link>
+            </h3>
+
             <div className={styles.price}>
               {discount > 0 && (
-                <span className={styles.original}>${originalPrice}</span>
+                <span className={styles.original} aria-label={`Original price ${originalPrice}`}>
+                  ${originalPrice}
+                </span>
               )}
-              <span className={styles.current}>
-                {(isMultipleType || isMuskType) && selectedSize
-                  ? `$${currentPrice.toFixed(2)}`
-                  : `$${basePrice.toFixed(2)}`}
+              <span className={styles.current} itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                <meta itemProp="priceCurrency" content="USD" />
+                <link itemProp="url" href={`${SITE_URL}${productUrl}`} />
+                <span itemProp="price" content={( (isMultipleType || isMuskType) && selectedSize ? currentPrice : basePrice ).toFixed(2)}>
+                  {finalDisplayPrice}
+                </span>
+                <meta itemProp="availability" content="https://schema.org/InStock" />
+                <meta itemProp="itemCondition" content="https://schema.org/NewCondition" />
               </span>
             </div>
           </div>
 
           <div className={styles.addToCartButton}>
-            <div className={styles.flipButton} onClick={handleAddToBasket}>
+            <button
+              type="button"
+              className={styles.flipButton}
+              onClick={handleAddToBasket}
+              aria-label={`Add ${product.name} to cart`}
+            >
               <div className={styles.flipInner}>
                 <div className={styles.flipFront}>Add to Cart</div>
                 <div className={styles.flipBack}>
-                  <FaShoppingCart />
+                  <FaShoppingCart aria-hidden="true" />
                 </div>
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 });
 

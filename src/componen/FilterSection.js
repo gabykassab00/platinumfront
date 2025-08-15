@@ -1094,14 +1094,208 @@
 
 
 
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
+// import { useLocation } from 'react-router-dom';
+// import styles from '../style/FilterSection.module.css';
+
+// const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }) => {
+//   const location = useLocation();
+
+//   // 🔻 Start all sections collapsed
+//   const [openSections, setOpenSections] = useState({
+//     brands: false,
+//     genres: false,
+//     price: false,
+//   });
+
+//   const toggleSection = (section) => {
+//     setOpenSections((prev) => ({
+//       ...prev,
+//       [section]: !prev[section],
+//     }));
+//   };
+
+//   const perfumeBrands = [
+//     'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel',
+//     'Paco Rabanne', 'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian',
+//     'Burberry', 'Nasomatto', 'Carolina Herrera', 'Bulgari', 'Lattafa', 'Tom Ford',
+//     'Ralph Lauren', 'Hugo Boss', 'Joop!', 'Givenchy', 'Dolce & Gabbana', 'Dior', 'Dunhill',
+//     'Cartier', 'Laura Biagiotti', 'Jacques Bogart', 'Nikos', 'Emporio Armani', 'Viktor & Rolf',
+//     'Calvin Klein', 'oud guerlain', 'taif', 'sunamusk', 'Gucci', 'Nautica or Hermès',
+//     'Ferrari', 'Fendi', 'Yves Saint Laurent', 'Issey Miyake', 'Creed', 'Kenzo', 'Louis Vuitton',
+//     'Lacoste', 'happy touch', 'Ted Lapidus', 'misk', 'maa althahab', 'Mercedes-Benz',
+//     'Montblanc', 'Police', 'Ajmal or Armaf', 'Roberto Cavalli', 'rave', 'Ajmal', 'Asdaaf',
+//     'Afnan', 'Mousouf', 'شمس الامارات', 'Victoria’s Secret', 'Britney Spears', 'Jardin de Parfums',
+//     'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Victoria secret', 'Mugler', 'Elie Saab',
+//     'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez', 'Prada', 'Chloé',
+//     'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic', 'sir', 'nasmat',
+//     'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly',
+//   ];
+
+//   const makeupBrands = ['Maybelline', 'Ruby Beauty', 'Samoa', 'dali', 'Ruby Rose'];
+
+//   let showFilter = true;
+//   let filterLabel = 'Brands';
+//   let filterOptions = [];
+
+//   if (location.pathname.includes('/makeup')) {
+//     filterOptions = makeupBrands;
+//   } else if (location.pathname.includes('/watches')) {
+//     filterOptions = ['Curren', 'Richard Mille'];
+//   } else if (location.pathname.includes('/musk')) {
+//     showFilter = false;
+//   } else if (location.pathname.includes('/lattafa-rasasi')) {
+//     filterOptions = ['Lattafa', 'Rasasi'];
+//   } else if (location.pathname.includes('/refresheners')) {
+//     filterLabel = 'Type';
+//     filterOptions = ['air', 'furniture'];
+//   } else {
+//     filterOptions = perfumeBrands;
+//   }
+
+//   if (showFilter) {
+//     filterOptions = [...new Set(filterOptions)].sort((a, b) => a.localeCompare(b));
+//   }
+
+//   const genres = [
+//     { value: 'Men', label: 'Men' },
+//     { value: 'Women', label: 'Women' },
+//     { value: 'Unisex', label: 'Unisex' },
+//   ];
+
+//   useEffect(() => {
+//     if (filters.brands.length === 0) {
+//       document.querySelectorAll('input[type="checkbox"][name="brand"]').forEach((cb) => (cb.checked = false));
+//     }
+//     if (filters.genres.length === 0) {
+//       document.querySelectorAll('input[type="checkbox"][name="genre"]').forEach((cb) => (cb.checked = false));
+//     }
+//   }, [filters]);
+
+//   useEffect(() => {
+//     onFilterChange('resetAll');
+//   }, [location.pathname]);
+
+//   return (
+//     <div className={styles['filter-section']}>
+//       <h3 className={styles['filter-title']}>Filter By</h3>
+
+//       {/* Brand/Type */}
+//       {showFilter && (
+//         <div className={styles['filter-group']}>
+//           <div className={styles['filter-header']} onClick={() => toggleSection('brands')}>
+//             <h4 className={styles['filter-subtitle']}>{filterLabel}</h4>
+//             <span className={styles['toggle-icon']}>{openSections.brands ? '−' : '+'}</span>
+//           </div>
+//           {openSections.brands && (
+//             <div className={styles['filter-options-container']}>
+//               {filterOptions.map((option) => (
+//                 <div key={option} className={styles['filter-option']}>
+//                   <input
+//                     type="checkbox"
+//                     id={`brand-${option}`}
+//                     name="brand"
+//                     checked={filters.brands.includes(option)}
+//                     onChange={() => onFilterChange('brands', option)}
+//                     className={styles['filter-checkbox']}
+//                   />
+//                   <label htmlFor={`brand-${option}`} className={styles['filter-label']}>
+//                     {option}
+//                   </label>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+//         </div>
+//       )}
+
+//       {/* Genre */}
+//       {!hideGenreFilter && (
+//         <div className={styles['filter-group']}>
+//           <div className={styles['filter-header']} onClick={() => toggleSection('genres')}>
+//             <h4 className={styles['filter-subtitle']}>Genre</h4>
+//             <span className={styles['toggle-icon']}>{openSections.genres ? '−' : '+'}</span>
+//           </div>
+//           {openSections.genres && (
+//             <div className={styles['filter-options-container']}>
+//               {genres.map((genre) => (
+//                 <div key={genre.value} className={styles['filter-option']}>
+//                   <input
+//                     type="checkbox"
+//                     id={`genre-${genre.value}`}
+//                     name="genre"
+//                     checked={filters.genres.includes(genre.value)}
+//                     onChange={() => onFilterChange('genres', genre.value)}
+//                     className={styles['filter-checkbox']}
+//                   />
+//                   <label htmlFor={`genre-${genre.value}`} className={styles['filter-label']}>
+//                     {genre.label}
+//                   </label>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+//         </div>
+//       )}
+
+//       {/* Price */}
+//       <div className={styles['filter-group']}>
+//         <div className={styles['filter-header']} onClick={() => toggleSection('price')}>
+//           <h4 className={styles['filter-subtitle']}>Price</h4>
+//           <span className={styles['toggle-icon']}>{openSections.price ? '−' : '+'}</span>
+//         </div>
+//         {openSections.price && (
+//           <div className={styles['price-filter-container']}>
+//             <input
+//               type="range"
+//               min="0"
+//               max="500"
+//               step="10"
+//               value={filters.price}
+//               onChange={(e) => onFilterChange('price', parseFloat(e.target.value))}
+//               className={styles['price-slider']}
+//             />
+//             <div className={styles['price-display']}>${filters.price.toFixed(2)}</div>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default FilterSection;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// src/components/FilterSection.jsx
+
+import React, { useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from '../style/FilterSection.module.css';
 
 const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }) => {
   const location = useLocation();
 
-  // 🔻 Start all sections collapsed
+  // Start all sections collapsed
   const [openSections, setOpenSections] = useState({
     brands: false,
     genres: false,
@@ -1109,92 +1303,113 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
   });
 
   const toggleSection = (section) => {
-    setOpenSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
+    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
-  const perfumeBrands = [
-    'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel',
-    'Paco Rabanne', 'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian',
-    'Burberry', 'Nasomatto', 'Carolina Herrera', 'Bulgari', 'Lattafa', 'Tom Ford',
-    'Ralph Lauren', 'Hugo Boss', 'Joop!', 'Givenchy', 'Dolce & Gabbana', 'Dior', 'Dunhill',
-    'Cartier', 'Laura Biagiotti', 'Jacques Bogart', 'Nikos', 'Emporio Armani', 'Viktor & Rolf',
-    'Calvin Klein', 'oud guerlain', 'taif', 'sunamusk', 'Gucci', 'Nautica or Hermès',
-    'Ferrari', 'Fendi', 'Yves Saint Laurent', 'Issey Miyake', 'Creed', 'Kenzo', 'Louis Vuitton',
-    'Lacoste', 'happy touch', 'Ted Lapidus', 'misk', 'maa althahab', 'Mercedes-Benz',
-    'Montblanc', 'Police', 'Ajmal or Armaf', 'Roberto Cavalli', 'rave', 'Ajmal', 'Asdaaf',
-    'Afnan', 'Mousouf', 'شمس الامارات', 'Victoria’s Secret', 'Britney Spears', 'Jardin de Parfums',
-    'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Victoria secret', 'Mugler', 'Elie Saab',
-    'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez', 'Prada', 'Chloé',
-    'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic', 'sir', 'nasmat',
-    'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly',
-  ];
+  // Brand pools
+  const perfumeBrands = useMemo(
+    () => [
+      'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel',
+      'Paco Rabanne', 'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian',
+      'Burberry', 'Nasomatto', 'Carolina Herrera', 'Bulgari', 'Lattafa', 'Tom Ford',
+      'Ralph Lauren', 'Hugo Boss', 'Joop!', 'Givenchy', 'Dolce & Gabbana', 'Dior', 'Dunhill',
+      'Cartier', 'Laura Biagiotti', 'Jacques Bogart', 'Nikos', 'Emporio Armani', 'Viktor & Rolf',
+      'Calvin Klein', 'oud guerlain', 'taif', 'sunamusk', 'Gucci', 'Nautica or Hermès',
+      'Ferrari', 'Fendi', 'Yves Saint Laurent', 'Issey Miyake', 'Creed', 'Kenzo', 'Louis Vuitton',
+      'Lacoste', 'happy touch', 'Ted Lapidus', 'misk', 'maa althahab', 'Mercedes-Benz',
+      'Montblanc', 'Police', 'Ajmal or Armaf', 'Roberto Cavalli', 'rave', 'Ajmal', 'Asdaaf',
+      'Afnan', 'Mousouf', 'شمس الامارات', 'Victoria’s Secret', 'Britney Spears', 'Jardin de Parfums',
+      'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Victoria secret', 'Mugler', 'Elie Saab',
+      'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez', 'Prada', 'Chloé',
+      'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic', 'sir', 'nasmat',
+      'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly',
+    ],
+    []
+  );
 
-  const makeupBrands = ['Maybelline', 'Ruby Beauty', 'Samoa', 'dali', 'Ruby Rose'];
+  const makeupBrands = useMemo(() => ['Maybelline', 'Ruby Beauty', 'Samoa', 'dali', 'Ruby Rose'], []);
 
-  let showFilter = true;
-  let filterLabel = 'Brands';
-  let filterOptions = [];
+  // Compute filter options based on route
+  const { showFilter, filterLabel, filterOptions } = useMemo(() => {
+    let show = true;
+    let label = 'Brands';
+    let options = [];
 
-  if (location.pathname.includes('/makeup')) {
-    filterOptions = makeupBrands;
-  } else if (location.pathname.includes('/watches')) {
-    filterOptions = ['Curren', 'Richard Mille'];
-  } else if (location.pathname.includes('/musk')) {
-    showFilter = false;
-  } else if (location.pathname.includes('/lattafa-rasasi')) {
-    filterOptions = ['Lattafa', 'Rasasi'];
-  } else if (location.pathname.includes('/refresheners')) {
-    filterLabel = 'Type';
-    filterOptions = ['air', 'furniture'];
-  } else {
-    filterOptions = perfumeBrands;
-  }
-
-  if (showFilter) {
-    filterOptions = [...new Set(filterOptions)].sort((a, b) => a.localeCompare(b));
-  }
-
-  const genres = [
-    { value: 'Men', label: 'Men' },
-    { value: 'Women', label: 'Women' },
-    { value: 'Unisex', label: 'Unisex' },
-  ];
-
-  useEffect(() => {
-    if (filters.brands.length === 0) {
-      document.querySelectorAll('input[type="checkbox"][name="brand"]').forEach((cb) => (cb.checked = false));
+    if (location.pathname.includes('/makeup')) {
+      options = makeupBrands;
+    } else if (location.pathname.includes('/watches')) {
+      options = ['Curren', 'Richard Mille'];
+    } else if (location.pathname.includes('/musk')) {
+      show = false; // hide brand filter on musk page
+    } else if (location.pathname.includes('/lattafa-rasasi')) {
+      options = ['Lattafa', 'Rasasi'];
+    } else if (location.pathname.includes('/refresheners')) {
+      label = 'Type';
+      options = ['air', 'furniture'];
+    } else {
+      options = perfumeBrands;
     }
-    if (filters.genres.length === 0) {
-      document.querySelectorAll('input[type="checkbox"][name="genre"]').forEach((cb) => (cb.checked = false));
-    }
-  }, [filters]);
 
+    if (show) {
+      options = [...new Set(options)].sort((a, b) => a.localeCompare(b));
+    }
+
+    return { showFilter: show, filterLabel: label, filterOptions: options };
+  }, [location.pathname, perfumeBrands, makeupBrands]);
+
+  const genres = useMemo(
+    () => [
+      { value: 'Men', label: 'Men' },
+      { value: 'Women', label: 'Women' },
+      { value: 'Unisex', label: 'Unisex' },
+    ],
+    []
+  );
+
+  // Reset all filters when route changes (matches your previous behavior)
   useEffect(() => {
     onFilterChange('resetAll');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
+  // IDs for aria-controls
+  const brandsPanelId = 'filter-brands-panel';
+  const genresPanelId = 'filter-genres-panel';
+  const pricePanelId  = 'filter-price-panel';
+
   return (
-    <div className={styles['filter-section']}>
-      <h3 className={styles['filter-title']}>Filter By</h3>
+    <section className={styles['filter-section']} aria-labelledby="filter-title">
+      <h3 id="filter-title" className={styles['filter-title']}>Filter By</h3>
 
       {/* Brand/Type */}
       {showFilter && (
         <div className={styles['filter-group']}>
-          <div className={styles['filter-header']} onClick={() => toggleSection('brands')}>
+          <button
+            type="button"
+            className={styles['filter-header']}
+            aria-expanded={openSections.brands}
+            aria-controls={brandsPanelId}
+            onClick={() => toggleSection('brands')}
+          >
             <h4 className={styles['filter-subtitle']}>{filterLabel}</h4>
-            <span className={styles['toggle-icon']}>{openSections.brands ? '−' : '+'}</span>
-          </div>
+            <span className={styles['toggle-icon']} aria-hidden="true">
+              {openSections.brands ? '−' : '+'}
+            </span>
+          </button>
+
           {openSections.brands && (
-            <div className={styles['filter-options-container']}>
+            <div
+              id={brandsPanelId}
+              role="region"
+              aria-label={`${filterLabel} options`}
+              className={styles['filter-options-container']}
+            >
               {filterOptions.map((option) => (
                 <div key={option} className={styles['filter-option']}>
                   <input
                     type="checkbox"
                     id={`brand-${option}`}
-                    name="brand"
+                    name={filterLabel === 'Type' ? 'type' : 'brand'}
                     checked={filters.brands.includes(option)}
                     onChange={() => onFilterChange('brands', option)}
                     className={styles['filter-checkbox']}
@@ -1212,12 +1427,26 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
       {/* Genre */}
       {!hideGenreFilter && (
         <div className={styles['filter-group']}>
-          <div className={styles['filter-header']} onClick={() => toggleSection('genres')}>
+          <button
+            type="button"
+            className={styles['filter-header']}
+            aria-expanded={openSections.genres}
+            aria-controls={genresPanelId}
+            onClick={() => toggleSection('genres')}
+          >
             <h4 className={styles['filter-subtitle']}>Genre</h4>
-            <span className={styles['toggle-icon']}>{openSections.genres ? '−' : '+'}</span>
-          </div>
+            <span className={styles['toggle-icon']} aria-hidden="true">
+              {openSections.genres ? '−' : '+'}
+            </span>
+          </button>
+
           {openSections.genres && (
-            <div className={styles['filter-options-container']}>
+            <div
+              id={genresPanelId}
+              role="region"
+              aria-label="Genre options"
+              className={styles['filter-options-container']}
+            >
               {genres.map((genre) => (
                 <div key={genre.value} className={styles['filter-option']}>
                   <input
@@ -1240,12 +1469,26 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
 
       {/* Price */}
       <div className={styles['filter-group']}>
-        <div className={styles['filter-header']} onClick={() => toggleSection('price')}>
+        <button
+          type="button"
+          className={styles['filter-header']}
+          aria-expanded={openSections.price}
+          aria-controls={pricePanelId}
+          onClick={() => toggleSection('price')}
+        >
           <h4 className={styles['filter-subtitle']}>Price</h4>
-          <span className={styles['toggle-icon']}>{openSections.price ? '−' : '+'}</span>
-        </div>
+          <span className={styles['toggle-icon']} aria-hidden="true">
+            {openSections.price ? '−' : '+'}
+          </span>
+        </button>
+
         {openSections.price && (
-          <div className={styles['price-filter-container']}>
+          <div
+            id={pricePanelId}
+            role="region"
+            aria-label="Price filter"
+            className={styles['price-filter-container']}
+          >
             <input
               type="range"
               min="0"
@@ -1254,12 +1497,15 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
               value={filters.price}
               onChange={(e) => onFilterChange('price', parseFloat(e.target.value))}
               className={styles['price-slider']}
+              aria-label="Maximum price"
             />
-            <div className={styles['price-display']}>${filters.price.toFixed(2)}</div>
+            <div className={styles['price-display']} aria-live="polite">
+              ${filters.price.toFixed(2)}
+            </div>
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 
