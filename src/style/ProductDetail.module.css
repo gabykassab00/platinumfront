@@ -2467,6 +2467,7 @@
 @media (max-width: 576px) {
   .container {
     padding-top: 0rem; /* Reduce top padding */
+    margin-top: -1rem;
   }
 
   .productContainer {
