@@ -2711,23 +2711,6 @@
   box-shadow: none;
 }
 
-/* .addToCartButton .flipFront,
-.addToCartButton .flipBack {
-  background-color: transparent;
-  color: black;
-  font-size: 1rem;
-  border: 1px solid black; 
-}
-
-.addToCartButton .flipFront:hover,
-.addToCartButton .flipBack:hover {
-  background-color: black;
-  border: 1px solid black; 
-} */
-
-
-
-
 
 
 .addToCartButton .flipFront,
@@ -2774,6 +2757,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #444444; /* Light black / dark gray */
 }
 
 .price {
@@ -2791,7 +2775,7 @@
 }
 
 .current {
-  color: #d4af37;              /* gold */
+  color: #000000;              /* gold */
   font-size: 1.6rem;
   font-weight: bold;
   font-style: italic;
