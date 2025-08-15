@@ -2779,8 +2779,7 @@
   font-size: 1.6rem;
   font-weight: normal; /* Removed bold */
   font-style: italic;
-  font-family: Arial Narrow, sans-serif; /* Condensed look */
-  font-stretch: condensed;
+  font-family: 'Inter', sans-serif; /* Inter font */
   letter-spacing: 0.5px;
   text-shadow: 0.5px 0.5px 0 rgba(0, 0, 0, 0.1);
 }
