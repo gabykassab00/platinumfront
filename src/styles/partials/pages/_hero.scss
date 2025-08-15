@@ -139,3 +139,27 @@
     }
   }
 }
+/* tighten spacing between "Shop Now" and dots on small screens */
+@include devices(sm) {
+  /* 1) Pull the dots up (works across Swiper versions) */
+  #hero .swiper {
+    --swiper-pagination-bottom: 8px;      /* preferred way */
+    padding-bottom: 0 !important;         /* safety: kill extra bottom padding */
+  }
+
+  /* 2) Remove extra margin under the Shop Now button */
+  #hero .hero_wrapper .shop-btn,
+  #hero .hero_wrapper .btn.shop-btn {
+    margin-bottom: 0 !important;
+  }
+
+  /* If your button is wrapped by a price container, squash that too (harmless if not present) */
+  #hero .hero_wrapper .hero_price {
+    margin-bottom: 0 !important;
+  }
+
+  /* As a fallback if your build ignores the CSS var, force the dots position */
+  #hero .swiper .swiper-pagination {
+    bottom: 8px !important;
+  }
+}
