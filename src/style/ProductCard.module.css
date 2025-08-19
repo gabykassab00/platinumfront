@@ -3080,7 +3080,7 @@
   backdrop-filter: blur(20px) saturate(180%);
   border-radius: 12px;
   padding: 14px 10px;
-  width: 80%;
+  width: 90%;
   max-width: 500px;   /* smaller than before */
   max-height: 80vh;   /* shorter */
   overflow: hidden;
