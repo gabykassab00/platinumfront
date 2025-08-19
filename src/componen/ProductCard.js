@@ -5,27 +5,27 @@
 //   return (
 //     <div className={styles['product-card']}>
 //       <div className={styles['product-image']}>
-//         <img 
-//           src={`http://localhost:5000/${product.image_path.replace(/\\/g, '/')}`} 
+//         <img
+//           src={`http://localhost:5000/${product.image_path.replace(/\\/g, '/')}`}
 //           alt={product.name}
 //           onError={(e) => {
 //             e.target.src = 'https://via.placeholder.com/150';
 //           }}
 //         />
 //       </div>
-      
+
 //       <div className={styles['product-info']}>
 //         <h3 className={styles['product-name']}>{product.name}</h3>
 //         <p className={styles['product-description']}>Premium fragrance product</p>
-        
+
 //         <div className={styles['price-section']}>
 //           <span className={styles['current-price']}>¥{product.price.toLocaleString()}</span>
 //           <span className={styles['original-price']}>¥{(product.price * 1.5).toLocaleString()}</span>
 //         </div>
-        
+
 //         <button className={styles['add-to-cart']}>Add to cart</button>
 //       </div>
-      
+
 //       <div className={styles['product-footer']}>
 //         <span className={styles.rating}>*****</span>
 //         <span className={styles.brand}>{product.brand || 'Premium Brand'}</span>
@@ -45,7 +45,7 @@
 //   return (
 //     <div className={styles['product-card']}>
 //       <div className={styles['product-image']}>
-//         <img 
+//         <img
 //           src={imageUrl}
 //           alt={product.name}
 //           onError={(e) => {
@@ -75,9 +75,6 @@
 // };
 
 // export default ProductCard;
-
-
-
 
 // import React from 'react';
 // import styles from '../style/ProductCard.module.css';
@@ -128,9 +125,6 @@
 // };
 
 // export default ProductCard;
-
-
-
 
 // import React from 'react';
 // import styles from '../style/ProductCard.module.css';
@@ -197,13 +191,6 @@
 // };
 
 // export default ProductCard;
-
-
-
-
-
-
-
 
 // import React from 'react';
 // import styles from '../style/ProductCard.module.css';
@@ -276,8 +263,6 @@
 // };
 
 // export default ProductCard;
-
-
 
 // import React from 'react';
 // import styles from '../style/ProductCard.module.css';
@@ -352,16 +337,6 @@
 
 // export default ProductCard;
 
-
-
-
-
-
-
-
-
-
-
 // import React from 'react';
 // import styles from '../style/ProductCard.module.css';
 // import { FaEye, FaShoppingCart } from 'react-icons/fa';
@@ -409,7 +384,7 @@
 //             <div className={styles.flipBack}><FaEye /></div>
 //           </div>
 //         </div>
-//         <div 
+//         <div
 //           className={styles.flipButton}
 //           onClick={handleAddToBasket}
 //         >
@@ -434,9 +409,6 @@
 
 // export default ProductCard;
 
-
-
-
 // import React, { useState } from 'react';
 // import styles from '../style/ProductCard.module.css';
 // import { FaShoppingCart } from 'react-icons/fa';
@@ -460,7 +432,7 @@
 //       setSizeError(true);
 //       return;
 //     }
-    
+
 //     const productWithSize = {
 //       ...product,
 //       // size: selectedSize,
@@ -501,7 +473,7 @@
 
 //       {/* Size Selection Buttons */}
 //       <div className={styles.priceButtons}>
-//         <div 
+//         <div
 //           className={`${styles.flipButton} ${selectedSize === 35 ? styles.selectedSize : ''}`}
 //           onClick={() => handleSizeSelect(35)}
 //         >
@@ -510,7 +482,7 @@
 //             <div className={styles.flipBack}>Small</div>
 //           </div>
 //         </div>
-//         <div 
+//         <div
 //           className={`${styles.flipButton} ${selectedSize === 80 ? styles.selectedSize : ''}`}
 //           onClick={() => handleSizeSelect(80)}
 //         >
@@ -519,7 +491,7 @@
 //             <div className={styles.flipBack}>Medium</div>
 //           </div>
 //         </div>
-//         <div 
+//         <div
 //           className={`${styles.flipButton} ${selectedSize === 100 ? styles.selectedSize : ''}`}
 //           onClick={() => handleSizeSelect(100)}
 //         >
@@ -539,7 +511,7 @@
 
 //       {/* Add to Cart Button */}
 //       <div className={styles.addToCartButton}>
-//         <div 
+//         <div
 //           className={styles.flipButton}
 //           onClick={handleAddToBasket}
 //         >
@@ -563,23 +535,6 @@
 // };
 
 // export default ProductCard;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState } from 'react';
 // import styles from '../style/ProductCard.module.css';
@@ -606,7 +561,7 @@
 //   };
 
 //   const currentPrice = selectedSize ? getPriceForSize(selectedSize) : basePrice;
-  
+
 //   const originalPrice = discount > 0
 //     ? (basePrice / (1 - discount)).toFixed(2)
 //     : basePrice.toFixed(2);
@@ -616,14 +571,14 @@
 //       setSizeError(true);
 //       return;
 //     }
-    
+
 //     const productWithSize = {
 //       ...product,
 //       size: `${selectedSize}ml`,
 //       price: currentPrice.toFixed(2),
 //       sizeValue: selectedSize // Add numerical size for comparison
 //     };
-    
+
 //     addItem(productWithSize);
 //     openSidebar();
 //     setSizeError(false);
@@ -658,7 +613,7 @@
 
 //       {/* Size Selection Buttons */}
 //       <div className={styles.priceButtons}>
-//         <div 
+//         <div
 //           className={`${styles.flipButton} ${selectedSize === 35 ? styles.selectedSize : ''}`}
 //           onClick={() => handleSizeSelect(35)}
 //         >
@@ -667,7 +622,7 @@
 //             <div className={styles.flipBack}>Small</div>
 //           </div>
 //         </div>
-//         <div 
+//         <div
 //           className={`${styles.flipButton} ${selectedSize === 80 ? styles.selectedSize : ''}`}
 //           onClick={() => handleSizeSelect(80)}
 //         >
@@ -676,7 +631,7 @@
 //             <div className={styles.flipBack}>Medium</div>
 //           </div>
 //         </div>
-//         <div 
+//         <div
 //           className={`${styles.flipButton} ${selectedSize === 100 ? styles.selectedSize : ''}`}
 //           onClick={() => handleSizeSelect(100)}
 //         >
@@ -696,7 +651,7 @@
 
 //       {/* Add to Cart Button */}
 //       <div className={styles.addToCartButton}>
-//         <div 
+//         <div
 //           className={styles.flipButton}
 //           onClick={handleAddToBasket}
 //         >
@@ -722,8 +677,6 @@
 // };
 
 // export default ProductCard;
-
-
 
 // import React, { useState } from 'react';
 // import styles from '../style/ProductCard.module.css';
@@ -804,7 +757,7 @@
 
 //       {/* Size Selection Buttons */}
 //       <div className={styles.priceButtons}>
-//         <div 
+//         <div
 //           className={`${styles.flipButton} ${selectedSize === 35 ? styles.selectedSize : ''}`}
 //           onClick={() => handleSizeSelect(35)}
 //         >
@@ -813,7 +766,7 @@
 //             <div className={styles.flipBack}>Small</div>
 //           </div>
 //         </div>
-//         <div 
+//         <div
 //           className={`${styles.flipButton} ${selectedSize === 80 ? styles.selectedSize : ''}`}
 //           onClick={() => handleSizeSelect(80)}
 //         >
@@ -822,7 +775,7 @@
 //             <div className={styles.flipBack}>Medium</div>
 //           </div>
 //         </div>
-//         <div 
+//         <div
 //           className={`${styles.flipButton} ${selectedSize === 100 ? styles.selectedSize : ''}`}
 //           onClick={() => handleSizeSelect(100)}
 //         >
@@ -842,7 +795,7 @@
 
 //       {/* Add to Cart Button */}
 //       <div className={styles.addToCartButton}>
-//         <div 
+//         <div
 //           className={styles.flipButton}
 //           onClick={handleAddToBasket}
 //         >
@@ -868,20 +821,6 @@
 // };
 
 // export default ProductCard;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState } from 'react';
 // import styles from '../style/ProductCard.module.css';
@@ -921,7 +860,7 @@
 //       return;
 //     }
 
-//     const productToAdd = isMultipleType 
+//     const productToAdd = isMultipleType
 //       ? {
 //           ...product,
 //           size: `${selectedSize}ml`,
@@ -968,7 +907,7 @@
 //       {/* Conditionally render size buttons */}
 //       {isMultipleType && (
 //         <div className={styles.priceButtons}>
-//           <div 
+//           <div
 //             className={`${styles.flipButton} ${selectedSize === 35 ? styles.selectedSize : ''}`}
 //             onClick={() => handleSizeSelect(35)}
 //           >
@@ -977,7 +916,7 @@
 //               <div className={styles.flipBack}>Small</div>
 //             </div>
 //           </div>
-//           <div 
+//           <div
 //             className={`${styles.flipButton} ${selectedSize === 80 ? styles.selectedSize : ''}`}
 //             onClick={() => handleSizeSelect(80)}
 //           >
@@ -986,7 +925,7 @@
 //               <div className={styles.flipBack}>Medium</div>
 //             </div>
 //           </div>
-//           <div 
+//           <div
 //             className={`${styles.flipButton} ${selectedSize === 100 ? styles.selectedSize : ''}`}
 //             onClick={() => handleSizeSelect(100)}
 //           >
@@ -1005,7 +944,7 @@
 //       )}
 
 //       <div className={styles.addToCartButton}>
-//         <div 
+//         <div
 //           className={styles.flipButton}
 //           onClick={handleAddToBasket}
 //         >
@@ -1030,11 +969,6 @@
 // };
 
 // export default ProductCard;
-
-
-
-
-
 
 // import React, { useState } from 'react';
 // import styles from '../style/ProductCard.module.css';
@@ -1186,13 +1120,6 @@
 
 // export default ProductCard;
 
-
-
-
-
-
-
-
 // import React, { useState, useMemo, useCallback } from 'react';
 // import styles from '../style/ProductCard.module.css';
 // import { FaShoppingCart } from 'react-icons/fa';
@@ -1326,28 +1253,6 @@
 // });
 
 // export default ProductCard;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState, useMemo, useCallback } from 'react';
 // import styles from '../style/ProductCard.module.css';
@@ -1487,26 +1392,6 @@
 
 // export default ProductCard;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // import React, { useState, useMemo, useCallback } from 'react';
 // import styles from '../style/ProductCard.module.css';
 // import { FaShoppingCart } from 'react-icons/fa';
@@ -1619,9 +1504,9 @@
 //                   <div className={styles.flipInner}>
 //                     <div className={styles.flipFront}>{size}ml</div>
 //                     <div className={styles.flipBack}>
-//                       {isMuskType 
+//                       {isMuskType
 //                         ? (size === 6 ? 'Small' : 'Large') // Musk size labels
-//                         : (size === 50 ? 'Small' : size === 80 ? 'Medium' : 'Large')} 
+//                         : (size === 50 ? 'Small' : size === 80 ? 'Medium' : 'Large')}
 //                     </div>
 //                   </div>
 //                 </div>
@@ -1667,31 +1552,6 @@
 // });
 
 // export default ProductCard;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState, useMemo, useCallback } from 'react';
 // import styles from '../style/ProductCard.module.css';
@@ -1857,30 +1717,6 @@
 // });
 
 // export default ProductCard;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // // src/componen/ProductCard.jsx
 
@@ -2102,20 +1938,59 @@
 
 
 
-import React, { useState, useMemo, useCallback } from 'react';
-import styles from '../style/ProductCard.module.css';
-import { FaShoppingCart } from 'react-icons/fa';
-import { useBasket } from '../context/BasketProvider';
-import { Link } from 'react-router-dom';
+
+
+
+
+
+
+
+
+
+
+import React, { useState, useMemo, useCallback } from "react";
+import styles from "../style/ProductCard.module.css";
+import { FaShoppingCart } from "react-icons/fa";
+import { useBasket } from "../context/BasketProvider";
+import { Link } from "react-router-dom";
 
 // ✅ Perfume list
 const perfumeList = [
-  "Oriental Oud","Acqua di Gio White","Acqua di Gio","Azzaro Chrome","Issey Miyake",
-  "Armani","Armani Code","Bleu de Chanel","Burberry","Baccarat Rouge","Versace Eros",
-  "Yara","Good Girl","Sauvage","One Million","Black Opium","J'adore","Lady Million",
-  "La Vie Est Belle","Mon Paris","Libre","Coco Chanel Mademoiselle","Fahrenheit",
-  "Creed Aventus","Gucci Bloom","Idôle Lancôme","Kayali Vanilla","Washwasha","Mohra",
-  "Ajwad","Ramz lattafa","Asad","Hawas","Fakher lattafa","...etc"
+  "Oriental Oud",
+  "Acqua di Gio White",
+  "Acqua di Gio",
+  "Azzaro Chrome",
+  "Issey Miyake",
+  "Armani",
+  "Armani Code",
+  "Bleu de Chanel",
+  "Burberry",
+  "Baccarat Rouge",
+  "Versace Eros",
+  "Yara",
+  "Good Girl",
+  "Sauvage",
+  "One Million",
+  "Black Opium",
+  "J'adore",
+  "Lady Million",
+  "La Vie Est Belle",
+  "Mon Paris",
+  "Libre",
+  "Coco Chanel Mademoiselle",
+  "Fahrenheit",
+  "Creed Aventus",
+  "Gucci Bloom",
+  "Idôle Lancôme",
+  "Kayali Vanilla",
+  "Washwasha",
+  "Mohra",
+  "Ajwad",
+  "Ramz lattafa",
+  "Asad",
+  "Hawas",
+  "Fakher lattafa",
+  "...etc",
 ];
 
 const ProductCard = React.memo(({ product }) => {
@@ -2129,7 +2004,7 @@ const ProductCard = React.memo(({ product }) => {
   const [selectedPerfume, setSelectedPerfume] = useState("Perfume");
 
   const API_URL = process.env.REACT_APP_API_URL;
-  const SITE_URL = process.env.REACT_APP_SITE_URL || '';
+  const SITE_URL = process.env.REACT_APP_SITE_URL || "";
 
   const imageUrl = useMemo(
     () => `${API_URL}/${product.image_path}`,
@@ -2143,23 +2018,30 @@ const ProductCard = React.memo(({ product }) => {
 
   const basePrice = useMemo(() => parseFloat(product.price), [product.price]);
   const discount = product.discount || 0;
-  const isMultipleType = product.type === 'multiple';
-  const isMuskType = product.type === 'musk';
+  const isMultipleType = product.type === "multiple";
+  const isMuskType = product.type === "musk";
 
   const getPriceForSize = useCallback(
     (size) => {
       if (isMuskType) {
         switch (size) {
-          case 6: return basePrice * 0.5;
-          case 12: return basePrice * 1;
-          default: return basePrice;
+          case 6:
+            return basePrice * 0.5;
+          case 12:
+            return basePrice * 1;
+          default:
+            return basePrice;
         }
       } else {
         switch (size) {
-          case 50: return 10;
-          case 80: return 15;
-          case 100: return basePrice;
-          default: return basePrice;
+          case 50:
+            return 10;
+          case 80:
+            return 15;
+          case 100:
+            return basePrice;
+          default:
+            return basePrice;
         }
       }
     },
@@ -2169,7 +2051,10 @@ const ProductCard = React.memo(({ product }) => {
   const currentPrice = selectedSize ? getPriceForSize(selectedSize) : basePrice;
 
   const originalPrice = useMemo(
-    () => (discount > 0 ? (basePrice / (1 - discount)).toFixed(2) : basePrice.toFixed(2)),
+    () =>
+      discount > 0
+        ? (basePrice / (1 - discount)).toFixed(2)
+        : basePrice.toFixed(2),
     [basePrice, discount]
   );
 
@@ -2181,9 +2066,15 @@ const ProductCard = React.memo(({ product }) => {
 
     const productToAdd = {
       ...product,
-      price: (isMultipleType || isMuskType) ? currentPrice.toFixed(2) : basePrice.toFixed(2),
-      ...((isMultipleType || isMuskType) && { size: `${selectedSize}ml`, sizeValue: selectedSize }),
-      ...(product.type === "cream" && { perfume: selectedPerfume }) // 🟢 Save chosen perfume
+      price:
+        isMultipleType || isMuskType
+          ? currentPrice.toFixed(2)
+          : basePrice.toFixed(2),
+      ...((isMultipleType || isMuskType) && {
+        size: `${selectedSize}ml`,
+        sizeValue: selectedSize,
+      }),
+      ...(product.type === "cream" && { perfume: selectedPerfume }), // 🟢 Save chosen perfume
     };
 
     addItem(productToAdd);
@@ -2221,17 +2112,25 @@ const ProductCard = React.memo(({ product }) => {
   };
 
   return (
-    <article className={styles.card} itemScope itemType="https://schema.org/Product">
+    <article
+      className={styles.card}
+      itemScope
+      itemType="https://schema.org/Product"
+    >
       {/* Image links to product detail */}
-      <Link to={productUrl} className={styles.imageContainer} aria-label={`View details for ${product.name}`}>
+      <Link
+        to={productUrl}
+        className={styles.imageContainer}
+        aria-label={`View details for ${product.name}`}
+      >
         <img
           src={imageUrl}
-          alt={`${product.name} by ${product.brand || 'Platinum'}`}
+          alt={`${product.name} by ${product.brand || "Platinum"}`}
           loading="lazy"
           itemProp="image"
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = 'https://via.placeholder.com/150';
+            e.currentTarget.src = "https://via.placeholder.com/150";
           }}
         />
         {discount > 0 && (
@@ -2244,12 +2143,16 @@ const ProductCard = React.memo(({ product }) => {
       <div className={styles.cardContent}>
         {(isMultipleType || isMuskType) && (
           <div className={styles.sizeSection}>
-            <div className={styles.priceButtons} role="group" aria-label="Select size">
+            <div
+              className={styles.priceButtons}
+              role="group"
+              aria-label="Select size"
+            >
               {sizeOptions.map((size) => (
                 <button
                   key={size}
                   type="button"
-                  className={`${styles.flipButton} ${selectedSize === size ? styles.selectedSize : ''}`}
+                  className={`${styles.flipButton} ${selectedSize === size ? styles.selectedSize : ""}`}
                   onClick={() => handleSizeSelect(size)}
                   aria-pressed={selectedSize === size}
                 >
@@ -2257,8 +2160,14 @@ const ProductCard = React.memo(({ product }) => {
                     <div className={styles.flipFront}>{size}ml</div>
                     <div className={styles.flipBack}>
                       {isMuskType
-                        ? (size === 6 ? 'Small' : 'Large')
-                        : (size === 50 ? 'Small' : size === 80 ? 'Medium' : 'Large')}
+                        ? size === 6
+                          ? "Small"
+                          : "Large"
+                        : size === 50
+                          ? "Small"
+                          : size === 80
+                            ? "Medium"
+                            : "Large"}
                     </div>
                   </div>
                 </button>
@@ -2272,66 +2181,52 @@ const ProductCard = React.memo(({ product }) => {
           </div>
         )}
 
-        {(product.type === 'furniture' || product.type === 'air') && (
+        {(product.type === "furniture" || product.type === "air") && (
           <div className={styles.sizeSection}>
             <p className={styles.sizeText}>
-              {product.type === 'furniture' ? '320 ml' : '500 ml'}
+              {product.type === "furniture" ? "320 ml" : "500 ml"}
             </p>
           </div>
         )}
 
-        <div className={styles.footer}>
-          <div className={styles.details}>
-            <h3 className={styles.name} itemProp="name">
-              <Link to={productUrl}>{product.name}</Link>
-            </h3>
+ <div className={styles.footer}>
+  <div className={styles.details}>
 
-            <div className={styles.price}>
-              {discount > 0 && (
-                <span className={styles.original}>
-                  ${originalPrice}
-                </span>
-              )}
-              <span className={styles.current}>
-                {finalDisplayPrice}
-              </span>
+    {/* 🟢 Perfume button only if cream — placed above product name */}
+    {product.type === "cream" && (
+      <div className={styles.sizeSection}>
+        <div className={styles.priceButtons}>
+          <button
+            type="button"
+            onClick={() => setShowPerfumePopup(true)}
+            className={`${styles.flipButton} ${styles.perfumeSelector}`}
+          >
+            <div className={styles.flipInner}>
+              <div className={styles.flipFront}>{selectedPerfume}</div>
+              <div className={styles.flipBack}>Choose</div>
             </div>
-          </div>
-
-          {/* 🟢 Perfume button like size button */}
-{/* 🟢 Perfume button only if cream */}
-{product.type === "cream" && (
-  <div className={styles.sizeSection}>
-    <div className={styles.priceButtons}>
-      <button
-        type="button"
-        onClick={() => setShowPerfumePopup(true)}
-        className={`${styles.flipButton} ${styles.perfumeSelector}`}
-      >
-        <div className={styles.flipInner}>
-          <div className={styles.flipFront}>{selectedPerfume}</div>
-          <div className={styles.flipBack}>Choose</div>
+          </button>
         </div>
-      </button>
+      </div>
+    )}
+
+    {/* Product name */}
+    <h3 className={styles.name} itemProp="name">
+      <Link to={productUrl}>{product.name}</Link>
+    </h3>
+
+    <div className={styles.price}>
+      {discount > 0 && (
+        <span className={styles.original}>
+          ${originalPrice}
+        </span>
+      )}
+      <span className={styles.current}>
+        {finalDisplayPrice}
+      </span>
     </div>
   </div>
-)}
 
-          <div className={styles.addToCartButton}>
-            <button
-              type="button"
-              className={styles.flipButton}
-              onClick={handleAddToBasket}
-            >
-              <div className={styles.flipInner}>
-                <div className={styles.flipFront}>Add to Cart</div>
-                <div className={styles.flipBack}>
-                  <FaShoppingCart />
-                </div>
-              </div>
-            </button>
-          </div>
-        </div>
       </div>
 
       {/* 🟢 Perfume Popup (light, scrollable) */}
