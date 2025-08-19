@@ -2299,20 +2299,23 @@ const ProductCard = React.memo(({ product }) => {
           </div>
 
           {/* 🟢 Perfume button like size button */}
-          {product.type === "cream" && (
-            <div className={styles.sizeSection}>
-              <button
-                type="button"
-                onClick={() => setShowPerfumePopup(true)}
-                className={styles.flipButton}
-              >
-                <div className={styles.flipInner}>
-                  <div className={styles.flipFront}>{selectedPerfume}</div>
-                  <div className={styles.flipBack}>Choose</div>
-                </div>
-              </button>
-            </div>
-          )}
+{/* 🟢 Perfume button only if cream */}
+{product.type === "cream" && (
+  <div className={styles.sizeSection}>
+    <div className={styles.priceButtons}>
+      <button
+        type="button"
+        onClick={() => setShowPerfumePopup(true)}
+        className={`${styles.flipButton} ${styles.perfumeSelector}`}
+      >
+        <div className={styles.flipInner}>
+          <div className={styles.flipFront}>{selectedPerfume}</div>
+          <div className={styles.flipBack}>Choose</div>
+        </div>
+      </button>
+    </div>
+  </div>
+)}
 
           <div className={styles.addToCartButton}>
             <button
