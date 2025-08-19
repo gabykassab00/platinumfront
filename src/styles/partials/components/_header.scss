@@ -2884,7 +2884,7 @@ header.sticky { top: calc(30px + env(safe-area-inset-top, 0)); }
 
 .menu-list {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
   margin: 0;
