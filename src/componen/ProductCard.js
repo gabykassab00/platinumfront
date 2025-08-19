@@ -2107,9 +2107,8 @@ import styles from '../style/ProductCard.module.css';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useBasket } from '../context/BasketProvider';
 import { Link } from 'react-router-dom';
-import { FixedSizeList as List } from 'react-window'; // 🟢 virtualization
 
-// ✅ Keep perfume list outside so it doesn’t rebuild every render
+// ✅ Perfume list
 const perfumeList = [
   "Oriental Oud","Acqua di Gio White","Acqua di Gio","Azzaro Chrome","Issey Miyake",
   "Armani","Armani Code","Bleu de Chanel","Burberry","Baccarat Rouge","Versace Eros",
@@ -2221,20 +2220,9 @@ const ProductCard = React.memo(({ product }) => {
     setShowPerfumePopup(false);
   };
 
-  // 🟢 Row renderer for react-window
-  const Row = ({ index, style }) => (
-    <div
-      style={style}
-      className={styles.perfumeItem}
-      onClick={() => handlePerfumeSelect(filteredPerfumes[index])}
-    >
-      {filteredPerfumes[index]}
-    </div>
-  );
-
   return (
     <article className={styles.card} itemScope itemType="https://schema.org/Product">
-      {/* Image links to product detail for better internal linking */}
+      {/* Image links to product detail */}
       <Link to={productUrl} className={styles.imageContainer} aria-label={`View details for ${product.name}`}>
         <img
           src={imageUrl}
@@ -2264,7 +2252,6 @@ const ProductCard = React.memo(({ product }) => {
                   className={`${styles.flipButton} ${selectedSize === size ? styles.selectedSize : ''}`}
                   onClick={() => handleSizeSelect(size)}
                   aria-pressed={selectedSize === size}
-                  aria-label={`Select ${size} milliliters`}
                 >
                   <div className={styles.flipInner}>
                     <div className={styles.flipFront}>{size}ml</div>
@@ -2295,38 +2282,34 @@ const ProductCard = React.memo(({ product }) => {
 
         <div className={styles.footer}>
           <div className={styles.details}>
-            {/* Name links to detail too (extra crawl path) */}
             <h3 className={styles.name} itemProp="name">
               <Link to={productUrl}>{product.name}</Link>
             </h3>
 
             <div className={styles.price}>
               {discount > 0 && (
-                <span className={styles.original} aria-label={`Original price ${originalPrice}`}>
+                <span className={styles.original}>
                   ${originalPrice}
                 </span>
               )}
-              <span className={styles.current} itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                <meta itemProp="priceCurrency" content="USD" />
-                <link itemProp="url" href={`${SITE_URL}${productUrl}`} />
-                <span itemProp="price" content={((isMultipleType || isMuskType) && selectedSize ? currentPrice : basePrice).toFixed(2)}>
-                  {finalDisplayPrice}
-                </span>
-                <meta itemProp="availability" content="https://schema.org/InStock" />
-                <meta itemProp="itemCondition" content="https://schema.org/NewCondition" />
+              <span className={styles.current}>
+                {finalDisplayPrice}
               </span>
             </div>
           </div>
 
-          {/* 🟢 Perfume button only if cream */}
+          {/* 🟢 Perfume button like size button */}
           {product.type === "cream" && (
-            <div className={styles.perfumeButton}>
+            <div className={styles.sizeSection}>
               <button
                 type="button"
                 onClick={() => setShowPerfumePopup(true)}
                 className={styles.flipButton}
               >
-                {selectedPerfume}
+                <div className={styles.flipInner}>
+                  <div className={styles.flipFront}>{selectedPerfume}</div>
+                  <div className={styles.flipBack}>Choose</div>
+                </div>
               </button>
             </div>
           )}
@@ -2336,12 +2319,11 @@ const ProductCard = React.memo(({ product }) => {
               type="button"
               className={styles.flipButton}
               onClick={handleAddToBasket}
-              aria-label={`Add ${product.name} to cart`}
             >
               <div className={styles.flipInner}>
                 <div className={styles.flipFront}>Add to Cart</div>
                 <div className={styles.flipBack}>
-                  <FaShoppingCart aria-hidden="true" />
+                  <FaShoppingCart />
                 </div>
               </div>
             </button>
@@ -2349,7 +2331,7 @@ const ProductCard = React.memo(({ product }) => {
         </div>
       </div>
 
-      {/* 🟢 Perfume Popup */}
+      {/* 🟢 Perfume Popup (light, scrollable) */}
       {showPerfumePopup && (
         <div className={styles.popupOverlay}>
           <div className={styles.popupContent}>
@@ -2367,14 +2349,17 @@ const ProductCard = React.memo(({ product }) => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className={styles.searchInput}
             />
-            <List
-              height={400}
-              width={"100%"}
-              itemCount={filteredPerfumes.length}
-              itemSize={45}
-            >
-              {Row}
-            </List>
+            <div className={styles.scrollList}>
+              {filteredPerfumes.map((p, i) => (
+                <div
+                  key={i}
+                  onClick={() => handlePerfumeSelect(p)}
+                  className={styles.perfumeItem}
+                >
+                  {p}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
