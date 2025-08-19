@@ -2928,17 +2928,31 @@ const Header = () => {
   const { basketItems, openSidebar } = useBasket();
   const API_URL = process.env.REACT_APP_API_URL;
 
+  // const menuCategories = [
+  //   { id: 1, name: 'All Perfumes', path: '/perfumes' },
+  //   { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
+  //   { id: 3, name: 'Women Perfumes', path: '/perfumes/women' },
+  //   { id: 4, name: 'Lattafa & Rasasi Perfumes', path: '/lattafa-rasasi' },
+  //   { id: 5, name: 'Original and others perfumes', path: '/original' },
+  //   { id: 6, name: 'Musk', path: '/musk' },
+  //   { id: 7, name: 'Air and Furniture Refresheners', path: '/refresheners' },
+  //   { id: 8, name: 'Watches', path: '/watches' },
+  //   { id: 9, name: 'Makeup and Cosmetics', path: '/makeup' },
+  // ];
+
   const menuCategories = [
-    { id: 1, name: 'All Perfumes', path: '/perfumes' },
-    { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
-    { id: 3, name: 'Women Perfumes', path: '/perfumes/women' },
-    { id: 4, name: 'Lattafa & Rasasi Perfumes', path: '/lattafa-rasasi' },
-    { id: 5, name: 'Original and others perfumes', path: '/original' },
-    { id: 6, name: 'Musk', path: '/musk' },
-    { id: 7, name: 'Air and Furniture Refresheners', path: '/refresheners' },
-    { id: 8, name: 'Watches', path: '/watches' },
-    { id: 9, name: 'Makeup and Cosmetics', path: '/makeup' },
-  ];
+  { id: 1, name: 'All Perfumes', path: '/perfumes' },
+  { id: 2, name: 'Men Perfumes', path: '/perfumes/men' },
+  { id: 3, name: 'Women Perfumes', path: '/perfumes/women' },
+  { id: 4, name: 'Lattafa & Rasasi Perfumes', path: '/lattafa-rasasi' },
+  { id: 5, name: 'Original and others perfumes', path: '/original' },
+  { id: 6, name: 'Musk', path: '/musk' },
+  { id: 7, name: 'Air and Car Refresheners', path: '/refresheners' }, // updated
+  { id: 8, name: 'Watches', path: '/watches' },
+  { id: 9, name: 'Makeup and Cosmetics', path: '/makeup' },
+  { id: 10, name: 'Body Mist & Deodorant', path: '/body-mist' }, // new
+  { id: 11, name: 'Body Cream', path: '/body-cream' },            // new
+];
 
   useEffect(() => {
     const handleScroll = () => setIsSticky(window.scrollY >= 50);
