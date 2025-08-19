@@ -2501,13 +2501,16 @@
 .menu-nav {
   .menu-list {
     display: flex;
-    gap: 0.9rem;
-    justify-content: center;
+    justify-content: space-between; /* spread items across full width */
+    flex: 1;                        /* stretch */
+    width: 100%;                    /* force full width */
+    max-width: 1400px;              /* keep in container width */
+    margin: 0 auto;                 /* center inside container */
     list-style: none;
-    margin: 0;
     padding: 0;
   }
 }
+
 
 .menu-item {
   .menu-link {
