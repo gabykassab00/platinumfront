@@ -3828,21 +3828,22 @@ const ProductDetails = () => {
 
       <div className={styles.container}>
         <div className={styles.productContainer}>
-          <div className={styles.imageContainer}>
-            <div className={styles.imageViewport} ref={imageBoxRef}>
-              <img
-                src={imageUrl}
-                alt={product.name}
-                loading="lazy"
-                onError={(e) => {
-                  e.currentTarget.src = 'https://via.placeholder.com/300';
-                }}
-              />
-              {hasDiscount && (
-                <div className={styles.discountBadge}>-{Math.round(discount * 100)}%</div>
-              )}
-            </div>
-          </div>
+<div className={styles.imageContainer}>
+  <div className={styles.imageViewport}>
+    <img
+      src={imageUrl}
+      alt={product.name}
+      onError={(e) => (e.target.src = 'https://via.placeholder.com/300')}
+      loading="lazy"
+    />
+    {hasDiscount && (
+      <div className={styles.discountBadge}>
+        -{Math.round(discount * 100)}%
+      </div>
+    )}
+  </div>
+</div>
+
 
           <div ref={infoRef} className={styles.infoContainer}>
             <h1 className={styles.title}>{product.name}</h1>
