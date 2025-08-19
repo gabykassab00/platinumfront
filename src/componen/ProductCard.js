@@ -2102,13 +2102,14 @@
 
 
 
-// import React, { useState, useMemo, useCallback } from 'react';
 import React, { useState, useMemo, useCallback } from 'react';
 import styles from '../style/ProductCard.module.css';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useBasket } from '../context/BasketProvider';
 import { Link } from 'react-router-dom';
+import { FixedSizeList as List } from 'react-window'; // 🟢 virtualization
 
+// ✅ Keep perfume list outside so it doesn’t rebuild every render
 const perfumeList = [
   "Oriental Oud","Acqua di Gio White","Acqua di Gio","Azzaro Chrome","Issey Miyake",
   "Armani","Armani Code","Bleu de Chanel","Burberry","Baccarat Rouge","Versace Eros",
@@ -2150,23 +2151,16 @@ const ProductCard = React.memo(({ product }) => {
     (size) => {
       if (isMuskType) {
         switch (size) {
-          case 6:
-            return basePrice * 0.5;
-          case 12:
-            return basePrice * 1;
-          default:
-            return basePrice;
+          case 6: return basePrice * 0.5;
+          case 12: return basePrice * 1;
+          default: return basePrice;
         }
       } else {
         switch (size) {
-          case 50:
-            return 10;
-          case 80:
-            return 15;
-          case 100:
-            return basePrice;
-          default:
-            return basePrice;
+          case 50: return 10;
+          case 80: return 15;
+          case 100: return basePrice;
+          default: return basePrice;
         }
       }
     },
@@ -2227,12 +2221,19 @@ const ProductCard = React.memo(({ product }) => {
     setShowPerfumePopup(false);
   };
 
-  return (
-    <article
-      className={styles.card}
-      itemScope
-      itemType="https://schema.org/Product"
+  // 🟢 Row renderer for react-window
+  const Row = ({ index, style }) => (
+    <div
+      style={style}
+      className={styles.perfumeItem}
+      onClick={() => handlePerfumeSelect(filteredPerfumes[index])}
     >
+      {filteredPerfumes[index]}
+    </div>
+  );
+
+  return (
+    <article className={styles.card} itemScope itemType="https://schema.org/Product">
       {/* Image links to product detail for better internal linking */}
       <Link to={productUrl} className={styles.imageContainer} aria-label={`View details for ${product.name}`}>
         <img
@@ -2308,7 +2309,7 @@ const ProductCard = React.memo(({ product }) => {
               <span className={styles.current} itemProp="offers" itemScope itemType="https://schema.org/Offer">
                 <meta itemProp="priceCurrency" content="USD" />
                 <link itemProp="url" href={`${SITE_URL}${productUrl}`} />
-                <span itemProp="price" content={( (isMultipleType || isMuskType) && selectedSize ? currentPrice : basePrice ).toFixed(2)}>
+                <span itemProp="price" content={((isMultipleType || isMuskType) && selectedSize ? currentPrice : basePrice).toFixed(2)}>
                   {finalDisplayPrice}
                 </span>
                 <meta itemProp="availability" content="https://schema.org/InStock" />
@@ -2366,17 +2367,14 @@ const ProductCard = React.memo(({ product }) => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className={styles.searchInput}
             />
-            <ul className={styles.perfumeList}>
-              {filteredPerfumes.map((p, i) => (
-                <li
-                  key={i}
-                  onClick={() => handlePerfumeSelect(p)}
-                  className={styles.perfumeItem}
-                >
-                  {p}
-                </li>
-              ))}
-            </ul>
+            <List
+              height={400}
+              width={"100%"}
+              itemCount={filteredPerfumes.length}
+              itemSize={45}
+            >
+              {Row}
+            </List>
           </div>
         </div>
       )}
