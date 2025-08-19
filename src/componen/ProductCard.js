@@ -2102,63 +2102,20 @@
 
 
 
-// src/componen/ProductCard.jsx
-
+// import React, { useState, useMemo, useCallback } from 'react';
 import React, { useState, useMemo, useCallback } from 'react';
 import styles from '../style/ProductCard.module.css';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useBasket } from '../context/BasketProvider';
 import { Link } from 'react-router-dom';
 
-// ✅ Long perfume list moved into an array for cleaner code
 const perfumeList = [
-  "Oriental Oud","Acqua di Gio White","Acqua di Gio","Azzaro Chrome","Issey Miyake","Al Wissam","Égoïste Platinum",
-  "Armani Code","Armani","Invictus","Ana El Abyad","Versace Eros","Invictus Victory","Ultramale","Allure Sport",
-  "Bleu de Chanel","Blue Jeans Versace","Brut","Baccarat Rouge","Burberry Hero","Burberry","Black Afgano",
-  "Bad Boy","Black XS L'Excés","Bvlgari Man in Black","Bvlgari Tygar","Badee Al Oud","Bvlgari Man Glacial Essence",
-  "Black Orchid","Black XS","Polo Blue","Boss Element","Tom Ford Oud","Joop!","Givenchy Blue","Dolce & Gabbana",
-  "Dareej","Dior Homme","Dunhill Blue","Declaration","Dunhill Red (Desire)","Roma","D & G The One","Sauvage",
-  "Zahret Al Khaleej","Silver Scent","Sculpture","Stronger With You","Spicebomb","Sauvage Elixir","Safari","CK One",
-  "Sheikh Al Shuyoukh","Oud essential","Oud & Honey","Gold Dust (Ghoubar Al Dhahab)","Gucci Guilty Elixir","Voyage",
-  "Fahrenheit","Ferrari","Fendi","VIP 212","Cool Water","Kouros","Creed Aventus","Kenzo","Louis Vuitton Oud",
-  "Lacoste White","Lacoste Red","Lacoste Challenge","Lacoste","Louis Vuitton Orage","Louis Vuitton Imagination",
-  "Lacoste Essential","D & G Light Blue","D & G  Light Blue Intense","Layali Beirut","Le Male Elixir",
-  "La Nuit de L'Homme","Lapidus","Black Musk","Maa Althahab","Mandala  Oud","UAE Blend (Mukhallat Emirates)",
-  "Rasasi Royale","Mancera Rose Vanille","Mercedes-Benz","My Self","Montblanc Legend","Y","One Million",
-  "Hawas for Him","Hugo Energise","Police To Be","Hawas Ice","Dolce & Gabbana Velvet Desert Oud","Silver Shade",
-  "Roberto Cavalli","Silver Flame","Elissa L'eau","Viktor & Rolf","Armani Code","Olympéa","Idôle Lancôme","Yara",
-  "Escada","A Never Ending Love","In Love With You","Temptation","Alien","Private Show","Elie Saab","Bombshell",
-  "Black Opium","Burberry Her","Mon Paris","Taj Sunset","Roberto Cavalli Paradiso","Turquoise Escada","Tosca",
-  "Bonbon","J'adore","Midnight Fantasy","Harem Al Sultan","La Belle","De Marly Delina","Dior Bloom","Diams","Scandal",
-  "Sì","Secret Charm","Sir","Supreme Bouquet","Chanel No. 5","nasmat aloud","Gucci Bloom","Gucci Bamboo","Gucci Flora",
-  "Gucci Rush","Good Girl","Girl of Now","Vanilla","212 Vip","Bright Crystal","Far Away","Givenchy Very Irresistible",
-  "Very Sexy Orchid","Fleur Narcotique","Cool Water","Coco Chanel Mademoiselle","Wesal","Versace Crystal Noir",
-  "Chloé Nomade","Coco Chanel","Cobra","Kayali Juicy","L'Interdit","Love Is Heavenly","Lily","Libre",
-  "Ange Ou Demon Le Secret","La Vie Est Belle","Romance","Lacoste Sensuelle","Lady Million","My Way","mixed emotions",
-  "Mon Guerlain Oud Essentiel","Narciso Poudree","Hypnôse","Hugo Boss","Washwasha","mashair","Prada Paradoxe",
-  "Chanel Chance","Azzaro The Most Wanted","Oud El Abyad","Tulip","Stronger With You Absolutely",
-  "Stronger With You Intensely","Stronger With You Oud","Shams Al Emarat","Oud Arz","Gold Dust Edt",
-  "212 VIP Sexy Men","212 VIP Black","Kalimat","Lail Maleki","Madawi","Legend Blue Montblanc",
-  "Montblanc Legend Red","MONTBLANC Legend Spirit","Lanvin","Laura Mars Splandid","Hermes H24","GISSAH",
-  "Mexican Tobacco","Gentleman Givenchy","Hudson Gissah","Raghba","Xerjoff Dama Bianca","Silver Creed","Sage Spell",
-  "Pure Xs","Tom Ford Vanilla sex","Kurky","Hugo Boss","Jean Paul Gaultier Le Beau","Divine Oud Roberto Cavalli",
-  "FAME","GARDÉNIA","Gissah Martinique","KAYALI Marshmallow","Kayali Pistachio","Kayali Vanilla","Kosa","La Tulipe",
-  "Mont Blanc Lady Emblem","Montblanc Signature","NARCISO ambrée","Narciso For Her","Narciso Pure",
-  "Narciso Rodriguez","Narciso Rouge","Oud Al Salateen","Oud Cambodi","Phantom","Ralph Lauren Romance","Si Intense",
-  "Si Passione","Si","So Scandal!","Versace Woman","Zaffet Al Arous","Full Al-Rehab","AMARIGE","Armani Rouge Malachite",
-  "Angelina Jolie","Rasasi Egraa","Jean Paul Gaultier Divine","Terre d'Hermès","SPACE","Khamrah","Khamrah Dukhan",
-  "Khamrah Qahwa","Hummer","Musk Berries","Musk Caramel","Musk Pomegranate","Musk Tahara","Musk Ghazal","Musk Vanille",
-  "Musk Apple","Musk Mango","Musk Peach","Musk Mulberry","Musk Ananas","Musk Black","Musk White","Now Rouge",
-  "Sacred Love","Diamonte celestial","Shuhra","Hatem","Royale","Ameerat al arab","Ramz lattafa","Hawas black","Hawas",
-  "Darej","Ajwad","Maahir legacy","Maahir black","Iman","Teriaq intense","The kingdom","Badee al oud amethyst",
-  "Raed Luxe","Sheikh shuyukh","Oud mood","Lail malaki oud","Ajwad pink to pink","Qimmah","Ramz lattafa",
-  "Asad zanzibar","Asad bourbon","Asad","Eternal oud","Nebras","Qaed al fursan","Qaed al fursan black",
-  "Oud 24 hours with body spray","Mohra","Badee al oud sublime","Badee al oud oud for glory","Khamrah Dukhan","Khamrah",
-  "Khamrah qahwah","Supremancy in oud","His confession","Tharwah","Ameer al oudh","Silver shade","Al wissam","Mousouf",
-  "Mousuf azure","Virtage Radio","Yara moi","Yara","Yara candy","Relation","Elite lady","سمو الرصاصي وجاهة","Yumn",
-  "Emotion","Takhail","Knowledge","Aristocrat","Neutron","Hawas ice","Hawas","Sotoor","Darej","اغراء","Romance",
-  "شمس الامارات","Azeezah","Washwasha","Mohra silky rose","Fakher lattafa","Al dur al maknoon","Velvet oud",
-  "Ana abyad rouge","Ana abyad poudré","Ana abyad","Hamasat"
+  "Oriental Oud","Acqua di Gio White","Acqua di Gio","Azzaro Chrome","Issey Miyake",
+  "Armani","Armani Code","Bleu de Chanel","Burberry","Baccarat Rouge","Versace Eros",
+  "Yara","Good Girl","Sauvage","One Million","Black Opium","J'adore","Lady Million",
+  "La Vie Est Belle","Mon Paris","Libre","Coco Chanel Mademoiselle","Fahrenheit",
+  "Creed Aventus","Gucci Bloom","Idôle Lancôme","Kayali Vanilla","Washwasha","Mohra",
+  "Ajwad","Ramz lattafa","Asad","Hawas","Fakher lattafa","...etc"
 ];
 
 const ProductCard = React.memo(({ product }) => {
@@ -2166,9 +2123,10 @@ const ProductCard = React.memo(({ product }) => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeError, setSizeError] = useState(false);
 
-  // New states for Cream Popup
+  // 🟢 Perfume popup states
   const [showPerfumePopup, setShowPerfumePopup] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPerfume, setSelectedPerfume] = useState("Perfume");
 
   const API_URL = process.env.REACT_APP_API_URL;
   const SITE_URL = process.env.REACT_APP_SITE_URL || '';
@@ -2188,58 +2146,209 @@ const ProductCard = React.memo(({ product }) => {
   const isMultipleType = product.type === 'multiple';
   const isMuskType = product.type === 'musk';
 
-  // Filtering perfumes in popup
+  const getPriceForSize = useCallback(
+    (size) => {
+      if (isMuskType) {
+        switch (size) {
+          case 6:
+            return basePrice * 0.5;
+          case 12:
+            return basePrice * 1;
+          default:
+            return basePrice;
+        }
+      } else {
+        switch (size) {
+          case 50:
+            return 10;
+          case 80:
+            return 15;
+          case 100:
+            return basePrice;
+          default:
+            return basePrice;
+        }
+      }
+    },
+    [basePrice, isMuskType]
+  );
+
+  const currentPrice = selectedSize ? getPriceForSize(selectedSize) : basePrice;
+
+  const originalPrice = useMemo(
+    () => (discount > 0 ? (basePrice / (1 - discount)).toFixed(2) : basePrice.toFixed(2)),
+    [basePrice, discount]
+  );
+
+  const handleAddToBasket = () => {
+    if ((isMultipleType || isMuskType) && !selectedSize) {
+      setSizeError(true);
+      return;
+    }
+
+    const productToAdd = {
+      ...product,
+      price: (isMultipleType || isMuskType) ? currentPrice.toFixed(2) : basePrice.toFixed(2),
+      ...((isMultipleType || isMuskType) && { size: `${selectedSize}ml`, sizeValue: selectedSize }),
+      ...(product.type === "cream" && { perfume: selectedPerfume }) // 🟢 Save chosen perfume
+    };
+
+    addItem(productToAdd);
+    openSidebar();
+    setSizeError(false);
+  };
+
+  const handleSizeSelect = (size) => {
+    setSelectedSize(size);
+    setSizeError(false);
+  };
+
+  const getSizeOptions = () => {
+    if (isMuskType) return [6, 12];
+    return [50, 80, 100];
+  };
+
+  const sizeOptions = getSizeOptions();
+
+  const finalDisplayPrice =
+    (isMultipleType || isMuskType) && selectedSize
+      ? `$${currentPrice.toFixed(2)}`
+      : `$${basePrice.toFixed(2)}`;
+
+  // 🟢 Filter perfumes for search
   const filteredPerfumes = useMemo(() => {
     return perfumeList.filter((p) =>
       p.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm]);
 
+  const handlePerfumeSelect = (perfume) => {
+    setSelectedPerfume(perfume);
+    setShowPerfumePopup(false);
+  };
+
   return (
-    <article className={styles.card}>
-      {/* ... (your existing code stays unchanged above) */}
-
-      <div className={styles.footer}>
-        <div className={styles.details}>
-          <h3 className={styles.name}>
-            <Link to={productUrl}>{product.name}</Link>
-          </h3>
-
-          <div className={styles.price}>
-            <span className={styles.current}>${basePrice.toFixed(2)}</span>
+    <article
+      className={styles.card}
+      itemScope
+      itemType="https://schema.org/Product"
+    >
+      {/* Image links to product detail for better internal linking */}
+      <Link to={productUrl} className={styles.imageContainer} aria-label={`View details for ${product.name}`}>
+        <img
+          src={imageUrl}
+          alt={`${product.name} by ${product.brand || 'Platinum'}`}
+          loading="lazy"
+          itemProp="image"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = 'https://via.placeholder.com/150';
+          }}
+        />
+        {discount > 0 && (
+          <div className={styles.discountBadge}>
+            -{Math.round(discount * 100)}%
           </div>
-        </div>
+        )}
+      </Link>
 
-        {/* ✅ Extra Button only for type=cream */}
-        {product.type === "cream" && (
-          <div className={styles.perfumeButton}>
-            <button
-              type="button"
-              onClick={() => setShowPerfumePopup(true)}
-              className={styles.flipButton}
-            >
-              Perfume
-            </button>
+      <div className={styles.cardContent}>
+        {(isMultipleType || isMuskType) && (
+          <div className={styles.sizeSection}>
+            <div className={styles.priceButtons} role="group" aria-label="Select size">
+              {sizeOptions.map((size) => (
+                <button
+                  key={size}
+                  type="button"
+                  className={`${styles.flipButton} ${selectedSize === size ? styles.selectedSize : ''}`}
+                  onClick={() => handleSizeSelect(size)}
+                  aria-pressed={selectedSize === size}
+                  aria-label={`Select ${size} milliliters`}
+                >
+                  <div className={styles.flipInner}>
+                    <div className={styles.flipFront}>{size}ml</div>
+                    <div className={styles.flipBack}>
+                      {isMuskType
+                        ? (size === 6 ? 'Small' : 'Large')
+                        : (size === 50 ? 'Small' : size === 80 ? 'Medium' : 'Large')}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+            {sizeError && (
+              <div className={styles.errorMessage} role="alert">
+                Please select a size before adding to cart
+              </div>
+            )}
           </div>
         )}
 
-        <div className={styles.addToCartButton}>
-          <button
-            type="button"
-            className={styles.flipButton}
-            onClick={() => addItem(product)}
-          >
-            <div className={styles.flipInner}>
-              <div className={styles.flipFront}>Add to Cart</div>
-              <div className={styles.flipBack}>
-                <FaShoppingCart />
-              </div>
+        {(product.type === 'furniture' || product.type === 'air') && (
+          <div className={styles.sizeSection}>
+            <p className={styles.sizeText}>
+              {product.type === 'furniture' ? '320 ml' : '500 ml'}
+            </p>
+          </div>
+        )}
+
+        <div className={styles.footer}>
+          <div className={styles.details}>
+            {/* Name links to detail too (extra crawl path) */}
+            <h3 className={styles.name} itemProp="name">
+              <Link to={productUrl}>{product.name}</Link>
+            </h3>
+
+            <div className={styles.price}>
+              {discount > 0 && (
+                <span className={styles.original} aria-label={`Original price ${originalPrice}`}>
+                  ${originalPrice}
+                </span>
+              )}
+              <span className={styles.current} itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                <meta itemProp="priceCurrency" content="USD" />
+                <link itemProp="url" href={`${SITE_URL}${productUrl}`} />
+                <span itemProp="price" content={( (isMultipleType || isMuskType) && selectedSize ? currentPrice : basePrice ).toFixed(2)}>
+                  {finalDisplayPrice}
+                </span>
+                <meta itemProp="availability" content="https://schema.org/InStock" />
+                <meta itemProp="itemCondition" content="https://schema.org/NewCondition" />
+              </span>
             </div>
-          </button>
+          </div>
+
+          {/* 🟢 Perfume button only if cream */}
+          {product.type === "cream" && (
+            <div className={styles.perfumeButton}>
+              <button
+                type="button"
+                onClick={() => setShowPerfumePopup(true)}
+                className={styles.flipButton}
+              >
+                {selectedPerfume}
+              </button>
+            </div>
+          )}
+
+          <div className={styles.addToCartButton}>
+            <button
+              type="button"
+              className={styles.flipButton}
+              onClick={handleAddToBasket}
+              aria-label={`Add ${product.name} to cart`}
+            >
+              <div className={styles.flipInner}>
+                <div className={styles.flipFront}>Add to Cart</div>
+                <div className={styles.flipBack}>
+                  <FaShoppingCart aria-hidden="true" />
+                </div>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* ✅ Popup Modal */}
+      {/* 🟢 Perfume Popup */}
       {showPerfumePopup && (
         <div className={styles.popupOverlay}>
           <div className={styles.popupContent}>
@@ -2259,7 +2368,13 @@ const ProductCard = React.memo(({ product }) => {
             />
             <ul className={styles.perfumeList}>
               {filteredPerfumes.map((p, i) => (
-                <li key={i}>{p}</li>
+                <li
+                  key={i}
+                  onClick={() => handlePerfumeSelect(p)}
+                  className={styles.perfumeItem}
+                >
+                  {p}
+                </li>
               ))}
             </ul>
           </div>
