@@ -3069,22 +3069,20 @@
 
 
 
-
-
 /* Popup container */
 .popupContent,
 .cardPopupContent {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 20px;
-  padding: 40px 20px 20px;  /* ⬅ Added more top padding */
+  border-radius: 16px;
+  padding: 28px 16px 16px; /* reduced padding */
   width: 90%;
-  max-width: 500px;
-  max-height: 80vh;
+  max-width: 420px;
+  max-height: 75vh; /* ⬅ shorter popup */
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
   animation: slideUp 0.35s ease;
   position: relative;
 }
@@ -3093,18 +3091,19 @@
 .closePopup {
   background: none;
   border: none;
-  font-size: 1.8rem;
+  font-size: 1.5rem;   /* smaller */
   color: #fff;
   position: absolute;
-  top: 12px;   /* stays at top */
-  right: 16px; /* pushed in */
+  top: 8px;            /* closer to edge */
+  right: 12px;
   cursor: pointer;
   transition: transform 0.2s ease;
-  z-index: 10; /* make sure it's above everything */
+  z-index: 10;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6); /* visible even on light bg */
 }
 
 .closePopup:hover {
-  transform: scale(1.2);
+  transform: scale(1.15);
   color: #ff6b6b;
 }
 
@@ -3113,40 +3112,64 @@
 .cardPopupContent h3 {
   color: #fff;
   text-align: center;
-  margin: 0 0 15px; /* reset margin */
-  font-size: 1.4rem;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  margin: 10px 0; /* tighter */
+  font-size: 1.2rem;  /* smaller */
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
 }
 
 /* Search box */
 .searchInput {
-  margin-top: 10px; /* ⬅ adds space below title */
-  padding: 12px 16px;
-  border-radius: 12px;
+  margin-top: 8px;
+  padding: 10px 12px; /* smaller */
+  border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.3);
   background: rgba(255,255,255,0.15);
   color: #fff;
-  font-size: 0.95rem;
+  font-size: 0.85rem;  /* smaller text */
   outline: none;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
-/* Responsive adjustments */
+/* Perfume item style */
+.perfumeItem {
+  padding: 10px;
+  font-size: 0.85rem;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+
+/* 📱 Responsive */
 @media (max-width: 576px) {
   .popupContent,
   .cardPopupContent {
-    width: 85%;
-    max-width: 360px;
-    padding: 38px 16px 16px; /* still enough top padding */
+    max-width: 340px;
+    max-height: 70vh;   /* smaller */
+    padding: 26px 12px 12px;
+  }
+
+  .closePopup {
+    font-size: 1.4rem;
+    top: 6px;
+    right: 10px;
   }
 }
 
 @media (max-width: 480px) {
   .popupContent,
   .cardPopupContent {
-    width: 90%;
-    max-width: 320px;
-    padding: 36px 14px 14px;
+    max-width: 300px;
+    max-height: 65vh;  /* fits smaller screens */
+    padding: 24px 10px 10px;
+  }
+
+  .closePopup {
+    font-size: 1.3rem;
+    top: 6px;
+    right: 8px;
+  }
+
+  .popupContent h3 {
+    font-size: 1rem;
   }
 }
