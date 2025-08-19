@@ -3081,8 +3081,8 @@
   border-radius: 12px;
   padding: 14px 10px;
   width: 80%;
-  max-width: 400px;   /* smaller than before */
-  max-height: 100vh;   /* shorter */
+  max-width: 500px;   /* smaller than before */
+  max-height: 80vh;   /* shorter */
   overflow: hidden;
   display: flex;
   flex-direction: column;
