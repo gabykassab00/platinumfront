@@ -2237,37 +2237,39 @@ const ProductCard = React.memo(({ product }) => {
       </div>
 
       {/* 🟢 Perfume Popup (light, scrollable) */}
-      {showPerfumePopup && (
-        <div className={styles.popupOverlay}>
-          <div className={styles.popupContent}>
-            <button
-              className={styles.closePopup}
-              onClick={() => setShowPerfumePopup(false)}
-            >
-              ×
-            </button>
-            <h3>Select a Perfume</h3>
-            <input
-              type="text"
-              placeholder="Search perfumes..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className={styles.searchInput}
-            />
-            <div className={styles.scrollList}>
-              {filteredPerfumes.map((p, i) => (
-                <div
-                  key={i}
-                  onClick={() => handlePerfumeSelect(p)}
-                  className={styles.perfumeItem}
-                >
-                  {p}
-                </div>
-              ))}
-            </div>
+{/* 🟢 Perfume Popup (scoped to card) */}
+{showPerfumePopup && (
+  <div className={styles.cardPopupWrapper}>
+    <div className={styles.cardPopupContent}>
+      <button
+        className={styles.closePopup}
+        onClick={() => setShowPerfumePopup(false)}
+      >
+        ×
+      </button>
+      <h3>Select a Perfume</h3>
+      <input
+        type="text"
+        placeholder="Search perfumes..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className={styles.searchInput}
+      />
+      <div className={styles.scrollList}>
+        {filteredPerfumes.map((p, i) => (
+          <div
+            key={i}
+            onClick={() => handlePerfumeSelect(p)}
+            className={styles.perfumeItem}
+          >
+            {p}
           </div>
-        </div>
-      )}
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
     </article>
   );
 });
