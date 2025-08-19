@@ -2873,7 +2873,7 @@ header.sticky { top: calc(30px + env(safe-area-inset-top, 0)); }
 }
 
 .desktop-menu-container .container {
-  padding: 0 8rem 0 0.2rem;
+  padding: 0 8rem 0 1rem;
   max-width: 100%; /* Allow full width */
 }
 
@@ -2896,7 +2896,7 @@ header.sticky { top: calc(30px + env(safe-area-inset-top, 0)); }
 .menu-item {
   .menu-link {
       flex: 0 1 auto; /* Allow natural width */
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     font-weight: 500;
     color: #333;
     text-decoration: none;
