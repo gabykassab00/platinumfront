@@ -3069,21 +3069,25 @@
 
 
 
+/* ============================= */
+/* 🔮 Perfume Popup - Compact v2 */
+/* ============================= */
+
 /* Default Popup (desktop / large) */
 .popupContent,
 .cardPopupContent {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 14px;
-  padding: 20px 14px 14px;
-  width: 85%;
-  max-width: 380px;   /* smaller than before */
-  max-height: 70vh;   /* shorter */
+  border-radius: 12px;
+  padding: 14px 10px;
+  width: 80%;
+  max-width: 320px;   /* smaller than before */
+  max-height: 60vh;   /* shorter */
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 6px 22px rgba(0,0,0,0.25);
-  animation: slideUp 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  animation: slideUp 0.25s ease;
   position: relative;
 }
 
@@ -3091,11 +3095,11 @@
 .closePopup {
   background: none;
   border: none;
-  font-size: 1.2rem;  /* smaller */
+  font-size: 1rem;  /* smaller */
   color: #fff;
   position: absolute;
-  top: 6px;
-  right: 10px;
+  top: 4px;
+  right: 8px;
   cursor: pointer;
   z-index: 10;
   text-shadow: 0 2px 4px rgba(0,0,0,0.6);
@@ -3106,40 +3110,54 @@
 .cardPopupContent h3 {
   color: #fff;
   text-align: center;
-  margin: 6px 0 10px;
-  font-size: 1.05rem; /* smaller */
-  letter-spacing: 0.5px;
+  margin: 4px 0 8px;
+  font-size: 0.95rem; /* smaller */
+  letter-spacing: 0.4px;
 }
 
 /* Search box */
 .searchInput {
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  margin-bottom: 10px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  margin-bottom: 8px;
 }
 
 /* Perfume item style */
 .perfumeItem {
-  padding: 8px;
-  font-size: 0.8rem;
-  border-radius: 8px;
-  margin-bottom: 6px;
+  padding: 6px;
+  font-size: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 5px;
 }
 
 /* 📱 Medium small (≤576px) */
 @media (max-width: 576px) {
   .popupContent,
   .cardPopupContent {
-    max-width: 300px;  /* smaller */
-    max-height: 65vh;
-    padding: 18px 12px 12px;
+    max-width: 260px;  /* smaller */
+    max-height: 55vh;
+    padding: 12px 8px;
   }
 
   .closePopup {
-    font-size: 1.1rem;
-    top: 6px;
-    right: 8px;
+    font-size: 0.9rem;
+    top: 4px;
+    right: 6px;
+  }
+
+  .popupContent h3 {
+    font-size: 0.9rem;
+  }
+
+  .searchInput {
+    font-size: 0.7rem;
+    padding: 6px 7px;
+  }
+
+  .perfumeItem {
+    font-size: 0.7rem;
+    padding: 5px;
   }
 }
 
@@ -3147,28 +3165,28 @@
 @media (max-width: 480px) {
   .popupContent,
   .cardPopupContent {
-    max-width: 260px;   /* smallest */
-    max-height: 60vh;
-    padding: 16px 10px 10px;
+    max-width: 220px;   /* smallest */
+    max-height: 50vh;
+    padding: 10px 6px;
   }
 
   .popupContent h3 {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
   }
 
   .searchInput {
-    font-size: 0.75rem;
-    padding: 7px 9px;
+    font-size: 0.65rem;
+    padding: 5px 6px;
   }
 
   .perfumeItem {
-    font-size: 0.75rem;
-    padding: 7px;
+    font-size: 0.65rem;
+    padding: 4px;
   }
 
   .closePopup {
-    font-size: 1rem;
-    top: 5px;
-    right: 6px;
+    font-size: 0.85rem;
+    top: 3px;
+    right: 5px;
   }
 }
