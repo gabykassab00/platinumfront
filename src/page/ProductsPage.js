@@ -6117,17 +6117,6 @@ const ProductsPage = () => {
   const itemsPerPage = 12;
   const API_URL = process.env.REACT_APP_API_URL;
 
-  // const pageTitle = useMemo(() => {
-  //   if (location.pathname.includes('/perfumes/men')) return "Men's Perfumes";
-  //   if (location.pathname.includes('/perfumes/women')) return "Women's Perfumes";
-  //   if (location.pathname.includes('/lattafa-rasasi')) return "Lattafa & Rasasi Perfumes";
-  //   if (location.pathname.includes('/original')) return "Original Perfumes";
-  //   if (location.pathname.includes('/makeup')) return "Makeup Products";
-  //   if (location.pathname.includes('/watches')) return "Watches";
-  //   if (location.pathname.includes('/musk')) return "Musk Products";
-  //   if (location.pathname.includes('/refresheners')) return "Air and Furniture Refresheners";
-  //   return "All Perfumes";
-  // }, [location.pathname]);
   const pageTitle = useMemo(() => {
   if (location.pathname.includes('/perfumes/men')) return "Men's Perfumes";
   if (location.pathname.includes('/perfumes/women')) return "Women's Perfumes";
@@ -6175,31 +6164,7 @@ case "Body Mist & Deodorant":
     return `${SITE_URL}${location.pathname}`;
   }, [location.pathname]);
 
-  // const routeFilters = useMemo(() => {
-  //   if (location.pathname.includes('/perfumes/men')) {
-  //     return { genres: ['men'], type: 'multiple' };
-  //   } else if (location.pathname.includes('/perfumes/women')) {
-  //     return { genres: ['women'], type: 'multiple' };
-  //   } else if (location.pathname.includes('/lattafa-rasasi')) {
-  //     return { brands: ['lattafa', 'rasasi'], type: 'single' };
-  //   } else if (location.pathname.includes('/original')) {
-  //     return { type: 'single', excludeBrands: ['lattafa', 'rasasi'] };
-  //   } else if (location.pathname.includes('/makeup')) {
-  //     return { type: 'makeup' };
-  //   } else if (location.pathname.includes('/watches')) {
-  //     return { type: 'watch' };
-  //   } else if (location.pathname.includes('/musk')) {
-  //     return { type: 'musk' };
-  //   } else if (location.pathname.includes('/refresheners')) {
-  //     return { type: ['air', 'furniture'] };
-  //   } else if (location.pathname.includes('/perfumes')) {
-  //     return { type: ['single', 'multiple'] };
-  //   }
-  //   return {};
-  // }, [location.pathname]);
-
-
-  const routeFilters = useMemo(() => {
+const routeFilters = useMemo(() => {
   if (location.pathname.includes('/perfumes/men')) {
     return { genres: ['men'], type: 'multiple' };
   } else if (location.pathname.includes('/perfumes/women')) {
@@ -6217,7 +6182,7 @@ case "Body Mist & Deodorant":
   } else if (location.pathname.includes('/refresheners')) {
     return { type: ['air', 'furniture'] };
   } else if (location.pathname.includes('/body-mist')) {
-    return { type: 'body-mist' };
+    return { type: 'body' };   // ✅ fixed: match your DB
   } else if (location.pathname.includes('/body-cream')) {
     return { type: 'cream' };
   } else if (location.pathname.includes('/perfumes')) {
