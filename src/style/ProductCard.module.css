@@ -3081,7 +3081,7 @@
   border-radius: 12px;
   padding: 14px 10px;
   width: 80%;
-  max-width: 320px;   /* smaller than before */
+  max-width: 400px;   /* smaller than before */
   max-height: 60vh;   /* shorter */
   overflow: hidden;
   display: flex;
