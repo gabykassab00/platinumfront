@@ -1942,15 +1942,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
 import React, { useState, useMemo, useCallback } from "react";
 import styles from "../style/ProductCard.module.css";
 import { FaShoppingCart } from "react-icons/fa";
@@ -2077,7 +2068,7 @@ const ProductCard = React.memo(({ product }) => {
         size: `${selectedSize}ml`,
         sizeValue: selectedSize,
       }),
-      ...(product.type === "cream" && { perfume: selectedPerfume }), // 🟢 Save chosen perfume
+      ...(product.type === "cream" && { perfume: selectedPerfume }),
     };
 
     addItem(productToAdd);
@@ -2155,7 +2146,9 @@ const ProductCard = React.memo(({ product }) => {
                 <button
                   key={size}
                   type="button"
-                  className={`${styles.flipButton} ${selectedSize === size ? styles.selectedSize : ""}`}
+                  className={`${styles.flipButton} ${
+                    selectedSize === size ? styles.selectedSize : ""
+                  }`}
                   onClick={() => handleSizeSelect(size)}
                   aria-pressed={selectedSize === size}
                 >
@@ -2167,10 +2160,10 @@ const ProductCard = React.memo(({ product }) => {
                           ? "Small"
                           : "Large"
                         : size === 50
-                          ? "Small"
-                          : size === 80
-                            ? "Medium"
-                            : "Large"}
+                        ? "Small"
+                        : size === 80
+                        ? "Medium"
+                        : "Large"}
                     </div>
                   </div>
                 </button>
@@ -2194,7 +2187,6 @@ const ProductCard = React.memo(({ product }) => {
 
         <div className={styles.footer}>
           <div className={styles.details}>
-
             {/* 🟢 Perfume button only if cream — placed above product name */}
             {product.type === "cream" && (
               <div className={styles.sizeSection}>
@@ -2202,7 +2194,7 @@ const ProductCard = React.memo(({ product }) => {
                   <button
                     type="button"
                     onClick={() => setShowPerfumePopup(true)}
-                    className={`${styles.flipButton} ${styles.perfumeSelector}`}
+                    className={styles.flipButton}
                   >
                     <div className={styles.flipInner}>
                       <div className={styles.flipFront}>{selectedPerfume}</div>
@@ -2220,25 +2212,27 @@ const ProductCard = React.memo(({ product }) => {
 
             <div className={styles.price}>
               {discount > 0 && (
-                <span className={styles.original}>
-                  ${originalPrice}
-                </span>
+                <span className={styles.original}>${originalPrice}</span>
               )}
-              <span className={styles.current}>
-                {finalDisplayPrice}
-              </span>
+              <span className={styles.current}>{finalDisplayPrice}</span>
             </div>
           </div>
 
-          {/* ADD TO CART BUTTON - This was missing! */}
-          <button 
-            className={styles.addToCartButton}
-            onClick={handleAddToBasket}
-            aria-label="Add to cart"
-          >
-            <FaShoppingCart />
-            Add to Cart
-          </button>
+          {/* 🛒 Add to Cart button */}
+          <div className={styles.addToCartButton}>
+            <button
+              type="button"
+              className={styles.flipButton}
+              onClick={handleAddToBasket}
+            >
+              <div className={styles.flipInner}>
+                <div className={styles.flipFront}>Add to Cart</div>
+                <div className={styles.flipBack}>
+                  <FaShoppingCart />
+                </div>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
 
