@@ -1948,6 +1948,9 @@
 
 
 
+
+
+
 import React, { useState, useMemo, useCallback } from "react";
 import styles from "../style/ProductCard.module.css";
 import { FaShoppingCart } from "react-icons/fa";
@@ -2189,44 +2192,54 @@ const ProductCard = React.memo(({ product }) => {
           </div>
         )}
 
- <div className={styles.footer}>
-  <div className={styles.details}>
+        <div className={styles.footer}>
+          <div className={styles.details}>
 
-    {/* 🟢 Perfume button only if cream — placed above product name */}
-    {product.type === "cream" && (
-      <div className={styles.sizeSection}>
-        <div className={styles.priceButtons}>
-          <button
-            type="button"
-            onClick={() => setShowPerfumePopup(true)}
-            className={`${styles.flipButton} ${styles.perfumeSelector}`}
-          >
-            <div className={styles.flipInner}>
-              <div className={styles.flipFront}>{selectedPerfume}</div>
-              <div className={styles.flipBack}>Choose</div>
+            {/* 🟢 Perfume button only if cream — placed above product name */}
+            {product.type === "cream" && (
+              <div className={styles.sizeSection}>
+                <div className={styles.priceButtons}>
+                  <button
+                    type="button"
+                    onClick={() => setShowPerfumePopup(true)}
+                    className={`${styles.flipButton} ${styles.perfumeSelector}`}
+                  >
+                    <div className={styles.flipInner}>
+                      <div className={styles.flipFront}>{selectedPerfume}</div>
+                      <div className={styles.flipBack}>Choose</div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Product name */}
+            <h3 className={styles.name} itemProp="name">
+              <Link to={productUrl}>{product.name}</Link>
+            </h3>
+
+            <div className={styles.price}>
+              {discount > 0 && (
+                <span className={styles.original}>
+                  ${originalPrice}
+                </span>
+              )}
+              <span className={styles.current}>
+                {finalDisplayPrice}
+              </span>
             </div>
+          </div>
+
+          {/* ADD TO CART BUTTON - This was missing! */}
+          <button 
+            className={styles.addToCartButton}
+            onClick={handleAddToBasket}
+            aria-label="Add to cart"
+          >
+            <FaShoppingCart />
+            Add to Cart
           </button>
         </div>
-      </div>
-    )}
-
-    {/* Product name */}
-    <h3 className={styles.name} itemProp="name">
-      <Link to={productUrl}>{product.name}</Link>
-    </h3>
-
-    <div className={styles.price}>
-      {discount > 0 && (
-        <span className={styles.original}>
-          ${originalPrice}
-        </span>
-      )}
-      <span className={styles.current}>
-        {finalDisplayPrice}
-      </span>
-    </div>
-  </div>
-
       </div>
 
       {/* 🟢 Perfume Popup (light, scrollable) */}
