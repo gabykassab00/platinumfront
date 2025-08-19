@@ -2895,6 +2895,7 @@ header.sticky { top: calc(30px + env(safe-area-inset-top, 0)); }
 
 .menu-item {
   .menu-link {
+      flex: 0 1 auto; /* Allow natural width */
     font-size: 0.75rem;
     font-weight: 500;
     color: #333;
