@@ -3059,66 +3059,38 @@
 
 /* 📱 For screens ≤ 576px */
 @media (max-width: 576px) {
+  .closePopup {
+    font-size: 1.5rem;   /* smaller X */
+    top: 8px;            /* move higher */
+    right: 12px;         /* move right */
+  }
+
   .popupContent,
   .cardPopupContent {
-    width: 80%;          /* smaller width */
-    max-width: 380px;    /* prevent it from stretching too much */
-    height: 70vh;        /* shorter height */
+    width: 80%;
+    max-width: 380px;
+    height: 70vh;
     max-height: 70vh;
-    padding: 18px;
+    padding: 18px 18px 20px; /* keep extra bottom padding */
     border-radius: 16px;
-  }
-
-  .popupContent h3,
-  .cardPopupContent h3 {
-    font-size: 1.2rem;
-    margin-bottom: 12px;
-  }
-
-  .searchInput {
-    font-size: 0.9rem;
-    padding: 10px 14px;
-  }
-
-  .perfumeItem {
-    font-size: 0.9rem;
-    padding: 10px;
-  }
-
-  .scrollList {
-    max-height: 60vh;
   }
 }
 
 /* 📱 For screens ≤ 480px */
 @media (max-width: 480px) {
+  .closePopup {
+    font-size: 1.3rem;   /* even smaller */
+    top: 6px;            /* higher again */
+    right: 10px;         /* a little inside */
+  }
+
   .popupContent,
   .cardPopupContent {
     width: 85%;
     max-width: 320px;
     height: 65vh;
     max-height: 65vh;
-    padding: 16px;
+    padding: 16px 16px 18px;
     border-radius: 14px;
-  }
-
-  .popupContent h3,
-  .cardPopupContent h3 {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-  }
-
-  .searchInput {
-    font-size: 0.85rem;
-    padding: 9px 12px;
-  }
-
-  .perfumeItem {
-    font-size: 0.85rem;
-    padding: 9px;
-  }
-
-  .scrollList {
-    max-height: 55vh;
   }
 }
