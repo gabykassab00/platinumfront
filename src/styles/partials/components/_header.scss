@@ -2882,7 +2882,7 @@ header.sticky { top: calc(30px + env(safe-area-inset-top, 0)); }
 
 .menu-list {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   margin: 0;
@@ -2892,7 +2892,7 @@ header.sticky { top: calc(30px + env(safe-area-inset-top, 0)); }
 
 .menu-item {
   .menu-link {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: 500;
     color: #333;
     text-decoration: none;
