@@ -3038,3 +3038,12 @@
   transform: scale(1.2);
   color: #ff6b6b;
 }
+
+.cardPopupContent h3 {
+  color: #fff; /* White text */
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
