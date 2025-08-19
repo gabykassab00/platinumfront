@@ -3047,3 +3047,76 @@
   letter-spacing: 1px;
   text-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
+
+.searchInput::placeholder {
+  color: rgba(255, 255, 255, 0.8); 
+}
+
+
+/* ===================== */
+/* 📱 Responsive popup tweaks */
+/* ===================== */
+
+/* For screens ≤ 576px (small tablets / large phones) */
+@media (max-width: 576px) {
+  .popupContent,
+  .cardPopupContent {
+    width: 95%;          /* take more width */
+    max-width: 400px;    /* limit width */
+    padding: 18px;       /* slightly smaller padding */
+    border-radius: 16px; /* tighter corners */
+  }
+
+  .popupContent h3,
+  .cardPopupContent h3 {
+    font-size: 1.2rem;   /* shrink title */
+  }
+
+  .searchInput {
+    font-size: 0.9rem;
+    padding: 10px 14px;
+  }
+
+  .perfumeItem {
+    font-size: 0.9rem;   /* reduce text size */
+    padding: 10px;
+  }
+
+  .closePopup {
+    font-size: 1.5rem;   /* slightly smaller X button */
+    top: 10px;
+    right: 15px;
+  }
+}
+
+/* For screens ≤ 480px (phones) */
+@media (max-width: 480px) {
+  .popupContent,
+  .cardPopupContent {
+    width: 96%;
+    max-width: 350px;
+    padding: 15px;
+    border-radius: 14px;
+  }
+
+  .popupContent h3,
+  .cardPopupContent h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .searchInput {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  .perfumeItem {
+    font-size: 0.85rem;
+    padding: 8px;
+    margin-bottom: 6px;
+  }
+
+  .scrollList {
+    max-height: 60vh; /* shrink scrollable area */
+  }
+}
