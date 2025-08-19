@@ -2873,13 +2873,13 @@ header.sticky { top: calc(30px + env(safe-area-inset-top, 0)); }
 }
 
 .desktop-menu-container .container {
-  padding: 0 8rem 0 1rem;
+  padding: 0 1rem 0 1rem;
   max-width: 100%; /* Allow full width */
 }
 
 .menu-nav {
   width: 100%;
-    padding: 0 2rem;
+    padding: 0;
 }
 
 .menu-list {
