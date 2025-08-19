@@ -2826,6 +2826,14 @@
 }
 
 @media (max-width: 480px) {
+    .name {
+    white-space: normal;       /* allow text to wrap */
+    overflow: visible;         /* don’t hide text */
+    text-overflow: unset;      /* no ellipsis */
+    font-size: 0.9rem;         /* slightly smaller to fit */
+    line-height: 1.3;          /* better readability */
+    word-wrap: break-word;     /* break very long words */
+  }
   .priceButtons {
     gap: 5px;
   }
