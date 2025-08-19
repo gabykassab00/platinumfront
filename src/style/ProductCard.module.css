@@ -3058,39 +3058,82 @@
 /* ===================== */
 
 /* 📱 For screens ≤ 576px */
-@media (max-width: 576px) {
-  .closePopup {
-    font-size: 1.5rem;   /* smaller X */
-    top: 8px;            /* move higher */
-    right: 12px;         /* move right */
-  }
 
+
+
+
+
+
+
+
+
+
+
+
+
+/* 🟢 Shared header styles */
+.popupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.popupHeader h3 {
+  color: #fff;
+  font-size: 1.2rem;
+  margin: 0;
+  text-align: left;
+  flex: 1;
+}
+
+.closePopup {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+/* 📱 For screens ≤ 576px */
+@media (max-width: 576px) {
   .popupContent,
   .cardPopupContent {
-    width: 80%;
-    max-width: 380px;
+    width: 85%;
+    max-width: 360px;
     height: 70vh;
     max-height: 70vh;
-    padding: 18px 18px 20px; /* keep extra bottom padding */
+    padding: 16px;
     border-radius: 16px;
+  }
+
+  .popupHeader h3 {
+    font-size: 1.1rem;
+  }
+
+  .closePopup {
+    font-size: 1.3rem;
   }
 }
 
 /* 📱 For screens ≤ 480px */
 @media (max-width: 480px) {
-  .closePopup {
-    font-size: 1.3rem;   /* even smaller */
-    top: 6px;            /* higher again */
-    right: 10px;         /* a little inside */
-  }
-
   .popupContent,
   .cardPopupContent {
-    width: 85%;
+    width: 90%;
     max-width: 320px;
     height: 65vh;
     max-height: 65vh;
-    padding: 16px 16px 18px;
+    padding: 14px;
     border-radius: 14px;
+  }
+
+  .popupHeader h3 {
+    font-size: 1rem;
+  }
+
+  .closePopup {
+    font-size: 1.2rem;
   }
 }
