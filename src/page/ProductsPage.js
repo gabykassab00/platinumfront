@@ -6180,7 +6180,7 @@ const routeFilters = useMemo(() => {
   } else if (location.pathname.includes('/musk')) {
     return { type: 'musk' };
   } else if (location.pathname.includes('/refresheners')) {
-    return { type: ['air', 'furniture'] };
+    return { type: ['air', 'furniture','incense'] };
   } else if (location.pathname.includes('/body-mist')) {
     return { type: 'body' };   // ✅ fixed: match your DB
   } else if (location.pathname.includes('/body-cream')) {
