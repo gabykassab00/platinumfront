@@ -698,6 +698,224 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { createContext, useContext, useReducer } from 'react';
+
+// const BasketContext = createContext();
+
+// const initialState = {
+//   basketItems: JSON.parse(localStorage.getItem('basketItems')) || [],
+//   sidebarVisible: false,
+//   preventCloseOnce: false,
+// };
+
+// const basketReducer = (state, action) => {
+//   let newState;
+  
+//   switch (action.type) {
+//     case 'ADD_ITEM': {
+//       const { id, size } = action.payload;
+//       // Check if an item with the same id AND size exists
+//       const existing = state.basketItems.find(
+//         item => item.id === id && item.size === size
+//       );
+//       const updatedItems = existing
+//         ? state.basketItems.map(item =>
+//             item.id === id && item.size === size
+//               ? { ...item, quantity: item.quantity + 1 }
+//               : item
+//           )
+//         : [...state.basketItems, { ...action.payload, quantity: 1 }];
+
+//       newState = {
+//         ...state,
+//         basketItems: updatedItems,
+//         sidebarVisible: state.sidebarVisible || !existing,
+//       };
+//       break;
+//     }
+
+//     case 'REMOVE_ITEM': {
+//       const { id, size } = action.payload;
+//       newState = {
+//         ...state,
+//         basketItems: state.basketItems.filter(
+//           item => !(item.id === id && item.size === size)
+//         ),
+//       };
+//       break;
+//     }
+
+//     case 'INCREASE_QUANTITY': {
+//       const { id, size } = action.payload;
+//       newState = {
+//         ...state,
+//         basketItems: state.basketItems.map(item =>
+//           item.id === id && item.size === size
+//             ? { ...item, quantity: item.quantity + 1 }
+//             : item
+//         ),
+//       };
+//       break;
+//     }
+
+//     case 'DECREASE_QUANTITY': {
+//       const { id, size } = action.payload;
+//       newState = {
+//         ...state,
+//         basketItems: state.basketItems.map(item =>
+//           item.id === id && item.size === size && item.quantity > 1
+//             ? { ...item, quantity: item.quantity - 1 }
+//             : item
+//         ),
+//       };
+//       break;
+//     }
+
+//     case 'OPEN_SIDEBAR':
+//       newState = {
+//         ...state,
+//         sidebarVisible: true,
+//       };
+//       break;
+
+//     case 'CLOSE_SIDEBAR':
+//       newState = {
+//         ...state,
+//         sidebarVisible: false,
+//       };
+//       break;
+
+//     case 'PREVENT_CLOSE_ONCE':
+//       newState = {
+//         ...state,
+//         preventCloseOnce: true,
+//       };
+//       break;
+
+//     case 'RESET_PREVENT_CLOSE':
+//       newState = {
+//         ...state,
+//         preventCloseOnce: false,
+//       };
+//       break;
+
+//     case 'CLEAR_CART':
+//       newState = {
+//         ...state,
+//         basketItems: [],
+//       };
+//       break;
+
+//     default:
+//       return state;
+//   }
+
+//   // Save to localStorage after each state change
+//   localStorage.setItem('basketItems', JSON.stringify(newState.basketItems));
+//   return newState;
+// };
+
+// export const BasketProvider = ({ children }) => {
+//   const [state, dispatch] = useReducer(basketReducer, initialState);
+
+//   const addItem = (item) => {
+//     dispatch({ type: 'ADD_ITEM', payload: item });
+//   };
+
+//   const removeItem = (id, size) => {
+//     dispatch({ type: 'REMOVE_ITEM', payload: { id, size } });
+//   };
+
+//   const increaseQty = (id, size) => {
+//     dispatch({ type: 'INCREASE_QUANTITY', payload: { id, size } });
+//   };
+
+//   const decreaseQty = (id, size) => {
+//     dispatch({ type: 'DECREASE_QUANTITY', payload: { id, size } });
+//   };
+
+//   const openSidebar = () => {
+//     dispatch({ type: 'OPEN_SIDEBAR' });
+//   };
+
+//   const closeSidebar = () => {
+//     dispatch({ type: 'CLOSE_SIDEBAR' });
+//   };
+
+//   const preventCloseOnceAction = () => {
+//     dispatch({ type: 'PREVENT_CLOSE_ONCE' });
+//   };
+
+//   const resetPreventClose = () => {
+//     dispatch({ type: 'RESET_PREVENT_CLOSE' });
+//   };
+
+//   const clearCart = () => {
+//     dispatch({ type: 'CLEAR_CART' });
+//   };
+
+//   return (
+//     <BasketContext.Provider
+//       value={{
+//         basketItems: state.basketItems,
+//         sidebarVisible: state.sidebarVisible,
+//         preventCloseOnce: state.preventCloseOnce,
+//         addItem,
+//         removeItem,
+//         increaseQty,
+//         decreaseQty,
+//         openSidebar,
+//         closeSidebar,
+//         preventCloseOnceAction,
+//         resetPreventClose,
+//         clearCart,
+//       }}
+//     >
+//       {children}
+//     </BasketContext.Provider>
+//   );
+// };
+
+// export const useBasket = () => useContext(BasketContext);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// src/context/BasketProvider.js
 import React, { createContext, useContext, useReducer } from 'react';
 
 const BasketContext = createContext();
@@ -710,17 +928,24 @@ const initialState = {
 
 const basketReducer = (state, action) => {
   let newState;
-  
+
   switch (action.type) {
     case 'ADD_ITEM': {
-      const { id, size } = action.payload;
-      // Check if an item with the same id AND size exists
+      const { id, size, perfume } = action.payload;
+
+      // ✅ check by id + size + perfume
       const existing = state.basketItems.find(
-        item => item.id === id && item.size === size
+        item =>
+          item.id === id &&
+          item.size === size &&
+          item.perfume === perfume
       );
+
       const updatedItems = existing
         ? state.basketItems.map(item =>
-            item.id === id && item.size === size
+            item.id === id &&
+            item.size === size &&
+            item.perfume === perfume
               ? { ...item, quantity: item.quantity + 1 }
               : item
           )
@@ -735,22 +960,29 @@ const basketReducer = (state, action) => {
     }
 
     case 'REMOVE_ITEM': {
-      const { id, size } = action.payload;
+      const { id, size, perfume } = action.payload;
       newState = {
         ...state,
         basketItems: state.basketItems.filter(
-          item => !(item.id === id && item.size === size)
+          item =>
+            !(
+              item.id === id &&
+              item.size === size &&
+              item.perfume === perfume
+            )
         ),
       };
       break;
     }
 
     case 'INCREASE_QUANTITY': {
-      const { id, size } = action.payload;
+      const { id, size, perfume } = action.payload;
       newState = {
         ...state,
         basketItems: state.basketItems.map(item =>
-          item.id === id && item.size === size
+          item.id === id &&
+          item.size === size &&
+          item.perfume === perfume
             ? { ...item, quantity: item.quantity + 1 }
             : item
         ),
@@ -759,11 +991,14 @@ const basketReducer = (state, action) => {
     }
 
     case 'DECREASE_QUANTITY': {
-      const { id, size } = action.payload;
+      const { id, size, perfume } = action.payload;
       newState = {
         ...state,
         basketItems: state.basketItems.map(item =>
-          item.id === id && item.size === size && item.quantity > 1
+          item.id === id &&
+          item.size === size &&
+          item.perfume === perfume &&
+          item.quantity > 1
             ? { ...item, quantity: item.quantity - 1 }
             : item
         ),
@@ -772,45 +1007,30 @@ const basketReducer = (state, action) => {
     }
 
     case 'OPEN_SIDEBAR':
-      newState = {
-        ...state,
-        sidebarVisible: true,
-      };
+      newState = { ...state, sidebarVisible: true };
       break;
 
     case 'CLOSE_SIDEBAR':
-      newState = {
-        ...state,
-        sidebarVisible: false,
-      };
+      newState = { ...state, sidebarVisible: false };
       break;
 
     case 'PREVENT_CLOSE_ONCE':
-      newState = {
-        ...state,
-        preventCloseOnce: true,
-      };
+      newState = { ...state, preventCloseOnce: true };
       break;
 
     case 'RESET_PREVENT_CLOSE':
-      newState = {
-        ...state,
-        preventCloseOnce: false,
-      };
+      newState = { ...state, preventCloseOnce: false };
       break;
 
     case 'CLEAR_CART':
-      newState = {
-        ...state,
-        basketItems: [],
-      };
+      newState = { ...state, basketItems: [] };
       break;
 
     default:
       return state;
   }
 
-  // Save to localStorage after each state change
+  // 🟢 persist to localStorage
   localStorage.setItem('basketItems', JSON.stringify(newState.basketItems));
   return newState;
 };
@@ -822,37 +1042,23 @@ export const BasketProvider = ({ children }) => {
     dispatch({ type: 'ADD_ITEM', payload: item });
   };
 
-  const removeItem = (id, size) => {
-    dispatch({ type: 'REMOVE_ITEM', payload: { id, size } });
+  const removeItem = (id, size, perfume) => {
+    dispatch({ type: 'REMOVE_ITEM', payload: { id, size, perfume } });
   };
 
-  const increaseQty = (id, size) => {
-    dispatch({ type: 'INCREASE_QUANTITY', payload: { id, size } });
+  const increaseQty = (id, size, perfume) => {
+    dispatch({ type: 'INCREASE_QUANTITY', payload: { id, size, perfume } });
   };
 
-  const decreaseQty = (id, size) => {
-    dispatch({ type: 'DECREASE_QUANTITY', payload: { id, size } });
+  const decreaseQty = (id, size, perfume) => {
+    dispatch({ type: 'DECREASE_QUANTITY', payload: { id, size, perfume } });
   };
 
-  const openSidebar = () => {
-    dispatch({ type: 'OPEN_SIDEBAR' });
-  };
-
-  const closeSidebar = () => {
-    dispatch({ type: 'CLOSE_SIDEBAR' });
-  };
-
-  const preventCloseOnceAction = () => {
-    dispatch({ type: 'PREVENT_CLOSE_ONCE' });
-  };
-
-  const resetPreventClose = () => {
-    dispatch({ type: 'RESET_PREVENT_CLOSE' });
-  };
-
-  const clearCart = () => {
-    dispatch({ type: 'CLEAR_CART' });
-  };
+  const openSidebar = () => dispatch({ type: 'OPEN_SIDEBAR' });
+  const closeSidebar = () => dispatch({ type: 'CLOSE_SIDEBAR' });
+  const preventCloseOnceAction = () => dispatch({ type: 'PREVENT_CLOSE_ONCE' });
+  const resetPreventClose = () => dispatch({ type: 'RESET_PREVENT_CLOSE' });
+  const clearCart = () => dispatch({ type: 'CLEAR_CART' });
 
   return (
     <BasketContext.Provider
