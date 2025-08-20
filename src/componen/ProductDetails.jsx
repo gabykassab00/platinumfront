@@ -4953,6 +4953,468 @@
 
 
 
+// // src/pages/ProductDetails.jsx
+// import React, { useEffect, useState, useRef, useMemo } from "react";
+// import { useParams } from "react-router-dom";
+// import { Helmet } from "react-helmet-async";
+// import ProductCard from "../componen/ProductCard";
+// import styles from "../style/ProductDetail.module.css";
+// import { useBasket } from "../context/BasketProvider";
+// import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+
+// const SITE_URL =
+//   process.env.REACT_APP_SITE_URL ||
+//   (typeof window !== "undefined" ? window.location.origin : "");
+
+// // 🟢 Perfume list (static)
+// const perfumeList = [
+//   "Oriental Oud",
+//   "Acqua di Gio White",
+//   "Acqua di Gio",
+//   "Azzaro Chrome",
+//   "Issey Miyake",
+//   "Armani Code",
+//   "Bleu de Chanel",
+//   "Versace Eros",
+//   "Sauvage",
+//   "One Million",
+//   "Good Girl",
+//   "Black Opium",
+//   "La Vie Est Belle",
+//   "Chanel No. 5",
+//   "Dior J'adore",
+//   "Yves Saint Laurent Libre",
+//   // ... add the rest
+// ];
+
+// const ProductDetails = () => {
+//   const { productId } = useParams();
+//   const { addItem, openSidebar } = useBasket();
+
+//   const [product, setProduct] = useState(null);
+//   const [selectedSize, setSelectedSize] = useState(null);
+//   const [quantity, setQuantity] = useState(1);
+//   const [relatedProducts, setRelatedProducts] = useState([]);
+//   const [visibleProducts, setVisibleProducts] = useState(0);
+
+//   const infoRef = useRef(null);
+//   const imageBoxRef = useRef(null);
+//   const relatedProductsRef = useRef(null);
+
+//   const API_URL = process.env.REACT_APP_API_URL;
+
+//   // 🟢 Perfume popup states
+//   const [showPerfumePopup, setShowPerfumePopup] = useState(false);
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [selectedPerfume, setSelectedPerfume] = useState("Perfume");
+
+//   // ----------------- Fetch product -----------------
+//   useEffect(() => {
+//     fetch(`${API_URL}/api/products/${productId}`)
+//       .then((res) => res.json())
+//       .then((data) => {
+//         setProduct(data);
+//         if (data.type === "multiple") setSelectedSize("100ml");
+//         else if (data.type === "musk") setSelectedSize("6ml");
+//       })
+//       .catch((err) => console.error("Error fetching product:", err));
+//   }, [productId, API_URL]);
+
+//   // Match image box to info height
+//   useEffect(() => {
+//     if (infoRef.current && imageBoxRef.current) {
+//       const infoHeight = infoRef.current.offsetHeight;
+//       imageBoxRef.current.style.height = `${infoHeight}px`;
+//     }
+//   }, [product]);
+
+//   // ----------------- Related products -----------------
+//   useEffect(() => {
+//     if (!product) return;
+
+//     const genre = product.genre || "";
+//     const type = product.type?.toLowerCase() || "";
+//     const imagePath = product.image_path?.toLowerCase() || "";
+//     let url = "";
+
+//     const typeBasedRecommendations = [
+//       "musk",
+//       "air",
+//       "furniture",
+//       "watch",
+//       "makeup",
+//     ];
+
+//     if (typeBasedRecommendations.includes(type)) {
+//       url = `${API_URL}/api/products`;
+//     } else if (imagePath.includes("images/terkibmen/")) {
+//       url = `${API_URL}/api/products?baseImagePath=terkibmen`;
+//     } else if (imagePath.includes("images/terkibwomen/")) {
+//       url = `${API_URL}/api/products?baseImagePath=terkibwomen`;
+//     } else if (imagePath.includes("images/jehiz/")) {
+//       url = `${API_URL}/api/products?baseImagePath=jehiz&genre=${genre}`;
+//     }
+
+//     if (url) {
+//       fetch(url)
+//         .then((res) => res.json())
+//         .then((data) => {
+//           let filtered;
+//           if (typeBasedRecommendations.includes(type)) {
+//             filtered = data.filter(
+//               (p) => p.type?.toLowerCase() === type && p.id !== product.id
+//             );
+//           } else {
+//             filtered = data.filter((p) => p.id !== product.id);
+//           }
+//           setRelatedProducts(filtered.slice(0, 4));
+//         })
+//         .catch((err) => console.error("Error fetching related products:", err));
+//     }
+//   }, [product, API_URL]);
+
+//   // Scroll related products
+//   const scrollRelated = (direction) => {
+//     if (relatedProductsRef.current && relatedProductsRef.current.children[0]) {
+//       const container = relatedProductsRef.current;
+//       const card = container.children[0];
+//       const stylesComputed = window.getComputedStyle(card);
+//       const cardWidth =
+//         card.offsetWidth + parseInt(stylesComputed.marginRight, 10);
+
+//       container.style.scrollBehavior = "smooth";
+//       container.scrollLeft +=
+//         direction === "left" ? -cardWidth * 2 : cardWidth * 2;
+
+//       setVisibleProducts((prev) => {
+//         const next = direction === "left" ? prev - 2 : prev + 2;
+//         return Math.max(0, Math.min(next, relatedProducts.length - 2));
+//       });
+//     }
+//   };
+
+//   // ----------------- Pricing -----------------
+//   const imageUrl = product ? `${API_URL}/${product.image_path}` : "";
+//   const basePrice = product ? parseFloat(product.price) : 0;
+//   const discount = product ? parseFloat(product.discount || 0) : 0;
+//   const hasDiscount = discount > 0;
+//   const isMultiple = product?.type === "multiple";
+
+//   const getSizePrice = (size) => {
+//     if (product?.type === "musk") {
+//       if (size === "6ml") return 6;
+//       if (size === "12ml") return 12;
+//     }
+//     if (size === "50ml") return 10;
+//     if (size === "80ml") return 15;
+//     return basePrice;
+//   };
+
+//   const unitPrice = getSizePrice(selectedSize);
+//   const discountedUnitPrice = hasDiscount
+//     ? unitPrice * (1 - discount)
+//     : unitPrice;
+//   const totalPrice = (discountedUnitPrice * quantity).toFixed(2);
+//   const originalTotal = (unitPrice * quantity).toFixed(2);
+
+//   const handleAddToCart = () => {
+//     const item = {
+//       ...product,
+//       price: discountedUnitPrice.toFixed(2),
+//       total: totalPrice,
+//       quantity,
+//       ...(selectedSize && { size: selectedSize }),
+//       ...(product?.type === "cream" && { perfume: selectedPerfume }),
+//     };
+//     addItem(item);
+//     openSidebar();
+//   };
+
+//   // ----------------- SEO -----------------
+//   const canonicalUrl = useMemo(
+//     () => `${SITE_URL}/product-details/${productId}`,
+//     [productId]
+//   );
+
+//   const seoTitle = product
+//     ? `${product.name} | Platinum Perfumes Lebanon`
+//     : "Product | Platinum Perfumes Lebanon";
+
+//   const seoDescription = product
+//     ? product.description
+//       ? String(product.description).slice(0, 155)
+//       : `Shop ${product.name} by ${
+//           product.brand || "Platinum"
+//         } at Platinum Perfumes Lebanon.`
+//     : "Shop premium perfumes, musks, and more at Platinum Perfumes Lebanon.";
+
+//   const ogImage = product
+//     ? imageUrl
+//     : `${SITE_URL}/images/products/platinum.png`;
+
+//   const productJsonLd = product
+//     ? {
+//         "@context": "https://schema.org/",
+//         "@type": "Product",
+//         name: product.name,
+//         image: [ogImage],
+//         description: product.description || "Premium quality product",
+//         brand: product.brand || "Platinum",
+//         sku: String(product.id),
+//         category: product.genre || undefined,
+//         offers: {
+//           "@type": "Offer",
+//           url: canonicalUrl,
+//           priceCurrency: "USD",
+//           price: discountedUnitPrice
+//             ? discountedUnitPrice.toFixed(2)
+//             : basePrice.toFixed(2),
+//           availability: "https://schema.org/InStock",
+//           itemCondition: "https://schema.org/NewCondition",
+//         },
+//       }
+//     : null;
+
+//   // ----------------- RENDER -----------------
+//   if (!product) {
+//     return (
+//       <>
+//         <Helmet prioritizeSeoTags>
+//           <title>{seoTitle}</title>
+//           <meta name="description" content={seoDescription} />
+//           <link rel="canonical" href={canonicalUrl} />
+//         </Helmet>
+//         <div className={styles.loading}>Loading...</div>
+//       </>
+//     );
+//   }
+
+//   return (
+//     <>
+//       {/* SEO */}
+//       <Helmet prioritizeSeoTags>
+//         <title>{seoTitle}</title>
+//         <meta name="description" content={seoDescription} />
+//         <link rel="canonical" href={canonicalUrl} />
+//         {productJsonLd && (
+//           <script type="application/ld+json">
+//             {JSON.stringify(productJsonLd)}
+//           </script>
+//         )}
+//       </Helmet>
+
+//       <div className={styles.container}>
+//         <div className={styles.productContainer}>
+//           {/* ----------------- IMAGE ----------------- */}
+//           <div className={styles.imageContainer} ref={imageBoxRef}>
+//             <div className={styles.imageViewport}>
+//               <img
+//                 src={imageUrl}
+//                 alt={product.name}
+//                 onError={(e) =>
+//                   (e.target.src = "https://via.placeholder.com/300")
+//                 }
+//                 loading="lazy"
+//               />
+//               {hasDiscount && (
+//                 <div className={styles.discountBadge}>
+//                   -{Math.round(discount * 100)}%
+//                 </div>
+//               )}
+//             </div>
+//           </div>
+
+//           {/* ----------------- INFO ----------------- */}
+//           <div ref={infoRef} className={styles.infoContainer}>
+//             <h1 className={styles.title}>{product.name}</h1>
+
+//             {/* Price */}
+//             <div className={styles.priceRow}>
+//               {hasDiscount && (
+//                 <span className={styles.originalPrice}>${originalTotal}</span>
+//               )}
+//               <span className={styles.finalPrice}>${totalPrice}</span>
+//             </div>
+
+//             {/* Divider line */}
+//             <hr className={styles.divider} />
+
+//             {/* Perfume button (for creams only, below line) */}
+//             {product?.type === "cream" && (
+//               <div className={styles.sizeSection} style={{ textAlign: "center" }}>
+//                 <button
+//                   type="button"
+//                   onClick={() => setShowPerfumePopup(true)}
+//                   className={styles.sizeBtn}
+//                 >
+//                   {selectedPerfume || "Select a Perfume"}
+//                 </button>
+//               </div>
+//             )}
+
+//             {/* Product Details */}
+//             <div className={styles.detailsSection}>
+//               <h3 className={styles.sectionTitle}>Product Details</h3>
+//               {/* conditional bullet lists ... */}
+//             </div>
+
+//             {/* Size Options */}
+//             {(isMultiple || product?.type === "musk") && (
+//               <div className={styles.sizeSection}>
+//                 <h3 className={styles.sectionTitle}>Size</h3>
+//                 <div className={styles.sizeButtons}>
+//                   {(product?.type === "musk"
+//                     ? ["6ml", "12ml"]
+//                     : ["50ml", "80ml", "100ml"]
+//                   ).map((size) => (
+//                     <button
+//                       key={size}
+//                       className={`${styles.sizeBtn} ${
+//                         selectedSize === size ? styles.selected : ""
+//                       }`}
+//                       onClick={() => setSelectedSize(size)}
+//                     >
+//                       {size}
+//                     </button>
+//                   ))}
+//                 </div>
+//               </div>
+//             )}
+
+//             {/* Quantity */}
+//             <div className={styles.quantitySection}>
+//               <h3 className={styles.sectionTitle}>Quantity</h3>
+//               <div className={styles.quantityControls}>
+//                 <button
+//                   className={styles.quantityBtn}
+//                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+//                 >
+//                   −
+//                 </button>
+//                 <span className={styles.quantityValue}>{quantity}</span>
+//                 <button
+//                   className={styles.quantityBtn}
+//                   onClick={() => setQuantity((q) => q + 1)}
+//                 >
+//                   +
+//                 </button>
+//               </div>
+//             </div>
+
+//             {/* Add to Cart */}
+//             <button className={styles.addToCartBtn} onClick={handleAddToCart}>
+//               ADD TO CART
+//             </button>
+
+//             <p className={styles.description}>
+//               {product.description || "Premium quality product"}
+//             </p>
+//             <p className={styles.shipping}>Shipping calculated at checkout.</p>
+//           </div>
+//         </div>
+
+//         {/* ----------------- RELATED PRODUCTS ----------------- */}
+//         {relatedProducts.length > 0 && (
+//           <div className={styles.relatedSection}>
+//             <h2 className={styles.relatedTitle}>You may also like</h2>
+//             <div className={styles.relatedContainer}>
+//               {visibleProducts > 0 && (
+//                 <button
+//                   className={styles.scrollButton}
+//                   onClick={() => scrollRelated("left")}
+//                 >
+//                   <FiChevronLeft />
+//                 </button>
+//               )}
+//               <div className={styles.relatedGrid} ref={relatedProductsRef}>
+//                 {relatedProducts.map((item) => (
+//                   <div key={item.id} className={styles.relatedCardWrapper}>
+//                     <ProductCard
+//                       product={item}
+//                       className={styles.relatedCard}
+//                       compactHeight
+//                     />
+//                   </div>
+//                 ))}
+//               </div>
+//               {visibleProducts < relatedProducts.length - 2 && (
+//                 <button
+//                   className={styles.scrollButton}
+//                   onClick={() => scrollRelated("right")}
+//                 >
+//                   <FiChevronRight />
+//                 </button>
+//               )}
+//             </div>
+//           </div>
+//         )}
+//       </div>
+
+//       {/* ----------------- PERFUME POPUP ----------------- */}
+//       {showPerfumePopup && (
+//         <div className={styles.cardPopupWrapper}>
+//           <div className={styles.cardPopupContent}>
+//             <button
+//               className={styles.closePopup}
+//               onClick={() => setShowPerfumePopup(false)}
+//             >
+//               ×
+//             </button>
+//             <h3 className={styles.popupTitle}>Select a Perfume</h3>
+//             <input
+//               type="text"
+//               placeholder="Search perfumes..."
+//               value={searchTerm}
+//               onChange={(e) => setSearchTerm(e.target.value)}
+//               className={styles.searchInput}
+//             />
+//             <div className={styles.scrollList}>
+//               {perfumeList
+//                 .filter((p) =>
+//                   p.toLowerCase().includes(searchTerm.toLowerCase())
+//                 )
+//                 .map((p, i) => (
+//                   <div
+//                     key={i}
+//                     onClick={() => {
+//                       setSelectedPerfume(p);
+//                       setShowPerfumePopup(false);
+//                     }}
+//                     className={styles.perfumeItem}
+//                   >
+//                     {p}
+//                   </div>
+//                 ))}
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </>
+//   );
+// };
+
+// export default ProductDetails;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // src/pages/ProductDetails.jsx
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useParams } from "react-router-dom";
@@ -4966,7 +5428,7 @@ const SITE_URL =
   process.env.REACT_APP_SITE_URL ||
   (typeof window !== "undefined" ? window.location.origin : "");
 
-// 🟢 Perfume list (static)
+// 🟢 Perfume list
 const perfumeList = [
   "Oriental Oud",
   "Acqua di Gio White",
@@ -5020,7 +5482,7 @@ const ProductDetails = () => {
       .catch((err) => console.error("Error fetching product:", err));
   }, [productId, API_URL]);
 
-  // Match image box to info height
+  // Match image box height with info box
   useEffect(() => {
     if (infoRef.current && imageBoxRef.current) {
       const infoHeight = infoRef.current.offsetHeight;
@@ -5073,7 +5535,7 @@ const ProductDetails = () => {
     }
   }, [product, API_URL]);
 
-  // Scroll related products
+  // Scroll related
   const scrollRelated = (direction) => {
     if (relatedProductsRef.current && relatedProductsRef.current.children[0]) {
       const container = relatedProductsRef.current;
@@ -5205,7 +5667,7 @@ const ProductDetails = () => {
 
       <div className={styles.container}>
         <div className={styles.productContainer}>
-          {/* ----------------- IMAGE ----------------- */}
+          {/* IMAGE */}
           <div className={styles.imageContainer} ref={imageBoxRef}>
             <div className={styles.imageViewport}>
               <img
@@ -5224,7 +5686,7 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          {/* ----------------- INFO ----------------- */}
+          {/* INFO */}
           <div ref={infoRef} className={styles.infoContainer}>
             <h1 className={styles.title}>{product.name}</h1>
 
@@ -5236,12 +5698,15 @@ const ProductDetails = () => {
               <span className={styles.finalPrice}>${totalPrice}</span>
             </div>
 
-            {/* Divider line */}
+            {/* Divider (just one main line) */}
             <hr className={styles.divider} />
 
-            {/* Perfume button (for creams only, below line) */}
+            {/* Perfume button BELOW divider and ABOVE Product Details */}
             {product?.type === "cream" && (
-              <div className={styles.sizeSection} style={{ textAlign: "center" }}>
+              <div
+                className={styles.sizeSection}
+                style={{ textAlign: "center", marginBottom: "15px" }}
+              >
                 <button
                   type="button"
                   onClick={() => setShowPerfumePopup(true)}
@@ -5255,7 +5720,6 @@ const ProductDetails = () => {
             {/* Product Details */}
             <div className={styles.detailsSection}>
               <h3 className={styles.sectionTitle}>Product Details</h3>
-              {/* conditional bullet lists ... */}
             </div>
 
             {/* Size Options */}
@@ -5313,7 +5777,7 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        {/* ----------------- RELATED PRODUCTS ----------------- */}
+        {/* RELATED PRODUCTS */}
         {relatedProducts.length > 0 && (
           <div className={styles.relatedSection}>
             <h2 className={styles.relatedTitle}>You may also like</h2>
@@ -5350,7 +5814,7 @@ const ProductDetails = () => {
         )}
       </div>
 
-      {/* ----------------- PERFUME POPUP ----------------- */}
+      {/* PERFUME POPUP */}
       {showPerfumePopup && (
         <div className={styles.cardPopupWrapper}>
           <div className={styles.cardPopupContent}>
