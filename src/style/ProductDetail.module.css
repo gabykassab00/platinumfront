@@ -2876,6 +2876,6 @@
 /* Apply only for laptop/desktop screens */
 @media (min-width: 992px) and (max-width: 1440px) {
   .imageViewport {
-    transform: translateY(-3rem); /* lift upward */
+    transform: translateY(-5rem); /* lift upward */
   }
 }
