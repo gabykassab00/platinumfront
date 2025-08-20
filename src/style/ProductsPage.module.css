@@ -1589,7 +1589,7 @@
     gap: 1rem;
   }
   .paginationContainer {
-    justify-content: flex-start;
+    justify-content: center;
   }
 }
 
