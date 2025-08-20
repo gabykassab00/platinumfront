@@ -972,6 +972,154 @@
 
 
 
+// import React, { useEffect, useRef } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import { useBasket } from '../context/BasketProvider';
+// import styles from '../style/cart-sidebar.module.css';
+
+// const SidebarBasket = () => {
+//   const {
+//     basketItems,
+//     sidebarVisible,
+//     preventCloseOnce,
+//     closeSidebar,
+//     resetPreventClose,
+//     removeItem,
+//     increaseQty,
+//     decreaseQty,
+//   } = useBasket();
+
+//   const navigate = useNavigate();
+//   const sidebarRef = useRef();
+//   const API_URL = process.env.REACT_APP_API_URL;
+
+//   const goToCart = () => {
+//     closeSidebar();
+//     navigate('/cart');
+//   };
+
+//   const goToCheckout = () => {
+//     closeSidebar();
+//     navigate('/checkout');
+//   };
+
+//   const total = basketItems.reduce(
+//     (sum, item) => sum + Number(item.price) * item.quantity,
+//     0
+//   );
+
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       if (
+//         sidebarVisible &&
+//         sidebarRef.current &&
+//         !sidebarRef.current.contains(event.target)
+//       ) {
+//         if (preventCloseOnce) {
+//           resetPreventClose();
+//           return;
+//         }
+//         closeSidebar();
+//       }
+//     };
+
+//     document.addEventListener('mousedown', handleClickOutside);
+//     return () => {
+//       document.removeEventListener('mousedown', handleClickOutside);
+//     };
+//   }, [sidebarVisible, closeSidebar, preventCloseOnce, resetPreventClose]);
+
+//   return (
+//     <div
+//       className={`${styles.sidebar} ${sidebarVisible ? styles.open : ''}`}
+//       ref={sidebarRef}
+//     >
+//       <div className={styles.header}>
+//         <h3>Your Basket ({basketItems.length})</h3>
+//         <button className={styles.closeButton} onClick={closeSidebar}>
+//           ×
+//         </button>
+//       </div>
+
+//       <div className={styles.body}>
+//         {basketItems.length === 0 ? (
+//           <p className={styles.empty}>Your basket is empty.</p>
+//         ) : (
+//           basketItems.map((item) => (
+//             <div key={`${item.id}-${item.size}`} className={styles.item}>
+//               <img
+//                 src={`${API_URL}/${item.image_path}`}
+//                 alt={item.name}
+//                 className={styles.itemImage}
+//                 onError={(e) => {
+//                   e.target.src = 'https://via.placeholder.com/100';
+//                 }}
+//               />
+//               <div className={styles.itemDetails}>
+//                 <h4>{item.name}</h4>
+//                 <p>Size: {item.size}</p>
+//                 <p className={styles.price}>${Number(item.price).toFixed(2)}</p>
+//                 <div className={styles.qtyControl}>
+//                   <button
+//                     className={styles.qtyBtn}
+//                     onClick={() => decreaseQty(item.id, item.size)}
+//                   >
+//                     −
+//                   </button>
+//                   <span className={styles.qty}>{item.quantity}</span>
+//                   <button
+//                     className={styles.qtyBtn}
+//                     onClick={() => increaseQty(item.id, item.size)}
+//                   >
+//                     +
+//                   </button>
+//                 </div>
+//               </div>
+//               <button
+//                 className={styles.removeButton}
+//                 onClick={() => removeItem(item.id, item.size)}
+//               >
+//                 🗑
+//               </button>
+//             </div>
+//           ))
+//         )}
+//       </div>
+
+//       <div className={styles.footer}>
+//         <div className={styles.totalRow}>
+//           <span>Total:</span>
+//           <span className={styles.total}>${total.toFixed(2)}</span>
+//         </div>
+//         <button className={styles.checkoutButton} onClick={goToCheckout}>
+//           Checkout
+//         </button>
+//         <button className={styles.continueButton} onClick={goToCart}>
+//           Go to Cart
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SidebarBasket;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// src/components/SidebarBasket.jsx
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBasket } from '../context/BasketProvider';
@@ -1008,6 +1156,7 @@ const SidebarBasket = () => {
     0
   );
 
+  // Close sidebar when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -1046,7 +1195,10 @@ const SidebarBasket = () => {
           <p className={styles.empty}>Your basket is empty.</p>
         ) : (
           basketItems.map((item) => (
-            <div key={`${item.id}-${item.size}`} className={styles.item}>
+            <div
+              key={`${item.id}-${item.size || ''}-${item.perfume || ''}`}
+              className={styles.item}
+            >
               <img
                 src={`${API_URL}/${item.image_path}`}
                 alt={item.name}
@@ -1057,19 +1209,24 @@ const SidebarBasket = () => {
               />
               <div className={styles.itemDetails}>
                 <h4>{item.name}</h4>
-                <p>Size: {item.size}</p>
+                {item.size && <p>Size: {item.size}</p>}
+                {item.perfume && <p>Perfume: {item.perfume}</p>} {/* 🟢 Show perfume if chosen */}
                 <p className={styles.price}>${Number(item.price).toFixed(2)}</p>
                 <div className={styles.qtyControl}>
                   <button
                     className={styles.qtyBtn}
-                    onClick={() => decreaseQty(item.id, item.size)}
+                    onClick={() =>
+                      decreaseQty(item.id, item.size, item.perfume)
+                    }
                   >
                     −
                   </button>
                   <span className={styles.qty}>{item.quantity}</span>
                   <button
                     className={styles.qtyBtn}
-                    onClick={() => increaseQty(item.id, item.size)}
+                    onClick={() =>
+                      increaseQty(item.id, item.size, item.perfume)
+                    }
                   >
                     +
                   </button>
@@ -1077,7 +1234,7 @@ const SidebarBasket = () => {
               </div>
               <button
                 className={styles.removeButton}
-                onClick={() => removeItem(item.id, item.size)}
+                onClick={() => removeItem(item.id, item.size, item.perfume)}
               >
                 🗑
               </button>
