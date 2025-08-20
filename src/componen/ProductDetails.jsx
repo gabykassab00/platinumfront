@@ -5728,7 +5728,6 @@ const ProductDetails = () => {
 
 {/* Product Details */}
 <div className={styles.detailsSection}>
-  <hr className={styles.divider} />
 
   {/* Perfume button BELOW line and ABOVE Product Details */}
   {product?.type === "cream" && (
