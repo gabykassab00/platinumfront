@@ -4312,9 +4312,7 @@ const ProductDetails = () => {
         onClick={() => setShowPerfumePopup(true)}
         className={styles.perfumeButton}
       >
-        <span>🎵</span> {/* Optional icon */}
         {selectedPerfume || "Select a Perfume"}
-        <span>✨</span> {/* Optional icon */}
       </button>
     </div>
   </div>
