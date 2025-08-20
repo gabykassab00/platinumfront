@@ -3899,37 +3899,45 @@ const CheckoutPage = () => {
             {itemCount} {itemCount === 1 ? 'item' : 'items'}
           </div>
 
-          <div className={styles.itemsList}>
-            {itemsWithOffer.map((item) => (
-              <div key={`${item.id}-${item.size}`} className={styles.summaryItem}>
-                <div className={styles.itemImageContainer}>
-                  <img
-                    src={`${API_URL}/${item.image_path}`}
-                    alt={item.name}
-                    className={styles.itemImage}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = '/placeholder-product.jpg';
-                    }}
-                  />
-                  <span className={styles.itemQuantity}>{item.quantity}</span>
-                </div>
+<div className={styles.itemsList}>
+  {itemsWithOffer.map((item) => (
+    <div key={`${item.id}-${item.size}-${item.perfume || ''}`} className={styles.summaryItem}>
+      <div className={styles.itemImageContainer}>
+        <img
+          src={`${API_URL}/${item.image_path}`}
+          alt={item.name}
+          className={styles.itemImage}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = '/placeholder-product.jpg';
+          }}
+        />
+        <span className={styles.itemQuantity}>{item.quantity}</span>
+      </div>
 
-                <div className={styles.itemDetails}>
-                  <div className={styles.itemName}>{item.name}</div>
-                  <div className={styles.itemSize}>{item.size}</div>
-                </div>
-
-                <div className={styles.itemPrice}>
-                  {item.offerApplied
-                    ? (item.quantity === 1
-                        ? `$0.00 (offer)`
-                        : `$${item.lineTotal.toFixed(2)} (offer)`)
-                    : `$${(item.price * item.quantity).toFixed(2)}`}
-                </div>
-              </div>
-            ))}
+      <div className={styles.itemDetails}>
+        <div className={styles.itemName}>{item.name}</div>
+        <div className={styles.itemSize}>{item.size}</div>
+        
+        {/* 🟢 Show perfume if present */}
+        {item.perfume && (
+          <div className={styles.itemPerfume}>
+            Perfume: <strong>{item.perfume}</strong>
           </div>
+        )}
+      </div>
+
+      <div className={styles.itemPrice}>
+        {item.offerApplied
+          ? (item.quantity === 1
+              ? `$0.00 (offer)`
+              : `$${item.lineTotal.toFixed(2)} (offer)`)
+          : `$${(item.price * item.quantity).toFixed(2)}`}
+      </div>
+    </div>
+  ))}
+</div>
+
 
           <div className={styles.discountSection}>
             <input type="text" placeholder="Discount code or gift card" className={styles.discountInput} />
