@@ -4919,7 +4919,7 @@ const [selectedPerfume, setSelectedPerfume] = useState(null);
     const imagePath = product.image_path?.toLowerCase() || '';
     let url = '';
 
-    const typeBasedRecommendations = ['musk', 'air', 'furniture', 'watch', 'makeup','cream','body'];
+    const typeBasedRecommendations = ['musk', 'air', 'furniture', 'watch', 'makeup','cream','body','incense'];
 
     if (typeBasedRecommendations.includes(type)) {
       url = `${API_URL}/api/products`;
