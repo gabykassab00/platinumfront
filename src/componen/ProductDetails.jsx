@@ -4291,19 +4291,21 @@ const ProductDetails = () => {
 
           <div ref={infoRef} className={styles.infoContainer}>
             {/* 🟢 Perfume button for creams */}
-            {product?.type === 'cream' && (
-              <div className={styles.sizeSection}>
-                <div className={styles.priceButtons}>
-                  <button
-                    type="button"
-                    onClick={() => setShowPerfumePopup(true)}
-                    className={styles.sizeBtn}
-                  >
-                    {selectedPerfume}
-                  </button>
-                </div>
-              </div>
-            )}
+{/* 🟢 Perfume button only if product.type === 'cream' */}
+{product?.type === "cream" && (
+  <div className={styles.sizeSection}>
+    <div className={styles.priceButtons}>
+      <button
+        type="button"
+        onClick={() => setShowPerfumePopup(true)}
+        className={styles.sizeBtn}
+      >
+        {selectedPerfume || "Select a Perfume"}
+      </button>
+    </div>
+  </div>
+)}
+
 
             <h1 className={styles.title}>{product.name}</h1>
 

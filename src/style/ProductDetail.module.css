@@ -2693,3 +2693,11 @@
 }
 
 
+/* Center the popup title */
+.cardPopupContent h3 {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: #222;
+}
