@@ -2563,3 +2563,271 @@
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Perfume Button Styles */
+.perfumeButton {
+  background: linear-gradient(135deg, #8a2be2 0%, #6a5acd 100%);
+  border: none;
+  border-radius: 16px;
+  color: white;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 4px 20px rgba(138, 43, 226, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.perfumeButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.perfumeButton:hover::before {
+  left: 100%;
+}
+
+.perfumeButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 30px rgba(138, 43, 226, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+}
+
+.perfumeButton:active {
+  transform: translateY(0);
+}
+
+/* Popup Overlay */
+.perfumePopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Popup Content */
+.perfumePopupContent {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 24px;
+  padding: 30px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  position: relative;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Popup Header */
+.popupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.popupTitle {
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #e2e2e2 0%, #a5a5a5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Close Button */
+.closePopup {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closePopup:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+/* Search Input */
+.searchInput {
+  width: 100%;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 16px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.searchInput:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.5);
+}
+
+.searchInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Scroll List */
+.scrollList {
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(138, 43, 226, 0.5) rgba(0, 0, 0, 0.2);
+}
+
+.scrollList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollList::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.scrollList::-webkit-scrollbar-thumb {
+  background: rgba(138, 43, 226, 0.5);
+  border-radius: 3px;
+}
+
+.scrollList::-webkit-scrollbar-thumb:hover {
+  background: rgba(138, 43, 226, 0.7);
+}
+
+/* Perfume Items */
+.perfumeItem {
+  padding: 16px 20px;
+  margin: 8px 0;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.perfumeItem:hover {
+  background: rgba(138, 43, 226, 0.15);
+  border-color: rgba(138, 43, 226, 0.3);
+  transform: translateX(5px);
+}
+
+.perfumeItem:active {
+  transform: translateX(5px) scale(0.98);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .perfumePopupContent {
+    margin: 20px;
+    padding: 24px;
+    max-width: 90%;
+  }
+  
+  .popupTitle {
+    font-size: 20px;
+  }
+  
+  .perfumeButton {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Glass morphism effect for modern look */
+.glassEffect {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+/* Add to your existing styles */
+.sizeSection {
+  margin-bottom: 20px;
+}
+
+.priceButtons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}

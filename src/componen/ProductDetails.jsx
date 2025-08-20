@@ -4292,20 +4292,6 @@ const ProductDetails = () => {
           <div ref={infoRef} className={styles.infoContainer}>
             {/* 🟢 Perfume button for creams */}
 {/* 🟢 Perfume button only if product.type === 'cream' */}
-{product?.type === "cream" && (
-  <div className={styles.sizeSection}>
-    <div className={styles.priceButtons}>
-      <button
-        type="button"
-        onClick={() => setShowPerfumePopup(true)}
-        className={styles.sizeBtn}
-      >
-        {selectedPerfume || "Select a Perfume"}
-      </button>
-    </div>
-  </div>
-)}
-
 
             <h1 className={styles.title}>{product.name}</h1>
 
@@ -4318,19 +4304,24 @@ const ProductDetails = () => {
 
 
             <div className={styles.detailsSection}>
+// Perfume Button (replace your current button)
 {product?.type === "cream" && (
   <div className={styles.sizeSection}>
     <div className={styles.priceButtons}>
       <button
         type="button"
         onClick={() => setShowPerfumePopup(true)}
-        className={styles.sizeBtn}
+        className={styles.perfumeButton}
       >
+        <span>🎵</span> {/* Optional icon */}
         {selectedPerfume || "Select a Perfume"}
+        <span>✨</span> {/* Optional icon */}
       </button>
     </div>
   </div>
 )}
+
+
               <h3 className={styles.sectionTitle}>Product Details</h3>
 
               {(product?.type === 'multiple' || product?.type === 'single') && (
@@ -4463,42 +4454,44 @@ const ProductDetails = () => {
       </div>
 
       {/* 🟢 Perfume Popup */}
-      {showPerfumePopup && (
-        <div className={styles.cardPopupWrapper}>
-          <div className={styles.cardPopupContent}>
-            <button
-              className={styles.closePopup}
-              onClick={() => setShowPerfumePopup(false)}
+{showPerfumePopup && (
+  <div className={styles.perfumePopupOverlay}>
+    <div className={styles.perfumePopupContent}>
+      <div className={styles.popupHeader}>
+        <h3 className={styles.popupTitle}>Select a Perfume</h3>
+        <button
+          className={styles.closePopup}
+          onClick={() => setShowPerfumePopup(false)}
+        >
+          ×
+        </button>
+      </div>
+      <input
+        type="text"
+        placeholder="Search perfumes..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className={styles.searchInput}
+      />
+      <div className={styles.scrollList}>
+        {perfumeList
+          .filter((p) => p.toLowerCase().includes(searchTerm.toLowerCase()))
+          .map((p, i) => (
+            <div
+              key={i}
+              onClick={() => {
+                setSelectedPerfume(p);
+                setShowPerfumePopup(false);
+              }}
+              className={styles.perfumeItem}
             >
-              ×
-            </button>
-            <h3>Select a Perfume</h3>
-            <input
-              type="text"
-              placeholder="Search perfumes..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className={styles.searchInput}
-            />
-            <div className={styles.scrollList}>
-              {perfumeList
-                .filter((p) => p.toLowerCase().includes(searchTerm.toLowerCase()))
-                .map((p, i) => (
-                  <div
-                    key={i}
-                    onClick={() => {
-                      setSelectedPerfume(p);
-                      setShowPerfumePopup(false);
-                    }}
-                    className={styles.perfumeItem}
-                  >
-                    {p}
-                  </div>
-                ))}
+              {p}
             </div>
-          </div>
-        </div>
-      )}
+          ))}
+      </div>
+    </div>
+  </div>
+)}
     </>
   );
 };
