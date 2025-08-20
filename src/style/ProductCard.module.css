@@ -3252,3 +3252,25 @@
     max-height: 200px;
   }
 }
+
+
+.errorMessage {
+  color: #d32f2f;         /* Red text */
+  font-size: 0.85rem;     /* Slightly smaller than normal text */
+  margin-top: 6px;        /* Space above */
+  font-weight: 500;       /* Semi-bold for visibility */
+  line-height: 1.3;
+  text-align: left;       /* Align with button */
+  animation: fadeIn 0.2s ease-in-out; /* Smooth entry */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

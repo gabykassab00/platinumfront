@@ -2295,6 +2295,7 @@ const ProductCard = React.memo(({ product }) => {
   const { addItem, openSidebar } = useBasket();
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeError, setSizeError] = useState(false);
+  const [perfumeError, setPerfumeError] = useState(false);
 
   // 🟢 Perfume popup states
   const [showPerfumePopup, setShowPerfumePopup] = useState(false);
@@ -2356,29 +2357,37 @@ const ProductCard = React.memo(({ product }) => {
     [basePrice, discount]
   );
 
-  const handleAddToBasket = () => {
-    if ((isMultipleType || isMuskType) && !selectedSize) {
-      setSizeError(true);
-      return;
-    }
+const handleAddToBasket = () => {
+  if ((isMultipleType || isMuskType) && !selectedSize) {
+    setSizeError(true);
+    return;
+  }
 
-    const productToAdd = {
-      ...product,
-      price:
-        isMultipleType || isMuskType
-          ? currentPrice.toFixed(2)
-          : basePrice.toFixed(2),
-      ...((isMultipleType || isMuskType) && {
-        size: `${selectedSize}ml`,
-        sizeValue: selectedSize,
-      }),
-      ...(product.type === "cream" && { perfume: selectedPerfume }),
-    };
+  if (product.type === "cream" && (!selectedPerfume || selectedPerfume === "Perfume")) {
+    setPerfumeError(true);
+    return;
+  }
 
-    addItem(productToAdd);
-    openSidebar();
-    setSizeError(false);
+  const productToAdd = {
+    ...product,
+    price:
+      isMultipleType || isMuskType
+        ? currentPrice.toFixed(2)
+        : basePrice.toFixed(2),
+    ...((isMultipleType || isMuskType) && {
+      size: `${selectedSize}ml`,
+      sizeValue: selectedSize,
+    }),
+    ...(product.type === "cream" && { perfume: selectedPerfume }),
   };
+
+  addItem(productToAdd);
+  openSidebar();
+
+  // Reset errors after success
+  setSizeError(false);
+  setPerfumeError(false);
+};
 
   const handleSizeSelect = (size) => {
     setSelectedSize(size);
@@ -2492,22 +2501,28 @@ const ProductCard = React.memo(({ product }) => {
         <div className={styles.footer}>
           <div className={styles.details}>
             {/* 🟢 Perfume button only if cream — placed above product name */}
-            {product.type === "cream" && (
-              <div className={styles.sizeSection}>
-                <div className={styles.priceButtons}>
-                  <button
-                    type="button"
-                    onClick={() => setShowPerfumePopup(true)}
-                    className={styles.flipButton}
-                  >
-                    <div className={styles.flipInner}>
-                      <div className={styles.flipFront}>{selectedPerfume}</div>
-                      <div className={styles.flipBack}>Choose</div>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            )}
+{product.type === "cream" && (
+  <div className={styles.sizeSection}>
+    <div className={styles.priceButtons}>
+      <button
+        type="button"
+        onClick={() => setShowPerfumePopup(true)}
+        className={styles.flipButton}
+      >
+        <div className={styles.flipInner}>
+          <div className={styles.flipFront}>{selectedPerfume}</div>
+          <div className={styles.flipBack}>Choose</div>
+        </div>
+      </button>
+    </div>
+    {perfumeError && (
+      <div className={styles.errorMessage} role="alert">
+        Please select a perfume before adding to cart
+      </div>
+    )}
+  </div>
+)}
+
 
             {/* Product name */}
             <h3 className={styles.name} itemProp="name">
