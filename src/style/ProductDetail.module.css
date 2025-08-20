@@ -2875,6 +2875,6 @@
 /* Lift image upward only on big screens */
 @media (min-width: 992px) {
   .imageWrapper {
-    margin-top: -3rem; /* adjust the value to lift more/less */
+    margin-top: -8rem; /* adjust the value to lift more/less */
   }
 }
