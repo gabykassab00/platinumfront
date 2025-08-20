@@ -2873,8 +2873,9 @@
 
 
 /* Lift image upward only on big screens */
-@media (min-width: 992px) {
-  .imageWrapper {
-    margin-top: -8rem; /* adjust the value to lift more/less */
+/* Apply only for laptop/desktop screens */
+@media (min-width: 992px) and (max-width: 1440px) {
+  .imageViewport {
+    transform: translateY(-3rem); /* lift upward */
   }
 }
