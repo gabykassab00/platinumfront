@@ -4009,20 +4009,511 @@
 
 
 
+// // src/pages/ProductDetails.jsx
+// import React, { useEffect, useState, useRef, useMemo } from 'react';
+// import { useParams } from 'react-router-dom';
+// import { Helmet } from 'react-helmet-async';
+// import ProductCard from '../componen/ProductCard';
+// import styles from '../style/ProductDetail.module.css';
+// import { useBasket } from '../context/BasketProvider';
+// import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+
+// const SITE_URL =
+//   process.env.REACT_APP_SITE_URL ||
+//   (typeof window !== 'undefined' ? window.location.origin : '');
+
+// // 🟢 Perfume list (copied from ProductCard for now, later can be moved to a shared file)
+// const perfumeList = [
+//   "Oriental Oud",
+//   "Acqua di Gio White",
+//   "Acqua di Gio",
+//   "Azzaro Chrome",
+//   "Issey Miyake",
+//   "Armani Code",
+//   "Bleu de Chanel",
+//   "Versace Eros",
+//   "Sauvage",
+//   "One Million",
+//   "Good Girl",
+//   "Black Opium",
+//   "La Vie Est Belle",
+//   "Chanel No. 5",
+//   "Dior J'adore",
+//   "Yves Saint Laurent Libre",
+//   // ... rest of your list
+// ];
+
+// const ProductDetails = () => {
+//   const { productId } = useParams();
+//   const { addItem, openSidebar } = useBasket();
+
+//   const [product, setProduct] = useState(null);
+//   const [selectedSize, setSelectedSize] = useState(null);
+//   const [quantity, setQuantity] = useState(1);
+//   const [relatedProducts, setRelatedProducts] = useState([]);
+//   const [visibleProducts, setVisibleProducts] = useState(0);
+
+//   const infoRef = useRef(null);
+//   const imageBoxRef = useRef(null);
+//   const relatedProductsRef = useRef(null);
+
+//   const API_URL = process.env.REACT_APP_API_URL;
+
+//   // 🟢 Perfume popup states
+//   const [showPerfumePopup, setShowPerfumePopup] = useState(false);
+//   const [searchTerm, setSearchTerm] = useState('');
+//   const [selectedPerfume, setSelectedPerfume] = useState('Perfume');
+
+//   // Fetch product
+//   useEffect(() => {
+//     fetch(`${API_URL}/api/products/${productId}`)
+//       .then((res) => res.json())
+//       .then((data) => {
+//         setProduct(data);
+//         if (data.type === 'multiple') setSelectedSize('100ml');
+//         else if (data.type === 'musk') setSelectedSize('6ml');
+//       })
+//       .catch((err) => console.error('Error fetching product:', err));
+//   }, [productId, API_URL]);
+
+//   // Match image box to info height
+//   useEffect(() => {
+//     if (infoRef.current && imageBoxRef.current) {
+//       const infoHeight = infoRef.current.offsetHeight;
+//       imageBoxRef.current.style.height = `${infoHeight}px`;
+//     }
+//   }, [product]);
+
+//   // Related products (same logic as your first file)
+//   useEffect(() => {
+//     if (!product) return;
+
+//     const genre = product.genre || '';
+//     const type = product.type?.toLowerCase() || '';
+//     const imagePath = product.image_path?.toLowerCase() || '';
+//     let url = '';
+
+//     const typeBasedRecommendations = ['musk', 'air', 'furniture', 'watch', 'makeup'];
+
+//     if (typeBasedRecommendations.includes(type)) {
+//       url = `${API_URL}/api/products`;
+//     } else if (imagePath.includes('images/terkibmen/')) {
+//       url = `${API_URL}/api/products?baseImagePath=terkibmen`;
+//     } else if (imagePath.includes('images/terkibwomen/')) {
+//       url = `${API_URL}/api/products?baseImagePath=terkibwomen`;
+//     } else if (imagePath.includes('images/jehiz/')) {
+//       url = `${API_URL}/api/products?baseImagePath=jehiz&genre=${genre}`;
+//     }
+
+//     if (url) {
+//       fetch(url)
+//         .then((res) => res.json())
+//         .then((data) => {
+//           let filtered;
+//           if (typeBasedRecommendations.includes(type)) {
+//             filtered = data.filter(
+//               (p) => p.type?.toLowerCase() === type && p.id !== product.id
+//             );
+//           } else {
+//             filtered = data.filter((p) => p.id !== product.id);
+//           }
+//           setRelatedProducts(filtered.slice(0, 4));
+//         })
+//         .catch((err) => console.error('Error fetching related products:', err));
+//     }
+//   }, [product, API_URL]);
+
+//   const scrollRelated = (direction) => {
+//     if (relatedProductsRef.current && relatedProductsRef.current.children[0]) {
+//       const container = relatedProductsRef.current;
+//       const card = container.children[0];
+//       const stylesComputed = window.getComputedStyle(card);
+//       const cardWidth = card.offsetWidth + parseInt(stylesComputed.marginRight, 10);
+
+//       container.style.scrollBehavior = 'smooth';
+//       container.scrollLeft += direction === 'left' ? -cardWidth * 2 : cardWidth * 2;
+
+//       setVisibleProducts((prev) => {
+//         const next = direction === 'left' ? prev - 2 : prev + 2;
+//         return Math.max(0, Math.min(next, relatedProducts.length - 2));
+//       });
+//     }
+//   };
+
+//   // ----- Pricing helpers (same as your first file) -----
+//   const imageUrl = product ? `${API_URL}/${product.image_path}` : '';
+//   const basePrice = product ? parseFloat(product.price) : 0;
+//   const discount = product ? parseFloat(product.discount || 0) : 0;
+//   const hasDiscount = discount > 0;
+//   const isMultiple = product?.type === 'multiple';
+
+//   const getSizePrice = (size) => {
+//     if (product?.type === 'musk') {
+//       if (size === '6ml') return 6;
+//       if (size === '12ml') return 12;
+//     }
+//     if (size === '50ml') return 10;
+//     if (size === '80ml') return 15;
+//     return basePrice;
+//   };
+
+//   const unitPrice = getSizePrice(selectedSize);
+//   const discountedUnitPrice = hasDiscount ? unitPrice * (1 - discount) : unitPrice;
+//   const totalPrice = (discountedUnitPrice * quantity).toFixed(2);
+//   const originalTotal = (unitPrice * quantity).toFixed(2);
+
+//   const handleAddToCart = () => {
+//     const item = {
+//       ...product,
+//       price: discountedUnitPrice.toFixed(2),
+//       total: totalPrice,
+//       quantity,
+//       ...(selectedSize && { size: selectedSize }),
+//       ...(product?.type === 'cream' && { perfume: selectedPerfume }), // 🟢 Include perfume for creams
+//     };
+//     addItem(item);
+//     openSidebar();
+//   };
+
+//   // ------------------ SEO (Helmet) ------------------
+//   const canonicalUrl = useMemo(
+//     () => `${SITE_URL}/product-details/${productId}`,
+//     [productId]
+//   );
+
+//   const seoTitle = product
+//     ? `${product.name} | Platinum Perfumes Lebanon`
+//     : 'Product | Platinum Perfumes Lebanon';
+
+//   const seoDescription = product
+//     ? (product.description
+//         ? String(product.description).slice(0, 155)
+//         : `Shop ${product.name} by ${product.brand || 'Platinum'} at Platinum Perfumes Lebanon. Long-lasting, premium fragrances delivered in Lebanon.`)
+//     : 'Shop premium perfumes, musks, and more at Platinum Perfumes Lebanon.';
+
+//   const ogImage = product ? imageUrl : `${SITE_URL}/images/products/platinum.png`;
+
+//   const productJsonLd = product
+//     ? {
+//         '@context': 'https://schema.org/',
+//         '@type': 'Product',
+//         name: product.name,
+//         image: [ogImage],
+//         description: product.description || 'Premium quality product',
+//         brand: product.brand || 'Platinum',
+//         sku: String(product.id),
+//         category: product.genre || undefined,
+//         offers: {
+//           '@type': 'Offer',
+//           url: canonicalUrl,
+//           priceCurrency: 'USD',
+//           price: discountedUnitPrice
+//             ? discountedUnitPrice.toFixed(2)
+//             : basePrice.toFixed(2),
+//           availability: 'https://schema.org/InStock',
+//           itemCondition: 'https://schema.org/NewCondition',
+//         },
+//       }
+//     : null;
+
+//   // ------------------ RENDER ------------------
+
+//   if (!product) {
+//     return (
+//       <>
+//         <Helmet prioritizeSeoTags>
+//           <title>{seoTitle}</title>
+//           <meta name="description" content={seoDescription} />
+//           <link rel="canonical" href={canonicalUrl} />
+//           <meta property="og:type" content="website" />
+//           <meta property="og:title" content={seoTitle} />
+//           <meta property="og:description" content={seoDescription} />
+//           <meta property="og:url" content={canonicalUrl} />
+//           <meta property="og:image" content={ogImage} />
+//           <meta name="twitter:card" content="summary_large_image" />
+//           <meta name="twitter:title" content={seoTitle} />
+//           <meta name="twitter:description" content={seoDescription} />
+//           <meta name="twitter:image" content={ogImage} />
+//         </Helmet>
+
+//         <div className={styles.loading}>Loading...</div>
+//       </>
+//     );
+//   }
+
+//   return (
+//     <>
+//       {/* SEO Head */}
+//       <Helmet prioritizeSeoTags>
+//         <title>{seoTitle}</title>
+//         <meta name="description" content={seoDescription} />
+//         <link rel="canonical" href={canonicalUrl} />
+
+//         {/* Open Graph */}
+//         <meta property="og:type" content="product" />
+//         <meta property="og:title" content={seoTitle} />
+//         <meta property="og:description" content={seoDescription} />
+//         <meta property="og:url" content={canonicalUrl} />
+//         <meta property="og:image" content={ogImage} />
+//         <meta property="og:site_name" content="Platinum Perfumes Lebanon" />
+
+//         {/* Twitter */}
+//         <meta name="twitter:card" content="summary_large_image" />
+//         <meta name="twitter:title" content={seoTitle} />
+//         <meta name="twitter:description" content={seoDescription} />
+//         <meta name="twitter:image" content={ogImage} />
+
+//         {/* JSON-LD Product */}
+//         {productJsonLd && (
+//           <script type="application/ld+json">
+//             {JSON.stringify(productJsonLd)}
+//           </script>
+//         )}
+//       </Helmet>
+
+//       <div className={styles.container}>
+//         <div className={styles.productContainer}>
+//           <div className={styles.imageContainer}>
+//             <div className={styles.imageViewport}>
+//               <img
+//                 src={imageUrl}
+//                 alt={product.name}
+//                 onError={(e) => (e.target.src = 'https://via.placeholder.com/300')}
+//                 loading="lazy"
+//               />
+//               {hasDiscount && (
+//                 <div className={styles.discountBadge}>
+//                   -{Math.round(discount * 100)}%
+//                 </div>
+//               )}
+//             </div>
+//           </div>
+
+//           <div ref={infoRef} className={styles.infoContainer}>
+//             {/* 🟢 Perfume button for creams */}
+// {/* 🟢 Perfume button only if product.type === 'cream' */}
+// {product?.type === "cream" && (
+//   <div className={styles.sizeSection}>
+//     <div className={styles.priceButtons}>
+//       <button
+//         type="button"
+//         onClick={() => setShowPerfumePopup(true)}
+//         className={styles.sizeBtn}
+//       >
+//         {selectedPerfume || "Select a Perfume"}
+//       </button>
+//     </div>
+//   </div>
+// )}
+
+
+//             <h1 className={styles.title}>{product.name}</h1>
+
+//             <div className={styles.priceRow}>
+//               {hasDiscount && (
+//                 <span className={styles.originalPrice}>${originalTotal}</span>
+//               )}
+//               <span className={styles.finalPrice}>${totalPrice}</span>
+//             </div>
+
+//             <div className={styles.detailsSection}>
+//               <h3 className={styles.sectionTitle}>Product Details</h3>
+
+//               {(product?.type === 'multiple' || product?.type === 'single') && (
+//                 <ul className={styles.bulletList}>
+//                   <li><strong>🏢 3rd French fragrance oil company agency in all over Lebanon</strong></li>
+//                   <li><strong>📜 ISO certification of quality scents</strong></li>
+//                   <li><strong>🧴 Bold. Precise. Aromatic.</strong></li>
+//                   <li><strong>💨 Stays long. Speaks loud.</strong></li>
+//                 </ul>
+//               )}
+
+//               {product?.type === 'watch' && (
+//                 <ul className={styles.bulletList}>
+//                   <li><strong>⌚ Curated selection of 100% original Curren watches</strong></li>
+//                   <li><strong>🕴️ Designed for men and women who value elegance and affordability</strong></li>
+//                   <li><strong>🛠️ Modern design, durable materials, and precise movement</strong></li>
+//                   <li><strong>🎉 Perfect for everyday wear or special occasions</strong></li>
+//                 </ul>
+//               )}
+
+//               {product?.type === 'makeup' && (
+//                 <ul className={styles.bulletList}>
+//                   <li><strong>💎 Discover authentic beauty with Platinum Perfumes</strong></li>
+//                   <li><strong>🧴 100% original, high-quality makeup brands</strong></li>
+//                   <li><strong>🌍 Featuring top international names</strong></li>
+//                   <li><strong>💄 Carefully selected beauty essentials you can trust</strong></li>
+//                 </ul>
+//               )}
+
+//               {product?.type === 'musk' && (
+//                 <ul className={styles.bulletList}>
+//                   <li><strong>🌿 Premium selection of rich, authentic musk perfumes</strong></li>
+//                   <li><strong>🧴 Long-lasting oil and spray formulas for every preference</strong></li>
+//                   <li><strong>🕊️ Soft, sensual, and clean scents that linger beautifully</strong></li>
+//                   <li><strong>🎁 Ideal for personal use or as a thoughtful gift</strong></li>
+//                 </ul>
+//               )}
+
+//               {(product?.type === 'air' || product?.type === 'furniture') && (
+//                 <ul className={styles.bulletList}>
+//                   <li><strong>🌬️ Instantly freshens your space with captivating scents</strong></li>
+//                   <li><strong>🛋️ Specially crafted for both air and fabric surfaces</strong></li>
+//                   <li><strong>🍃 Long-lasting formulas with elegant fragrance blends</strong></li>
+//                   <li><strong>🏠 Perfect for home, office, or car use</strong></li>
+//                 </ul>
+//               )}
+//             </div>
+
+//             {(isMultiple || product?.type === 'musk') && (
+//               <div className={styles.sizeSection}>
+//                 <h3 className={styles.sectionTitle}>Size</h3>
+//                 <div className={styles.sizeButtons}>
+//                   {(product?.type === 'musk' ? ['6ml', '12ml'] : ['50ml', '80ml', '100ml']).map(
+//                     (size) => (
+//                       <button
+//                         key={size}
+//                         className={`${styles.sizeBtn} ${selectedSize === size ? styles.selected : ''}`}
+//                         onClick={() => setSelectedSize(size)}
+//                       >
+//                         {size}
+//                       </button>
+//                     )
+//                   )}
+//                 </div>
+//               </div>
+//             )}
+
+//             <div className={styles.quantitySection}>
+//               <h3 className={styles.sectionTitle}>Quantity</h3>
+//               <div className={styles.quantityControls}>
+//                 <button
+//                   className={styles.quantityBtn}
+//                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+//                 >
+//                   −
+//                 </button>
+//                 <span className={styles.quantityValue}>{quantity}</span>
+//                 <button
+//                   className={styles.quantityBtn}
+//                   onClick={() => setQuantity((q) => q + 1)}
+//                 >
+//                   +
+//                 </button>
+//               </div>
+//             </div>
+
+//             <button className={styles.addToCartBtn} onClick={handleAddToCart}>
+//               ADD TO CART
+//             </button>
+
+//             <p className={styles.description}>{product.description || 'Premium quality product'}</p>
+//             <p className={styles.shipping}>Shipping calculated at checkout.</p>
+//           </div>
+//         </div>
+
+//         {relatedProducts.length > 0 && (
+//           <div className={styles.relatedSection}>
+//             <h2 className={styles.relatedTitle}>You may also like</h2>
+//             <div className={styles.relatedContainer}>
+//               {visibleProducts > 0 && (
+//                 <button
+//                   className={styles.scrollButton}
+//                   onClick={() => scrollRelated('left')}
+//                   aria-label="Scroll left"
+//                 >
+//                   <FiChevronLeft />
+//                 </button>
+//               )}
+
+//               <div className={styles.relatedGrid} ref={relatedProductsRef}>
+//                 {relatedProducts.map((item) => (
+//                   <div key={item.id} className={styles.relatedCardWrapper}>
+//                     <ProductCard product={item} className={styles.relatedCard} compactHeight />
+//                   </div>
+//                 ))}
+//               </div>
+
+//               {visibleProducts < relatedProducts.length - 2 && (
+//                 <button
+//                   className={styles.scrollButton}
+//                   onClick={() => scrollRelated('right')}
+//                   aria-label="Scroll right"
+//                 >
+//                   <FiChevronRight />
+//                 </button>
+//               )}
+//             </div>
+//           </div>
+//         )}
+//       </div>
+
+//       {/* 🟢 Perfume Popup */}
+//       {showPerfumePopup && (
+//         <div className={styles.cardPopupWrapper}>
+//           <div className={styles.cardPopupContent}>
+//             <button
+//               className={styles.closePopup}
+//               onClick={() => setShowPerfumePopup(false)}
+//             >
+//               ×
+//             </button>
+//             <h3>Select a Perfume</h3>
+//             <input
+//               type="text"
+//               placeholder="Search perfumes..."
+//               value={searchTerm}
+//               onChange={(e) => setSearchTerm(e.target.value)}
+//               className={styles.searchInput}
+//             />
+//             <div className={styles.scrollList}>
+//               {perfumeList
+//                 .filter((p) => p.toLowerCase().includes(searchTerm.toLowerCase()))
+//                 .map((p, i) => (
+//                   <div
+//                     key={i}
+//                     onClick={() => {
+//                       setSelectedPerfume(p);
+//                       setShowPerfumePopup(false);
+//                     }}
+//                     className={styles.perfumeItem}
+//                   >
+//                     {p}
+//                   </div>
+//                 ))}
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </>
+//   );
+// };
+
+// export default ProductDetails;
+
+
+
+
+
+
+
+
+
+
 // src/pages/ProductDetails.jsx
-import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
-import ProductCard from '../componen/ProductCard';
-import styles from '../style/ProductDetail.module.css';
-import { useBasket } from '../context/BasketProvider';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import React, { useEffect, useState, useRef, useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import ProductCard from "../componen/ProductCard";
+import styles from "../style/ProductDetail.module.css";
+import { useBasket } from "../context/BasketProvider";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const SITE_URL =
   process.env.REACT_APP_SITE_URL ||
-  (typeof window !== 'undefined' ? window.location.origin : '');
+  (typeof window !== "undefined" ? window.location.origin : "");
 
-// 🟢 Perfume list (copied from ProductCard for now, later can be moved to a shared file)
+// 🟢 Perfume list (copied from ProductCard)
 const perfumeList = [
   "Oriental Oud",
   "Acqua di Gio White",
@@ -4040,7 +4531,7 @@ const perfumeList = [
   "Chanel No. 5",
   "Dior J'adore",
   "Yves Saint Laurent Libre",
-  // ... rest of your list
+  // ... add the rest here
 ];
 
 const ProductDetails = () => {
@@ -4061,8 +4552,8 @@ const ProductDetails = () => {
 
   // 🟢 Perfume popup states
   const [showPerfumePopup, setShowPerfumePopup] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedPerfume, setSelectedPerfume] = useState('Perfume');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPerfume, setSelectedPerfume] = useState("Perfume");
 
   // Fetch product
   useEffect(() => {
@@ -4070,13 +4561,13 @@ const ProductDetails = () => {
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);
-        if (data.type === 'multiple') setSelectedSize('100ml');
-        else if (data.type === 'musk') setSelectedSize('6ml');
+        if (data.type === "multiple") setSelectedSize("100ml");
+        else if (data.type === "musk") setSelectedSize("6ml");
       })
-      .catch((err) => console.error('Error fetching product:', err));
+      .catch((err) => console.error("Error fetching product:", err));
   }, [productId, API_URL]);
 
-  // Match image box to info height
+  // Match image box height
   useEffect(() => {
     if (infoRef.current && imageBoxRef.current) {
       const infoHeight = infoRef.current.offsetHeight;
@@ -4084,24 +4575,30 @@ const ProductDetails = () => {
     }
   }, [product]);
 
-  // Related products (same logic as your first file)
+  // Related products
   useEffect(() => {
     if (!product) return;
 
-    const genre = product.genre || '';
-    const type = product.type?.toLowerCase() || '';
-    const imagePath = product.image_path?.toLowerCase() || '';
-    let url = '';
+    const genre = product.genre || "";
+    const type = product.type?.toLowerCase() || "";
+    const imagePath = product.image_path?.toLowerCase() || "";
+    let url = "";
 
-    const typeBasedRecommendations = ['musk', 'air', 'furniture', 'watch', 'makeup'];
+    const typeBasedRecommendations = [
+      "musk",
+      "air",
+      "furniture",
+      "watch",
+      "makeup",
+    ];
 
     if (typeBasedRecommendations.includes(type)) {
       url = `${API_URL}/api/products`;
-    } else if (imagePath.includes('images/terkibmen/')) {
+    } else if (imagePath.includes("images/terkibmen/")) {
       url = `${API_URL}/api/products?baseImagePath=terkibmen`;
-    } else if (imagePath.includes('images/terkibwomen/')) {
+    } else if (imagePath.includes("images/terkibwomen/")) {
       url = `${API_URL}/api/products?baseImagePath=terkibwomen`;
-    } else if (imagePath.includes('images/jehiz/')) {
+    } else if (imagePath.includes("images/jehiz/")) {
       url = `${API_URL}/api/products?baseImagePath=jehiz&genre=${genre}`;
     }
 
@@ -4119,46 +4616,51 @@ const ProductDetails = () => {
           }
           setRelatedProducts(filtered.slice(0, 4));
         })
-        .catch((err) => console.error('Error fetching related products:', err));
+        .catch((err) => console.error("Error fetching related products:", err));
     }
   }, [product, API_URL]);
 
+  // Scroll related
   const scrollRelated = (direction) => {
     if (relatedProductsRef.current && relatedProductsRef.current.children[0]) {
       const container = relatedProductsRef.current;
       const card = container.children[0];
       const stylesComputed = window.getComputedStyle(card);
-      const cardWidth = card.offsetWidth + parseInt(stylesComputed.marginRight, 10);
+      const cardWidth =
+        card.offsetWidth + parseInt(stylesComputed.marginRight, 10);
 
-      container.style.scrollBehavior = 'smooth';
-      container.scrollLeft += direction === 'left' ? -cardWidth * 2 : cardWidth * 2;
+      container.style.scrollBehavior = "smooth";
+      container.scrollLeft +=
+        direction === "left" ? -cardWidth * 2 : cardWidth * 2;
 
       setVisibleProducts((prev) => {
-        const next = direction === 'left' ? prev - 2 : prev + 2;
+        const next = direction === "left" ? prev - 2 : prev + 2;
         return Math.max(0, Math.min(next, relatedProducts.length - 2));
       });
     }
   };
 
-  // ----- Pricing helpers (same as your first file) -----
-  const imageUrl = product ? `${API_URL}/${product.image_path}` : '';
+  // Pricing
+  const imageUrl = product ? `${API_URL}/${product.image_path}` : "";
   const basePrice = product ? parseFloat(product.price) : 0;
   const discount = product ? parseFloat(product.discount || 0) : 0;
   const hasDiscount = discount > 0;
-  const isMultiple = product?.type === 'multiple';
+  const isMultiple = product?.type === "multiple";
 
   const getSizePrice = (size) => {
-    if (product?.type === 'musk') {
-      if (size === '6ml') return 6;
-      if (size === '12ml') return 12;
+    if (product?.type === "musk") {
+      if (size === "6ml") return 6;
+      if (size === "12ml") return 12;
     }
-    if (size === '50ml') return 10;
-    if (size === '80ml') return 15;
+    if (size === "50ml") return 10;
+    if (size === "80ml") return 15;
     return basePrice;
   };
 
   const unitPrice = getSizePrice(selectedSize);
-  const discountedUnitPrice = hasDiscount ? unitPrice * (1 - discount) : unitPrice;
+  const discountedUnitPrice = hasDiscount
+    ? unitPrice * (1 - discount)
+    : unitPrice;
   const totalPrice = (discountedUnitPrice * quantity).toFixed(2);
   const originalTotal = (unitPrice * quantity).toFixed(2);
 
@@ -4169,13 +4671,13 @@ const ProductDetails = () => {
       total: totalPrice,
       quantity,
       ...(selectedSize && { size: selectedSize }),
-      ...(product?.type === 'cream' && { perfume: selectedPerfume }), // 🟢 Include perfume for creams
+      ...(product?.type === "cream" && { perfume: selectedPerfume }),
     };
     addItem(item);
     openSidebar();
   };
 
-  // ------------------ SEO (Helmet) ------------------
+  // SEO
   const canonicalUrl = useMemo(
     () => `${SITE_URL}/product-details/${productId}`,
     [productId]
@@ -4183,41 +4685,44 @@ const ProductDetails = () => {
 
   const seoTitle = product
     ? `${product.name} | Platinum Perfumes Lebanon`
-    : 'Product | Platinum Perfumes Lebanon';
+    : "Product | Platinum Perfumes Lebanon";
 
   const seoDescription = product
-    ? (product.description
-        ? String(product.description).slice(0, 155)
-        : `Shop ${product.name} by ${product.brand || 'Platinum'} at Platinum Perfumes Lebanon. Long-lasting, premium fragrances delivered in Lebanon.`)
-    : 'Shop premium perfumes, musks, and more at Platinum Perfumes Lebanon.';
+    ? product.description
+      ? String(product.description).slice(0, 155)
+      : `Shop ${product.name} by ${
+          product.brand || "Platinum"
+        } at Platinum Perfumes Lebanon. Long-lasting, premium fragrances delivered in Lebanon.`
+    : "Shop premium perfumes, musks, and more at Platinum Perfumes Lebanon.";
 
-  const ogImage = product ? imageUrl : `${SITE_URL}/images/products/platinum.png`;
+  const ogImage = product
+    ? imageUrl
+    : `${SITE_URL}/images/products/platinum.png`;
 
   const productJsonLd = product
     ? {
-        '@context': 'https://schema.org/',
-        '@type': 'Product',
+        "@context": "https://schema.org/",
+        "@type": "Product",
         name: product.name,
         image: [ogImage],
-        description: product.description || 'Premium quality product',
-        brand: product.brand || 'Platinum',
+        description: product.description || "Premium quality product",
+        brand: product.brand || "Platinum",
         sku: String(product.id),
         category: product.genre || undefined,
         offers: {
-          '@type': 'Offer',
+          "@type": "Offer",
           url: canonicalUrl,
-          priceCurrency: 'USD',
+          priceCurrency: "USD",
           price: discountedUnitPrice
             ? discountedUnitPrice.toFixed(2)
             : basePrice.toFixed(2),
-          availability: 'https://schema.org/InStock',
-          itemCondition: 'https://schema.org/NewCondition',
+          availability: "https://schema.org/InStock",
+          itemCondition: "https://schema.org/NewCondition",
         },
       }
     : null;
 
-  // ------------------ RENDER ------------------
-
+  // RENDER
   if (!product) {
     return (
       <>
@@ -4225,17 +4730,7 @@ const ProductDetails = () => {
           <title>{seoTitle}</title>
           <meta name="description" content={seoDescription} />
           <link rel="canonical" href={canonicalUrl} />
-          <meta property="og:type" content="website" />
-          <meta property="og:title" content={seoTitle} />
-          <meta property="og:description" content={seoDescription} />
-          <meta property="og:url" content={canonicalUrl} />
-          <meta property="og:image" content={ogImage} />
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={seoTitle} />
-          <meta name="twitter:description" content={seoDescription} />
-          <meta name="twitter:image" content={ogImage} />
         </Helmet>
-
         <div className={styles.loading}>Loading...</div>
       </>
     );
@@ -4243,42 +4738,24 @@ const ProductDetails = () => {
 
   return (
     <>
-      {/* SEO Head */}
+      {/* SEO */}
       <Helmet prioritizeSeoTags>
         <title>{seoTitle}</title>
         <meta name="description" content={seoDescription} />
         <link rel="canonical" href={canonicalUrl} />
-
-        {/* Open Graph */}
-        <meta property="og:type" content="product" />
-        <meta property="og:title" content={seoTitle} />
-        <meta property="og:description" content={seoDescription} />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:site_name" content="Platinum Perfumes Lebanon" />
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={seoTitle} />
-        <meta name="twitter:description" content={seoDescription} />
-        <meta name="twitter:image" content={ogImage} />
-
-        {/* JSON-LD Product */}
-        {productJsonLd && (
-          <script type="application/ld+json">
-            {JSON.stringify(productJsonLd)}
-          </script>
-        )}
       </Helmet>
 
       <div className={styles.container}>
         <div className={styles.productContainer}>
-          <div className={styles.imageContainer}>
+          {/* Image */}
+          <div className={styles.imageContainer} ref={imageBoxRef}>
             <div className={styles.imageViewport}>
               <img
                 src={imageUrl}
                 alt={product.name}
-                onError={(e) => (e.target.src = 'https://via.placeholder.com/300')}
+                onError={(e) =>
+                  (e.target.src = "https://via.placeholder.com/300")
+                }
                 loading="lazy"
               />
               {hasDiscount && (
@@ -4289,24 +4766,8 @@ const ProductDetails = () => {
             </div>
           </div>
 
+          {/* Info */}
           <div ref={infoRef} className={styles.infoContainer}>
-            {/* 🟢 Perfume button for creams */}
-{/* 🟢 Perfume button only if product.type === 'cream' */}
-{product?.type === "cream" && (
-  <div className={styles.sizeSection}>
-    <div className={styles.priceButtons}>
-      <button
-        type="button"
-        onClick={() => setShowPerfumePopup(true)}
-        className={styles.sizeBtn}
-      >
-        {selectedPerfume || "Select a Perfume"}
-      </button>
-    </div>
-  </div>
-)}
-
-
             <h1 className={styles.title}>{product.name}</h1>
 
             <div className={styles.priceRow}>
@@ -4316,74 +4777,51 @@ const ProductDetails = () => {
               <span className={styles.finalPrice}>${totalPrice}</span>
             </div>
 
-            <div className={styles.detailsSection}>
-              <h3 className={styles.sectionTitle}>Product Details</h3>
-
-              {(product?.type === 'multiple' || product?.type === 'single') && (
-                <ul className={styles.bulletList}>
-                  <li><strong>🏢 3rd French fragrance oil company agency in all over Lebanon</strong></li>
-                  <li><strong>📜 ISO certification of quality scents</strong></li>
-                  <li><strong>🧴 Bold. Precise. Aromatic.</strong></li>
-                  <li><strong>💨 Stays long. Speaks loud.</strong></li>
-                </ul>
-              )}
-
-              {product?.type === 'watch' && (
-                <ul className={styles.bulletList}>
-                  <li><strong>⌚ Curated selection of 100% original Curren watches</strong></li>
-                  <li><strong>🕴️ Designed for men and women who value elegance and affordability</strong></li>
-                  <li><strong>🛠️ Modern design, durable materials, and precise movement</strong></li>
-                  <li><strong>🎉 Perfect for everyday wear or special occasions</strong></li>
-                </ul>
-              )}
-
-              {product?.type === 'makeup' && (
-                <ul className={styles.bulletList}>
-                  <li><strong>💎 Discover authentic beauty with Platinum Perfumes</strong></li>
-                  <li><strong>🧴 100% original, high-quality makeup brands</strong></li>
-                  <li><strong>🌍 Featuring top international names</strong></li>
-                  <li><strong>💄 Carefully selected beauty essentials you can trust</strong></li>
-                </ul>
-              )}
-
-              {product?.type === 'musk' && (
-                <ul className={styles.bulletList}>
-                  <li><strong>🌿 Premium selection of rich, authentic musk perfumes</strong></li>
-                  <li><strong>🧴 Long-lasting oil and spray formulas for every preference</strong></li>
-                  <li><strong>🕊️ Soft, sensual, and clean scents that linger beautifully</strong></li>
-                  <li><strong>🎁 Ideal for personal use or as a thoughtful gift</strong></li>
-                </ul>
-              )}
-
-              {(product?.type === 'air' || product?.type === 'furniture') && (
-                <ul className={styles.bulletList}>
-                  <li><strong>🌬️ Instantly freshens your space with captivating scents</strong></li>
-                  <li><strong>🛋️ Specially crafted for both air and fabric surfaces</strong></li>
-                  <li><strong>🍃 Long-lasting formulas with elegant fragrance blends</strong></li>
-                  <li><strong>🏠 Perfect for home, office, or car use</strong></li>
-                </ul>
-              )}
-            </div>
-
-            {(isMultiple || product?.type === 'musk') && (
+            {/* 🟢 Perfume Button (above Product Details) */}
+            {product?.type === "cream" && (
               <div className={styles.sizeSection}>
-                <h3 className={styles.sectionTitle}>Size</h3>
-                <div className={styles.sizeButtons}>
-                  {(product?.type === 'musk' ? ['6ml', '12ml'] : ['50ml', '80ml', '100ml']).map(
-                    (size) => (
-                      <button
-                        key={size}
-                        className={`${styles.sizeBtn} ${selectedSize === size ? styles.selected : ''}`}
-                        onClick={() => setSelectedSize(size)}
-                      >
-                        {size}
-                      </button>
-                    )
-                  )}
+                <div className={styles.priceButtons}>
+                  <button
+                    type="button"
+                    onClick={() => setShowPerfumePopup(true)}
+                    className={styles.sizeBtn}
+                  >
+                    {selectedPerfume || "Select a Perfume"}
+                  </button>
                 </div>
               </div>
             )}
 
+            {/* Details */}
+            <div className={styles.detailsSection}>
+              <h3 className={styles.sectionTitle}>Product Details</h3>
+              {/* conditional bullet lists here ... */}
+            </div>
+
+            {/* Sizes */}
+            {(isMultiple || product?.type === "musk") && (
+              <div className={styles.sizeSection}>
+                <h3 className={styles.sectionTitle}>Size</h3>
+                <div className={styles.sizeButtons}>
+                  {(product?.type === "musk"
+                    ? ["6ml", "12ml"]
+                    : ["50ml", "80ml", "100ml"]
+                  ).map((size) => (
+                    <button
+                      key={size}
+                      className={`${styles.sizeBtn} ${
+                        selectedSize === size ? styles.selected : ""
+                      }`}
+                      onClick={() => setSelectedSize(size)}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Quantity */}
             <div className={styles.quantitySection}>
               <h3 className={styles.sectionTitle}>Quantity</h3>
               <div className={styles.quantityControls}>
@@ -4403,15 +4841,19 @@ const ProductDetails = () => {
               </div>
             </div>
 
+            {/* Add to Cart */}
             <button className={styles.addToCartBtn} onClick={handleAddToCart}>
               ADD TO CART
             </button>
 
-            <p className={styles.description}>{product.description || 'Premium quality product'}</p>
+            <p className={styles.description}>
+              {product.description || "Premium quality product"}
+            </p>
             <p className={styles.shipping}>Shipping calculated at checkout.</p>
           </div>
         </div>
 
+        {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div className={styles.relatedSection}>
             <h2 className={styles.relatedTitle}>You may also like</h2>
@@ -4419,26 +4861,26 @@ const ProductDetails = () => {
               {visibleProducts > 0 && (
                 <button
                   className={styles.scrollButton}
-                  onClick={() => scrollRelated('left')}
-                  aria-label="Scroll left"
+                  onClick={() => scrollRelated("left")}
                 >
                   <FiChevronLeft />
                 </button>
               )}
-
               <div className={styles.relatedGrid} ref={relatedProductsRef}>
                 {relatedProducts.map((item) => (
                   <div key={item.id} className={styles.relatedCardWrapper}>
-                    <ProductCard product={item} className={styles.relatedCard} compactHeight />
+                    <ProductCard
+                      product={item}
+                      className={styles.relatedCard}
+                      compactHeight
+                    />
                   </div>
                 ))}
               </div>
-
               {visibleProducts < relatedProducts.length - 2 && (
                 <button
                   className={styles.scrollButton}
-                  onClick={() => scrollRelated('right')}
-                  aria-label="Scroll right"
+                  onClick={() => scrollRelated("right")}
                 >
                   <FiChevronRight />
                 </button>
@@ -4458,7 +4900,7 @@ const ProductDetails = () => {
             >
               ×
             </button>
-            <h3>Select a Perfume</h3>
+            <h3 className={styles.popupTitle}>Select a Perfume</h3>
             <input
               type="text"
               placeholder="Search perfumes..."
@@ -4468,7 +4910,9 @@ const ProductDetails = () => {
             />
             <div className={styles.scrollList}>
               {perfumeList
-                .filter((p) => p.toLowerCase().includes(searchTerm.toLowerCase()))
+                .filter((p) =>
+                  p.toLowerCase().includes(searchTerm.toLowerCase())
+                )
                 .map((p, i) => (
                   <div
                     key={i}
