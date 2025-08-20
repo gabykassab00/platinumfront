@@ -4304,7 +4304,6 @@ const ProductDetails = () => {
 
 
             <div className={styles.detailsSection}>
-// Perfume Button (replace your current button)
 {product?.type === "cream" && (
   <div className={styles.sizeSection}>
     <div className={styles.priceButtons}>
