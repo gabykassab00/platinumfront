@@ -4316,7 +4316,21 @@ const ProductDetails = () => {
               <span className={styles.finalPrice}>${totalPrice}</span>
             </div>
 
+
             <div className={styles.detailsSection}>
+{product?.type === "cream" && (
+  <div className={styles.sizeSection}>
+    <div className={styles.priceButtons}>
+      <button
+        type="button"
+        onClick={() => setShowPerfumePopup(true)}
+        className={styles.sizeBtn}
+      >
+        {selectedPerfume || "Select a Perfume"}
+      </button>
+    </div>
+  </div>
+)}
               <h3 className={styles.sectionTitle}>Product Details</h3>
 
               {(product?.type === 'multiple' || product?.type === 'single') && (
