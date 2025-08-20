@@ -5691,17 +5691,15 @@ const ProductDetails = () => {
             <h1 className={styles.title}>{product.name}</h1>
 
             {/* Price */}
-            <div className={styles.priceRow}>
+            {/* <div className={styles.priceRow}>
               {hasDiscount && (
                 <span className={styles.originalPrice}>${originalTotal}</span>
               )}
               <span className={styles.finalPrice}>${totalPrice}</span>
             </div>
 
-            {/* Divider (just one main line) */}
             <hr className={styles.divider} />
 
-            {/* Perfume button BELOW divider and ABOVE Product Details */}
             {product?.type === "cream" && (
               <div
                 className={styles.sizeSection}
@@ -5717,10 +5715,39 @@ const ProductDetails = () => {
               </div>
             )}
 
-            {/* Product Details */}
             <div className={styles.detailsSection}>
               <h3 className={styles.sectionTitle}>Product Details</h3>
-            </div>
+            </div> */}
+{/* Price */}
+<div className={styles.priceRow}>
+  {hasDiscount && (
+    <span className={styles.originalPrice}>${originalTotal}</span>
+  )}
+  <span className={styles.finalPrice}>${totalPrice}</span>
+</div>
+
+{/* Product Details */}
+<div className={styles.detailsSection}>
+  <hr className={styles.divider} />
+
+  {/* Perfume button BELOW line and ABOVE Product Details */}
+  {product?.type === "cream" && (
+    <div
+      className={styles.sizeSection}
+      style={{ textAlign: "center", margin: "15px 0" }}
+    >
+      <button
+        type="button"
+        onClick={() => setShowPerfumePopup(true)}
+        className={styles.sizeBtn}
+      >
+        {selectedPerfume || "Select a Perfume"}
+      </button>
+    </div>
+  )}
+
+  <h3 className={styles.sectionTitle}>Product Details</h3>
+</div>
 
             {/* Size Options */}
             {(isMultiple || product?.type === "musk") && (
