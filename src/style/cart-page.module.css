@@ -574,3 +574,11 @@
     font-size: 12px;
   }
 }
+
+
+
+.perfumeLine {
+  font-size: 0.85rem;
+  color: #444;
+  margin-top: 2px;
+}
