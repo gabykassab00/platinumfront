@@ -4566,7 +4566,7 @@ const ProductDetails = () => {
   // 🟢 Perfume popup states
   const [showPerfumePopup, setShowPerfumePopup] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedPerfume, setSelectedPerfume] = useState('Perfume');
+const [selectedPerfume, setSelectedPerfume] = useState(null);
 
   // Fetch product
   useEffect(() => {
@@ -4666,27 +4666,27 @@ const ProductDetails = () => {
   const totalPrice = (discountedUnitPrice * quantity).toFixed(2);
   const originalTotal = (unitPrice * quantity).toFixed(2);
 
-  const handleAddToCart = () => {
-    // Check if perfume is required but not selected
-    if (product?.type === 'cream' && selectedPerfume === 'Perfume') {
-      setPerfumeError(true);
-      return;
-    }
-    
-    // Reset perfume error if it was previously shown
-    setPerfumeError(false);
-    
-    const item = {
-      ...product,
-      price: discountedUnitPrice.toFixed(2),
-      total: totalPrice,
-      quantity,
-      ...(selectedSize && { size: selectedSize }),
-      ...(product?.type === 'cream' && { perfume: selectedPerfume }),
-    };
-    addItem(item);
-    openSidebar();
+const handleAddToCart = () => {
+  // Check if perfume is required but not selected
+  if (product?.type === 'cream' && !selectedPerfume) {
+    setPerfumeError(true);
+    return;
+  }
+
+  setPerfumeError(false); // reset error if valid
+
+  const item = {
+    ...product,
+    price: discountedUnitPrice.toFixed(2),
+    total: totalPrice,
+    quantity,
+    ...(selectedSize && { size: selectedSize }),
+    ...(product?.type === 'cream' && { perfume: selectedPerfume }),
   };
+  addItem(item);
+  openSidebar();
+};
+
 
   const handlePerfumeSelect = (perfume) => {
     setSelectedPerfume(perfume);
