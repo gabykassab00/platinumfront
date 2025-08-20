@@ -4819,7 +4819,8 @@ const ProductDetails = () => {
             </div>
 
             {/* 🟢 Perfume button for creams with error message */}
-            {product?.type === "cream" && (
+            <div className={styles.detailsSection}>
+                          {product?.type === "cream" && (
               <div className={styles.sizeSection}>
                 <div className={styles.priceButtons}>
                   <button
@@ -4840,8 +4841,6 @@ const ProductDetails = () => {
                 )}
               </div>
             )}
-
-            <div className={styles.detailsSection}>
               <h3 className={styles.sectionTitle}>Product Details</h3>
 
               {(product?.type === 'multiple' || product?.type === 'single') && (
