@@ -4094,21 +4094,25 @@ const CheckoutPage = () => {
   const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
 
   // ---------- Validation ----------
-  const validateInputs = () => {
-    const phone = emailRef.current?.value.trim() || "";
+const validateInputs = () => {
+  const phone = emailRef.current?.value.trim() || "";
 
-    const newErrors = {
-      // Allow only 2-digit prefix + hyphen + exactly 6 digits (71-234567)
-      email: !/^\d{2}-\d{6}$/.test(phone),
-      firstName: !firstNameRef.current?.value.trim(),
-      lastName: !lastNameRef.current?.value.trim(),
-      address: !addressRef.current?.value.trim(),
-      city: !cityRef.current?.value.trim(),
-    };
+  // Remove all non-digit characters and check if we have exactly 8 digits
+  const digitsOnly = phone.replace(/\D/g, "");
+  const hasEightDigits = digitsOnly.length === 8;
 
-    setErrors(newErrors);
-    return !Object.values(newErrors).some(Boolean);
+  const newErrors = {
+    // Check if we have exactly 8 digits (regardless of formatting)
+    email: !hasEightDigits,
+    firstName: !firstNameRef.current?.value.trim(),
+    lastName: !lastNameRef.current?.value.trim(),
+    address: !addressRef.current?.value.trim(),
+    city: !cityRef.current?.value.trim(),
   };
+
+  setErrors(newErrors);
+  return !Object.values(newErrors).some(Boolean);
+};
 
   // ---------- Complete Order ----------
   const handleCompleteOrder = () => {
