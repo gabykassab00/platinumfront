@@ -3666,11 +3666,16 @@ const CheckoutPage = () => {
   const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
 
   // ---------- Validation ----------
+
 const validateInputs = () => {
   const phone = emailRef.current?.value.trim() || "";
 
+  // Count digits only
+  const digitCount = phone.replace(/\D/g, "").length;
+
   const newErrors = {
-    email: !phone || phone.length < 8,  // 🟢 must be at least 8 chars
+    // Allow format like 71/234567 or 70-123456, as long as digits >= 8
+    email: digitCount < 8 || !/^(\d{2})[\/\-]?\d{6}$/.test(phone),
     firstName: !firstNameRef.current?.value.trim(),
     lastName: !lastNameRef.current?.value.trim(),
     address: !addressRef.current?.value.trim(),
@@ -3680,7 +3685,6 @@ const validateInputs = () => {
   setErrors(newErrors);
   return !Object.values(newErrors).some(Boolean);
 };
-
 
 
 
