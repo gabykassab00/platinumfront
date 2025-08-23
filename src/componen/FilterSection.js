@@ -1912,7 +1912,11 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
     } else if (location.pathname.includes('/body-mist')) {
       // 🟢 Deodorant page
       options = deodorantBrands;
-    } else {
+    }
+    else if (location.pathname.includes('/body-cream')) {
+      // 🟢 Cream page → hide brand filter
+      show = false;
+    }else {
       options = perfumeBrands;
     }
 
