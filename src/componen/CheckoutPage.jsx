@@ -3665,18 +3665,20 @@ const CheckoutPage = () => {
   const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
 
   // ---------- Validation ----------
-  const validateInputs = () => {
-    const newErrors = {
-      email: !emailRef.current?.value,
-      firstName: !firstNameRef.current?.value,
-      lastName: !lastNameRef.current?.value,
-      address: !addressRef.current?.value,
-      city: !cityRef.current?.value,
-    };
+const validateInputs = () => {
+  const phone = emailRef.current?.value.trim() || "";
 
-    setErrors(newErrors);
-    return !Object.values(newErrors).some(Boolean);
+  const newErrors = {
+    email: !phone || phone.length < 8,  // 🟢 must be at least 8 chars
+    firstName: !firstNameRef.current?.value.trim(),
+    lastName: !lastNameRef.current?.value.trim(),
+    address: !addressRef.current?.value.trim(),
+    city: !cityRef.current?.value.trim(),
   };
+
+  setErrors(newErrors);
+  return !Object.values(newErrors).some(Boolean);
+};
 
 
 
@@ -3792,7 +3794,12 @@ const handleCompleteOrder = () => {
               ref={emailRef}
               required
             />
-            {errors.email && <p className={styles.errorText}>Please enter your phone number</p>}
+            {errors.email && (
+  <p className={styles.errorText}>
+    Please enter a valid phone number (at least 8 digits)
+  </p>
+)}
+
           </div>
           <label className={styles.checkboxLabel}>
             <input type="checkbox" className={styles.checkboxInput} />
