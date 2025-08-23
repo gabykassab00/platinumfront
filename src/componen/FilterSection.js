@@ -1619,7 +1619,7 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
       options = ['Lattafa', 'Rasasi'];
     } else if (location.pathname.includes('/refresheners')) {
       label = 'Type';
-      options = ['air', 'furniture'];
+      options = ['air', 'furniture','incense'];
     } else {
       options = perfumeBrands;
     }
