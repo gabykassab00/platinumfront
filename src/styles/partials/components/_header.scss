@@ -2423,7 +2423,7 @@
 }
 
 .search-dropdown {
-  position: absolute;
+  position: fixed;
   top: calc(100% + 8px);
   left: 0;
   right: 0;
@@ -2931,4 +2931,11 @@ header.sticky { top: calc(30px + env(safe-area-inset-top, 0)); }
   .desktop-menu-container {
     display: none;
   }
+}
+
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1500;   /* below dropdown but above content */
 }
