@@ -2394,6 +2394,7 @@
   max-width: 500px;
   margin: 0 2rem;
   transition: all 0.3s ease;
+  z-index: 2000;  /* add this so it can rise above the header */
 
   @media (max-width: 768px) {
     display: none;
@@ -2423,14 +2424,14 @@
 }
 
 .search-dropdown {
-  position: fixed;
+  position: absolute;
   top: calc(100% + 8px);
   left: 0;
   right: 0;
   background: white;
   border-radius: 16px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-  z-index: 999;
+  z-index: 3000;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.05);
   max-height: 400px;
@@ -2937,5 +2938,5 @@ header.sticky { top: calc(30px + env(safe-area-inset-top, 0)); }
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.3);
-  z-index: 1500;   /* below dropdown but above content */
+  z-index: 2500;   /* below dropdown but above content */
 }
