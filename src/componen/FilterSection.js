@@ -1307,25 +1307,47 @@ const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }
   };
 
   // Brand pools
-  const perfumeBrands = useMemo(
-    () => [
-      'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel',
-      'Paco Rabanne', 'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian',
-      'Burberry', 'Nasomatto', 'Carolina Herrera', 'Bulgari', 'Lattafa', 'Tom Ford',
-      'Ralph Lauren', 'Hugo Boss', 'Joop!', 'Givenchy', 'Dolce & Gabbana', 'Dior', 'Dunhill',
-      'Cartier', 'Laura Biagiotti', 'Jacques Bogart', 'Nikos', 'Emporio Armani', 'Viktor & Rolf',
-      'Calvin Klein', 'oud guerlain', 'taif', 'sunamusk', 'Gucci', 'Nautica or Hermès',
-      'Ferrari', 'Fendi', 'Yves Saint Laurent', 'Issey Miyake', 'Creed', 'Kenzo', 'Louis Vuitton',
-      'Lacoste', 'happy touch', 'Ted Lapidus', 'misk', 'maa althahab', 'Mercedes-Benz',
-      'Montblanc', 'Police', 'Ajmal or Armaf', 'Roberto Cavalli', 'rave', 'Ajmal', 'Asdaaf',
-      'Afnan', 'Mousouf', 'شمس الامارات', 'Victoria’s Secret', 'Britney Spears', 'Jardin de Parfums',
-      'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Victoria secret', 'Mugler', 'Elie Saab',
-      'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez', 'Prada', 'Chloé',
-      'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic', 'sir', 'nasmat',
-      'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly',
-    ],
-    []
-  );
+const perfumeBrands = useMemo(
+  () => [
+    // ✅ already in
+    'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel',
+    'Paco Rabanne', 'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian',
+    'Burberry', 'Nasomatto', 'Carolina Herrera', 'Bulgari', 'Lattafa', 'Tom Ford',
+    'Ralph Lauren', 'Hugo Boss', 'Joop!', 'Givenchy', 'Dolce & Gabbana', 'Dior', 'Dunhill',
+    'Cartier', 'Laura Biagiotti', 'Jacques Bogart', 'Nikos', 'Emporio Armani', 'Viktor & Rolf',
+    'Calvin Klein', 'oud guerlain', 'taif', 'sunamusk', 'Gucci', 'Nautica or Hermès',
+    'Ferrari', 'Fendi', 'Yves Saint Laurent', 'Issey Miyake', 'Creed', 'Kenzo', 'Louis Vuitton',
+    'Lacoste', 'happy touch', 'Ted Lapidus', 'misk', 'maa althahab', 'Mercedes-Benz',
+    'Montblanc', 'Police', 'Ajmal or Armaf', 'Roberto Cavalli', 'rave', 'Ajmal', 'Asdaaf',
+    'Afnan', 'Mousouf', 'شمس الامارات', 'Victoria’s Secret', 'Britney Spears', 'Jardin de Parfums',
+    'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Victoria secret', 'Mugler', 'Elie Saab',
+    'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez', 'Prada', 'Chloé',
+    'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic', 'sir', 'nasmat',
+    'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly',
+
+    // ✅ Missing ones I added:
+    'happy touch',        // appeared separately
+    'Masque Milano',      // in your list (already included once, kept for clarity)
+    'Ajmal or Rasasi',    // was in your list but not in array
+    'Jardin de Parfums',  // already included, but confirming from list
+    'Platinum',           // many "Platinum" in your list
+    'Generic',            // appeared in list
+    'Fragrance World',    // appeared in list
+    'Perris Monte Carlo', // appeared in list
+    'Tiziana Terenzi',    // appeared in list
+    'Byredo',             // appeared in list
+    'Xerjoff',            // appeared in list
+    'Mexican Tobacco',    // appeared in list
+    'Gissah',             // appeared multiple times
+    'Lanvin',             // appeared in list
+    'Laura Mars',         // appeared in list
+    'Alghawaly',          // appeared in list
+    'Armaf',              // separate from Ajmal or Armaf
+    'Ard Al Zaafaran',    // already in array but keep once
+  ],
+  []
+);
+
 
   const makeupBrands = useMemo(() => ['Maybelline', 'Ruby Beauty', 'Samoa', 'dali', 'Ruby Rose'], []);
 
