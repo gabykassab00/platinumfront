@@ -3670,13 +3670,12 @@ const CheckoutPage = () => {
 const validateInputs = () => {
   const phone = emailRef.current?.value.trim() || "";
 
-  // Remove all non-digits and count
   const digitCount = phone.replace(/\D/g, "").length;
 
   const newErrors = {
     email:
-      digitCount < 8 ||
-      !/^(\d{2})([\/\-]?\d{6})$|^\d{8}$/.test(phone),
+      digitCount < 8 || // must be at least 8 digits
+      !/^(\d{2})([\/\-]?\d{6,7})$|^\d{8,9}$/.test(phone),
 
     firstName: !firstNameRef.current?.value.trim(),
     lastName: !lastNameRef.current?.value.trim(),
