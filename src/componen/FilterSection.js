@@ -1286,6 +1286,275 @@
 
 
 
+// // src/components/FilterSection.jsx
+
+// import React, { useState, useEffect, useMemo } from 'react';
+// import { useLocation } from 'react-router-dom';
+// import styles from '../style/FilterSection.module.css';
+
+// const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }) => {
+//   const location = useLocation();
+
+//   // Start all sections collapsed
+//   const [openSections, setOpenSections] = useState({
+//     brands: false,
+//     genres: false,
+//     price: false,
+//   });
+
+//   const toggleSection = (section) => {
+//     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
+//   };
+
+//   // Brand pools
+// const perfumeBrands = useMemo(
+//   () => [
+//     // ✅ already in
+//     'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel',
+//     'Paco Rabanne', 'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian',
+//     'Burberry', 'Nasomatto', 'Carolina Herrera', 'Bulgari', 'Lattafa', 'Tom Ford',
+//     'Ralph Lauren', 'Hugo Boss', 'Joop!', 'Givenchy', 'Dolce & Gabbana', 'Dior', 'Dunhill',
+//     'Cartier', 'Laura Biagiotti', 'Jacques Bogart', 'Nikos', 'Emporio Armani', 'Viktor & Rolf',
+//     'Calvin Klein', 'oud guerlain', 'taif', 'sunamusk', 'Gucci', 'Nautica or Hermès',
+//     'Ferrari', 'Fendi', 'Yves Saint Laurent', 'Issey Miyake', 'Creed', 'Kenzo', 'Louis Vuitton',
+//     'Lacoste', 'happy touch', 'Ted Lapidus', 'misk', 'maa althahab', 'Mercedes-Benz',
+//     'Montblanc', 'Police', 'Ajmal or Armaf', 'Roberto Cavalli', 'rave', 'Ajmal', 'Asdaaf',
+//     'Afnan', 'Mousouf', 'شمس الامارات', 'Victoria’s Secret', 'Britney Spears', 'Jardin de Parfums',
+//     'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Victoria secret', 'Mugler', 'Elie Saab',
+//     'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez', 'Prada', 'Chloé',
+//     'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic', 'sir', 'nasmat',
+//     'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly',
+
+//     // ✅ Missing ones I added:
+//     'happy touch',        // appeared separately
+//     'Masque Milano',      // in your list (already included once, kept for clarity)
+//     'Ajmal or Rasasi',    // was in your list but not in array
+//     'Jardin de Parfums',  // already included, but confirming from list
+//     'Platinum',           // many "Platinum" in your list
+//     'Generic',            // appeared in list
+//     'Fragrance World',    // appeared in list
+//     'Perris Monte Carlo', // appeared in list
+//     'Tiziana Terenzi',    // appeared in list
+//     'Byredo',             // appeared in list
+//     'Xerjoff',            // appeared in list
+//     'Mexican Tobacco',    // appeared in list
+//     'Gissah',             // appeared multiple times
+//     'Lanvin',             // appeared in list
+//     'Laura Mars',         // appeared in list
+//     'Alghawaly',          // appeared in list
+//     'Armaf',              // separate from Ajmal or Armaf
+//     'Ard Al Zaafaran',    // already in array but keep once
+//   ],
+//   []
+// );
+
+
+//   const makeupBrands = useMemo(() => ['Maybelline', 'Ruby Beauty', 'Samoa', 'dali', 'Ruby Rose'], []);
+
+//   // Compute filter options based on route
+//   const { showFilter, filterLabel, filterOptions } = useMemo(() => {
+//     let show = true;
+//     let label = 'Brands';
+//     let options = [];
+
+//     if (location.pathname.includes('/makeup')) {
+//       options = makeupBrands;
+//     } else if (location.pathname.includes('/watches')) {
+//       options = ['Curren', 'Richard Mille'];
+//     } else if (location.pathname.includes('/musk')) {
+//       show = false; // hide brand filter on musk page
+//     } else if (location.pathname.includes('/lattafa-rasasi')) {
+//       options = ['Lattafa', 'Rasasi'];
+//     } else if (location.pathname.includes('/refresheners')) {
+//       label = 'Type';
+//       options = ['air', 'furniture'];
+//     } else {
+//       options = perfumeBrands;
+//     }
+
+//     if (show) {
+//       options = [...new Set(options)].sort((a, b) => a.localeCompare(b));
+//     }
+
+//     return { showFilter: show, filterLabel: label, filterOptions: options };
+//   }, [location.pathname, perfumeBrands, makeupBrands]);
+
+//   const genres = useMemo(
+//     () => [
+//       { value: 'Men', label: 'Men' },
+//       { value: 'Women', label: 'Women' },
+//       { value: 'Unisex', label: 'Unisex' },
+//     ],
+//     []
+//   );
+
+//   // Reset all filters when route changes (matches your previous behavior)
+//   useEffect(() => {
+//     onFilterChange('resetAll');
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [location.pathname]);
+
+//   // IDs for aria-controls
+//   const brandsPanelId = 'filter-brands-panel';
+//   const genresPanelId = 'filter-genres-panel';
+//   const pricePanelId  = 'filter-price-panel';
+
+//   return (
+//     <section className={styles['filter-section']} aria-labelledby="filter-title">
+//       <h3 id="filter-title" className={styles['filter-title']}>Filter By</h3>
+
+//       {/* Brand/Type */}
+//       {showFilter && (
+//         <div className={styles['filter-group']}>
+//           <button
+//             type="button"
+//             className={styles['filter-header']}
+//             aria-expanded={openSections.brands}
+//             aria-controls={brandsPanelId}
+//             onClick={() => toggleSection('brands')}
+//           >
+//             <h4 className={styles['filter-subtitle']}>{filterLabel}</h4>
+//             <span className={styles['toggle-icon']} aria-hidden="true">
+//               {openSections.brands ? '−' : '+'}
+//             </span>
+//           </button>
+
+//           {openSections.brands && (
+//             <div
+//               id={brandsPanelId}
+//               role="region"
+//               aria-label={`${filterLabel} options`}
+//               className={styles['filter-options-container']}
+//             >
+//               {filterOptions.map((option) => (
+//                 <div key={option} className={styles['filter-option']}>
+//                   <input
+//                     type="checkbox"
+//                     id={`brand-${option}`}
+//                     name={filterLabel === 'Type' ? 'type' : 'brand'}
+//                     checked={filters.brands.includes(option)}
+//                     onChange={() => onFilterChange('brands', option)}
+//                     className={styles['filter-checkbox']}
+//                   />
+//                   <label htmlFor={`brand-${option}`} className={styles['filter-label']}>
+//                     {option}
+//                   </label>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+//         </div>
+//       )}
+
+//       {/* Genre */}
+//       {!hideGenreFilter && (
+//         <div className={styles['filter-group']}>
+//           <button
+//             type="button"
+//             className={styles['filter-header']}
+//             aria-expanded={openSections.genres}
+//             aria-controls={genresPanelId}
+//             onClick={() => toggleSection('genres')}
+//           >
+//             <h4 className={styles['filter-subtitle']}>Genre</h4>
+//             <span className={styles['toggle-icon']} aria-hidden="true">
+//               {openSections.genres ? '−' : '+'}
+//             </span>
+//           </button>
+
+//           {openSections.genres && (
+//             <div
+//               id={genresPanelId}
+//               role="region"
+//               aria-label="Genre options"
+//               className={styles['filter-options-container']}
+//             >
+//               {genres.map((genre) => (
+//                 <div key={genre.value} className={styles['filter-option']}>
+//                   <input
+//                     type="checkbox"
+//                     id={`genre-${genre.value}`}
+//                     name="genre"
+//                     checked={filters.genres.includes(genre.value)}
+//                     onChange={() => onFilterChange('genres', genre.value)}
+//                     className={styles['filter-checkbox']}
+//                   />
+//                   <label htmlFor={`genre-${genre.value}`} className={styles['filter-label']}>
+//                     {genre.label}
+//                   </label>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+//         </div>
+//       )}
+
+//       {/* Price */}
+//       <div className={styles['filter-group']}>
+//         <button
+//           type="button"
+//           className={styles['filter-header']}
+//           aria-expanded={openSections.price}
+//           aria-controls={pricePanelId}
+//           onClick={() => toggleSection('price')}
+//         >
+//           <h4 className={styles['filter-subtitle']}>Price</h4>
+//           <span className={styles['toggle-icon']} aria-hidden="true">
+//             {openSections.price ? '−' : '+'}
+//           </span>
+//         </button>
+
+//         {openSections.price && (
+//           <div
+//             id={pricePanelId}
+//             role="region"
+//             aria-label="Price filter"
+//             className={styles['price-filter-container']}
+//           >
+//             <input
+//               type="range"
+//               min="0"
+//               max="500"
+//               step="10"
+//               value={filters.price}
+//               onChange={(e) => onFilterChange('price', parseFloat(e.target.value))}
+//               className={styles['price-slider']}
+//               aria-label="Maximum price"
+//             />
+//             <div className={styles['price-display']} aria-live="polite">
+//               ${filters.price.toFixed(2)}
+//             </div>
+//           </div>
+//         )}
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default FilterSection;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // src/components/FilterSection.jsx
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -1295,63 +1564,46 @@ import styles from '../style/FilterSection.module.css';
 const FilterSection = ({ filters, onFilterChange, activeGenre, hideGenreFilter }) => {
   const location = useLocation();
 
-  // Start all sections collapsed
   const [openSections, setOpenSections] = useState({
     brands: false,
     genres: false,
     price: false,
   });
 
+  const [brandSearch, setBrandSearch] = useState(''); // 🔍 new state
+
   const toggleSection = (section) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
   // Brand pools
-const perfumeBrands = useMemo(
-  () => [
-    // ✅ already in
-    'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel',
-    'Paco Rabanne', 'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian',
-    'Burberry', 'Nasomatto', 'Carolina Herrera', 'Bulgari', 'Lattafa', 'Tom Ford',
-    'Ralph Lauren', 'Hugo Boss', 'Joop!', 'Givenchy', 'Dolce & Gabbana', 'Dior', 'Dunhill',
-    'Cartier', 'Laura Biagiotti', 'Jacques Bogart', 'Nikos', 'Emporio Armani', 'Viktor & Rolf',
-    'Calvin Klein', 'oud guerlain', 'taif', 'sunamusk', 'Gucci', 'Nautica or Hermès',
-    'Ferrari', 'Fendi', 'Yves Saint Laurent', 'Issey Miyake', 'Creed', 'Kenzo', 'Louis Vuitton',
-    'Lacoste', 'happy touch', 'Ted Lapidus', 'misk', 'maa althahab', 'Mercedes-Benz',
-    'Montblanc', 'Police', 'Ajmal or Armaf', 'Roberto Cavalli', 'rave', 'Ajmal', 'Asdaaf',
-    'Afnan', 'Mousouf', 'شمس الامارات', 'Victoria’s Secret', 'Britney Spears', 'Jardin de Parfums',
-    'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Victoria secret', 'Mugler', 'Elie Saab',
-    'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez', 'Prada', 'Chloé',
-    'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic', 'sir', 'nasmat',
-    'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly',
+  const perfumeBrands = useMemo(
+    () => [
+      'Davidoff', 'Giorgio Armani', 'arabian oud', 'Azzaro', 'Rasasi', 'Chanel',
+      'Paco Rabanne', 'Versace', 'Jean Paul Gaultier', 'Fabergé', 'Maison Francis Kurkdjian',
+      'Burberry', 'Nasomatto', 'Carolina Herrera', 'Bulgari', 'Lattafa', 'Tom Ford',
+      'Ralph Lauren', 'Hugo Boss', 'Joop!', 'Givenchy', 'Dolce & Gabbana', 'Dior', 'Dunhill',
+      'Cartier', 'Laura Biagiotti', 'Jacques Bogart', 'Nikos', 'Emporio Armani', 'Viktor & Rolf',
+      'Calvin Klein', 'oud guerlain', 'taif', 'sunamusk', 'Gucci', 'Nautica or Hermès',
+      'Ferrari', 'Fendi', 'Yves Saint Laurent', 'Issey Miyake', 'Creed', 'Kenzo', 'Louis Vuitton',
+      'Lacoste', 'happy touch', 'Ted Lapidus', 'misk', 'maa althahab', 'Mercedes-Benz',
+      'Montblanc', 'Police', 'Ajmal or Armaf', 'Roberto Cavalli', 'rave', 'Ajmal', 'Asdaaf',
+      'Afnan', 'Mousouf', 'شمس الامارات', 'Victoria’s Secret', 'Britney Spears', 'Jardin de Parfums',
+      'elissa', 'Lancôme', 'Yara or Inspired', 'Escada', 'Mugler', 'Elie Saab',
+      'Bath & Body Works', 'sparkling', 'Guerlain', 'Narciso Rodriguez', 'Prada', 'Chloé',
+      'Jeanne Arthes', 'Kayali (Huda Beauty)', 'Masque Milano', 'Folie Cosmetic', 'sir', 'nasmat',
+      'Mancera Roses', 'Avon', 'Ex Nihilo', 'Ard Al Zaafaran', 'Parfums de Marly',
+      'Platinum', 'Generic', 'Fragrance World', 'Perris Monte Carlo', 'Tiziana Terenzi',
+      'Byredo', 'Xerjoff', 'Mexican Tobacco', 'Gissah', 'Lanvin', 'Laura Mars', 'Alghawaly', 'Armaf',
+    ],
+    []
+  );
 
-    // ✅ Missing ones I added:
-    'happy touch',        // appeared separately
-    'Masque Milano',      // in your list (already included once, kept for clarity)
-    'Ajmal or Rasasi',    // was in your list but not in array
-    'Jardin de Parfums',  // already included, but confirming from list
-    'Platinum',           // many "Platinum" in your list
-    'Generic',            // appeared in list
-    'Fragrance World',    // appeared in list
-    'Perris Monte Carlo', // appeared in list
-    'Tiziana Terenzi',    // appeared in list
-    'Byredo',             // appeared in list
-    'Xerjoff',            // appeared in list
-    'Mexican Tobacco',    // appeared in list
-    'Gissah',             // appeared multiple times
-    'Lanvin',             // appeared in list
-    'Laura Mars',         // appeared in list
-    'Alghawaly',          // appeared in list
-    'Armaf',              // separate from Ajmal or Armaf
-    'Ard Al Zaafaran',    // already in array but keep once
-  ],
-  []
-);
+  const makeupBrands = useMemo(
+    () => ['Maybelline', 'Ruby Beauty', 'Samoa', 'dali', 'Ruby Rose'],
+    []
+  );
 
-
-  const makeupBrands = useMemo(() => ['Maybelline', 'Ruby Beauty', 'Samoa', 'dali', 'Ruby Rose'], []);
-
-  // Compute filter options based on route
   const { showFilter, filterLabel, filterOptions } = useMemo(() => {
     let show = true;
     let label = 'Brands';
@@ -1362,7 +1614,7 @@ const perfumeBrands = useMemo(
     } else if (location.pathname.includes('/watches')) {
       options = ['Curren', 'Richard Mille'];
     } else if (location.pathname.includes('/musk')) {
-      show = false; // hide brand filter on musk page
+      show = false;
     } else if (location.pathname.includes('/lattafa-rasasi')) {
       options = ['Lattafa', 'Rasasi'];
     } else if (location.pathname.includes('/refresheners')) {
@@ -1379,6 +1631,14 @@ const perfumeBrands = useMemo(
     return { showFilter: show, filterLabel: label, filterOptions: options };
   }, [location.pathname, perfumeBrands, makeupBrands]);
 
+  // Filter brands by search term
+  const filteredOptions = useMemo(() => {
+    if (!brandSearch.trim()) return filterOptions;
+    return filterOptions.filter((opt) =>
+      opt.toLowerCase().includes(brandSearch.toLowerCase())
+    );
+  }, [brandSearch, filterOptions]);
+
   const genres = useMemo(
     () => [
       { value: 'Men', label: 'Men' },
@@ -1388,22 +1648,19 @@ const perfumeBrands = useMemo(
     []
   );
 
-  // Reset all filters when route changes (matches your previous behavior)
   useEffect(() => {
     onFilterChange('resetAll');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
-  // IDs for aria-controls
   const brandsPanelId = 'filter-brands-panel';
   const genresPanelId = 'filter-genres-panel';
-  const pricePanelId  = 'filter-price-panel';
+  const pricePanelId = 'filter-price-panel';
 
   return (
     <section className={styles['filter-section']} aria-labelledby="filter-title">
       <h3 id="filter-title" className={styles['filter-title']}>Filter By</h3>
 
-      {/* Brand/Type */}
+      {/* Brands/Types */}
       {showFilter && (
         <div className={styles['filter-group']}>
           <button
@@ -1426,21 +1683,36 @@ const perfumeBrands = useMemo(
               aria-label={`${filterLabel} options`}
               className={styles['filter-options-container']}
             >
-              {filterOptions.map((option) => (
-                <div key={option} className={styles['filter-option']}>
-                  <input
-                    type="checkbox"
-                    id={`brand-${option}`}
-                    name={filterLabel === 'Type' ? 'type' : 'brand'}
-                    checked={filters.brands.includes(option)}
-                    onChange={() => onFilterChange('brands', option)}
-                    className={styles['filter-checkbox']}
-                  />
-                  <label htmlFor={`brand-${option}`} className={styles['filter-label']}>
-                    {option}
-                  </label>
+              {/* 🔍 Search bar for brands */}
+              <input
+                type="text"
+                placeholder={`Search ${filterLabel.toLowerCase()}...`}
+                value={brandSearch}
+                onChange={(e) => setBrandSearch(e.target.value)}
+                className={styles['brand-search']}
+              />
+
+              {filteredOptions.length > 0 ? (
+                filteredOptions.map((option) => (
+                  <div key={option} className={styles['filter-option']}>
+                    <input
+                      type="checkbox"
+                      id={`brand-${option}`}
+                      name={filterLabel === 'Type' ? 'type' : 'brand'}
+                      checked={filters.brands.includes(option)}
+                      onChange={() => onFilterChange('brands', option)}
+                      className={styles['filter-checkbox']}
+                    />
+                    <label htmlFor={`brand-${option}`} className={styles['filter-label']}>
+                      {option}
+                    </label>
+                  </div>
+                ))
+              ) : (
+                <div className={styles['no-results']}>
+                  No {filterLabel.toLowerCase()} found
                 </div>
-              ))}
+              )}
             </div>
           )}
         </div>

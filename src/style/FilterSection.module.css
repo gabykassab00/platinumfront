@@ -77,3 +77,41 @@
   font-weight: bold;
   margin-left: 8px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.brand-search {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  margin-bottom: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.brand-search:focus {
+  border-color: #0066ff;
+  box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.15);
+}
+
+.no-results {
+  font-size: 0.85rem;
+  color: #888;
+  padding: 0.5rem;
+  text-align: center;
+}
