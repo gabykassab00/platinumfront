@@ -4097,13 +4097,9 @@ const CheckoutPage = () => {
 const validateInputs = () => {
   const phone = emailRef.current?.value.trim() || "";
 
-  // Remove all non-digit characters and check if we have exactly 8 digits
-  const digitsOnly = phone.replace(/\D/g, "");
-  const hasEightDigits = digitsOnly.length === 8;
-
   const newErrors = {
-    // Check if we have exactly 8 digits (regardless of formatting)
-    email: !hasEightDigits,
+    // Check if format is exactly: 2 digits + hyphen + 6 digits
+    email: !/^\d{2}-\d{6}$/.test(phone),
     firstName: !firstNameRef.current?.value.trim(),
     lastName: !lastNameRef.current?.value.trim(),
     address: !addressRef.current?.value.trim(),
@@ -4213,14 +4209,19 @@ const validateInputs = () => {
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Contact</h1>
           <div className={styles.formGroup}>
-            <InputMask
-              mask="99-999999"
-              maskChar={null}
-              placeholder="__ - ______"
-              className={`${styles.textInput} ${errors.email ? styles.errorInput : ''}`}
-              inputRef={emailRef}
-              required
-            />
+<InputMask
+  mask="99-999999"
+  maskChar={null}
+  placeholder="__ - ______"
+  className={`${styles.textInput} ${errors.email ? styles.errorInput : ''}`}
+  inputRef={emailRef}
+  required
+  formatChars={{
+    '9': '[0-9]',
+    'a': '[A-Za-z]',
+    '*': '[A-Za-z0-9]'
+  }}
+/>
             {errors.email && (
               <p className={styles.errorText}>
                 Please enter a valid phone number (format: 71-234567, exactly 8 digits)
