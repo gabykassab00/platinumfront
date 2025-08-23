@@ -3678,82 +3678,6 @@ const CheckoutPage = () => {
     return !Object.values(newErrors).some(Boolean);
   };
 
-  // ---------- Complete Order ----------
-  // const handleCompleteOrder = () => {
-  //   const isValid = validateInputs();
-
-  //   if (!isValid) {
-  //     // On small screens, scroll to top to show validation messages
-  //     if (window.innerWidth <= 768) {
-  //       window.scrollTo({ top: 0, behavior: 'smooth' });
-  //     }
-  //     return;
-  //   }
-
-  //   // Build email rows from itemsWithOffer (so email matches what user sees)
-  //   const orderDetails = itemsWithOffer
-  //     .map((item, index) => {
-  //       const priceCell = item.offerApplied
-  //         ? item.quantity === 1
-  //           ? '$0.00 (offer)'
-  //           : `$${item.lineTotal.toFixed(2)} (offer)`
-  //         : `$${(item.price * item.quantity).toFixed(2)}`;
-
-  //       return `
-  //         <tr>
-  //           <td style="padding: 8px;">${index + 1}</td>
-  //           <td style="padding: 8px;">${item.name}</td>
-  //           <td style="padding: 8px;">${item.size || ''}</td>
-  //           <td style="padding: 8px;">${item.quantity}</td>
-  //           <td style="padding: 8px;">${priceCell}</td>
-  //         </tr>`;
-  //     })
-  //     .join('');
-
-  //   const templateParams = {
-  //     customer_email: emailRef.current.value,
-  //     first_name: firstNameRef.current.value,
-  //     last_name: lastNameRef.current.value,
-  //     delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
-  //     order_total: total.toFixed(2),
-  //     order_details: orderDetails,
-  //   };
-
-  //   emailjs
-  //     .send(
-  //       process.env.REACT_APP_EMAILJS_SERVICE_ID,
-  //       process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
-  //       templateParams,
-  //       process.env.REACT_APP_EMAILJS_PUBLIC_KEY
-  //     )
-  //     .then((result) => {
-  //       console.log('✅ Email sent', result.text);
-  //       clearCart();
-  //       setShowPopup(true);
-  //     })
-  //     .catch((error) => {
-  //       console.error('❌ Email send failed:', error);
-  //       alert('Order submitted but email failed to send.');
-  //     });
-  // };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3791,29 +3715,16 @@ const handleCompleteOrder = () => {
     .join('');
 
   const templateParams = {
-    customer_email: emailRef.current.value,
-    first_name: firstNameRef.current.value,
-    last_name: lastNameRef.current.value,
-    delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
-    order_total: total.toFixed(2),
-    order_details: `
-      <table border="1" cellspacing="0" cellpadding="4" style="border-collapse: collapse; width: 100%;">
-        <thead>
-          <tr style="background: #f2f2f2;">
-            <th>#</th>
-            <th>Product</th>
-            <th>Size</th>
-            <th>Qty</th>
-            <th>Perfume</th> <!-- 🟢 New Column -->
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${orderDetails}
-        </tbody>
-      </table>
-    `,
-  };
+  customer_email: emailRef.current.value,
+  first_name: firstNameRef.current.value,
+  last_name: lastNameRef.current.value,
+  delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
+  order_total: total.toFixed(2),
+
+  // ✅ Only send the rows (React builds them)
+  order_details: orderDetails,
+};
+
 
   emailjs
     .send(
