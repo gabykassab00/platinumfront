@@ -3612,6 +3612,7 @@ import { useBasket } from '../context/BasketProvider';
 import { useNavigate } from 'react-router-dom';
 import styles from '../style/checkout.module.css';
 import emailjs from '@emailjs/browser';
+import InputMask from "react-input-mask";
 
 const CheckoutPage = () => {
   const { basketItems, clearCart } = useBasket();
@@ -3787,13 +3788,23 @@ const handleCompleteOrder = () => {
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Contact</h1>
           <div className={styles.formGroup}>
-            <input
-              type="text"
-              placeholder="Mobile phone number"
-              className={`${styles.textInput} ${errors.email ? styles.errorInput : ''}`}
-              ref={emailRef}
-              required
-            />
+<InputMask
+  mask="99/999999"
+  maskChar="-"
+  placeholder="--/------"
+  className={`${styles.textInput} ${errors.email ? styles.errorInput : ''}`}
+  inputRef={emailRef}
+  required
+/>
+{errors.email && (
+  <p className={styles.errorText}>
+    Please enter a valid phone number (format: 71/234567)
+  </p>
+)}
+
+
+
+
             {errors.email && (
   <p className={styles.errorText}>
     Please enter a valid phone number (at least 8 digits)
