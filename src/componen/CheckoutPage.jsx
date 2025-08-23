@@ -3670,12 +3670,12 @@ const CheckoutPage = () => {
 const validateInputs = () => {
   const phone = emailRef.current?.value.trim() || "";
 
+  // Count only digits
   const digitCount = phone.replace(/\D/g, "").length;
 
   const newErrors = {
-    email:
-      digitCount < 8 || // must be at least 8 digits
-      !/^(\d{2})([\/\-]?\d{6,7})$|^\d{8,9}$/.test(phone),
+    // Allow only 2-digit prefix + slash + 6 or 7 digits (71/234567 or 71/2345678)
+    email: digitCount < 8 || !/^\d{2}\/\d{6,7}$/.test(phone),
 
     firstName: !firstNameRef.current?.value.trim(),
     lastName: !lastNameRef.current?.value.trim(),
@@ -3686,6 +3686,7 @@ const validateInputs = () => {
   setErrors(newErrors);
   return !Object.values(newErrors).some(Boolean);
 };
+
 
 
 
@@ -3796,17 +3797,18 @@ const handleCompleteOrder = () => {
           <div className={styles.formGroup}>
 <InputMask
   mask="99/999999"
-  maskChar="-"
-  placeholder="--/------"
+  maskChar={null}   // leave empty instead of "-"
+  placeholder="__ / ______"
   className={`${styles.textInput} ${errors.email ? styles.errorInput : ''}`}
   inputRef={emailRef}
   required
 />
 {errors.email && (
   <p className={styles.errorText}>
-    Please enter a valid phone number (format: 71/234567)
+    Please enter a valid phone number (format: 71/234567, at least 8 digits)
   </p>
 )}
+
 
 
 
