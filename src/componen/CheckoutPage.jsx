@@ -4433,6 +4433,402 @@
 
 
 
+// import React, { useRef, useState, useEffect } from 'react';
+// import { useBasket } from '../context/BasketProvider';
+// import { useNavigate } from 'react-router-dom';
+// import styles from '../style/checkout.module.css';
+// import emailjs from '@emailjs/browser';
+
+// const CheckoutPage = () => {
+//   const { basketItems, clearCart } = useBasket();
+//   const navigate = useNavigate();
+//   const API_URL = process.env.REACT_APP_API_URL;
+
+//   const firstNameRef = useRef();
+//   const lastNameRef = useRef();
+//   const addressRef = useRef();
+//   const cityRef = useRef();
+
+//   // ✅ New phone state
+//   const [phone, setPhone] = useState("");
+
+//   const [showPopup, setShowPopup] = useState(false);
+//   const [errors, setErrors] = useState({
+//     email: false,
+//     firstName: false,
+//     lastName: false,
+//     address: false,
+//     city: false,
+//   });
+
+//   // ---------- PROMO ----------
+//   const totalHundreds = basketItems.reduce(
+//     (sum, i) => sum + (i.size === '100ml' ? i.quantity : 0),
+//     0
+//   );
+//   const hasTwoHundreds = totalHundreds >= 2;
+//   const hasAnyFifty = basketItems.some((i) => i.size === '50ml' && i.quantity > 0);
+//   const offerEligible = hasTwoHundreds && hasAnyFifty;
+
+//   let remainingFree50 = offerEligible ? 1 : 0;
+//   const itemsWithOffer = basketItems.map((item) => {
+//     const unitTotal = item.price * item.quantity;
+//     let lineTotal = unitTotal;
+//     let offerApplied = false;
+
+//     if (remainingFree50 && item.size === '50ml' && item.quantity > 0) {
+//       lineTotal = Math.max(0, unitTotal - item.price);
+//       offerApplied = true;
+//       remainingFree50 = 0;
+//     }
+
+//     return { ...item, lineTotal, offerApplied };
+//   });
+
+//   const shipping = 3.0;
+//   const subtotal = itemsWithOffer.reduce((sum, i) => sum + i.lineTotal, 0);
+//   const total = subtotal + shipping;
+//   const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
+
+//   // ---------- Phone formatting ----------
+//   const handlePhoneChange = (e) => {
+//     let value = e.target.value.replace(/\D/g, ""); // only digits
+//     if (value.length > 2) {
+//       value = value.slice(0, 2) + "-" + value.slice(2, 8); // max 8 digits
+//     }
+//     setPhone(value);
+//   };
+
+//   // ---------- Validation ----------
+//   const validateInputs = () => {
+//     const newErrors = {
+//       email: !/^\d{2}-\d{6}$/.test(phone), // must be 2 digits - 6 digits
+//       firstName: !firstNameRef.current?.value.trim(),
+//       lastName: !lastNameRef.current?.value.trim(),
+//       address: !addressRef.current?.value.trim(),
+//       city: !cityRef.current?.value.trim(),
+//     };
+
+//     setErrors(newErrors);
+//     return !Object.values(newErrors).some(Boolean);
+//   };
+
+//   // ---------- Complete Order ----------
+//   const handleCompleteOrder = () => {
+//     const isValid = validateInputs();
+
+//     if (!isValid) {
+//       if (window.innerWidth <= 768) {
+//         window.scrollTo({ top: 0, behavior: 'smooth' });
+//       }
+//       return;
+//     }
+
+//     const orderDetails = itemsWithOffer
+//       .map((item, index) => {
+//         const priceCell = item.offerApplied
+//           ? item.quantity === 1
+//             ? '$0.00 (offer)'
+//             : `$${item.lineTotal.toFixed(2)} (offer)`
+//           : `$${(item.price * item.quantity).toFixed(2)}`;
+
+//         return `
+//           <tr>
+//             <td style="padding: 8px;">${index + 1}</td>
+//             <td style="padding: 8px;">${item.name}</td>
+//             <td style="padding: 8px;">${item.size || ''}</td>
+//             <td style="padding: 8px;">${item.quantity}</td>
+//             <td style="padding: 8px;">${item.perfume || '-'}</td>
+//             <td style="padding: 8px;">${priceCell}</td>
+//           </tr>`;
+//       })
+//       .join('');
+
+//     const templateParams = {
+//       customer_email: phone,
+//       first_name: firstNameRef.current.value,
+//       last_name: lastNameRef.current.value,
+//       delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
+//       order_total: total.toFixed(2),
+//       order_details: orderDetails,
+//     };
+
+//     emailjs
+//       .send(
+//         process.env.REACT_APP_EMAILJS_SERVICE_ID,
+//         process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+//         templateParams,
+//         process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+//       )
+//       .then((result) => {
+//         console.log('✅ Email sent', result.text);
+//         clearCart();
+//         setShowPopup(true);
+//       })
+//       .catch((error) => {
+//         console.error('❌ Email send failed:', error);
+//         alert('Order submitted but email failed to send.');
+//       });
+//   };
+
+//   // ---------- Redirect ----------
+//   useEffect(() => {
+//     if (showPopup) {
+//       const timer = setTimeout(() => {
+//         navigate('/');
+//       }, 10000);
+//       return () => clearTimeout(timer);
+//     }
+//   }, [showPopup, navigate]);
+
+//   if (basketItems.length === 0 && !showPopup) {
+//     return (
+//       <div className={styles.emptyCartContainer}>
+//         <div className={styles.emptyCartContent}>
+//           <h2>Your cart is empty</h2>
+//           <p>Looks like you haven't added anything to your cart yet.</p>
+//           <button onClick={() => navigate('/')} className={styles.continueShoppingButton}>
+//             Continue Shopping
+//           </button>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className={styles.checkoutContainer}>
+//       {showPopup && (
+//         <div className={styles.popupOverlay}>
+//           <div className={styles.popupContent}>
+//             <h2>Thank you for purchasing from us!</h2>
+//             <p>You will be redirected to the homepage shortly.</p>
+//           </div>
+//         </div>
+//       )}
+
+//       <div className={styles.leftColumn}>
+//         <section className={styles.section}>
+//           <h1 className={styles.sectionTitle}>Contact</h1>
+//           <div className={styles.formGroup}>
+//             <input
+//               type="text"
+//               value={phone}
+//               onChange={handlePhoneChange}
+//               placeholder="71-234567"
+//               className={`${styles.textInput} ${errors.email ? styles.errorInput : ''}`}
+//               required
+//             />
+//             {errors.email && (
+//               <p className={styles.errorText}>
+//                 Please enter a valid phone number (format: 71-234567, exactly 8 digits)
+//               </p>
+//             )}
+//           </div>
+//           <label className={styles.checkboxLabel}>
+//             <input type="checkbox" className={styles.checkboxInput} />
+//             <span className={styles.customCheckbox}></span>
+//             Message me with news and offers
+//           </label>
+//         </section>
+
+//         {/* Delivery */}
+//         <section className={styles.section}>
+//           <h1 className={styles.sectionTitle}>Delivery</h1>
+//           <div className={styles.formSection}>
+//             <h2 className={styles.subsectionTitle}>Country/Region</h2>
+//             <div className={styles.selectWrapper}>
+//               <select className={styles.selectInput} required>
+//                 <option>Lebanon</option>
+//               </select>
+//               <div className={styles.selectArrow}>▼</div>
+//             </div>
+//           </div>
+
+//           <div className={styles.nameRow}>
+//             <div className={styles.formGroup}>
+//               <input
+//                 type="text"
+//                 placeholder="First name"
+//                 className={`${styles.textInput} ${errors.firstName ? styles.errorInput : ''}`}
+//                 ref={firstNameRef}
+//                 required
+//               />
+//               {errors.firstName && <p className={styles.errorText}>Please enter your first name</p>}
+//             </div>
+//             <div className={styles.formGroup}>
+//               <input
+//                 type="text"
+//                 placeholder="Last name"
+//                 className={`${styles.textInput} ${errors.lastName ? styles.errorInput : ''}`}
+//                 ref={lastNameRef}
+//                 required
+//               />
+//               {errors.lastName && <p className={styles.errorText}>Please enter your last name</p>}
+//             </div>
+//           </div>
+
+//           <div className={styles.formGroup}>
+//             <input
+//               type="text"
+//               placeholder="Address"
+//               className={`${styles.textInput} ${errors.address ? styles.errorInput : ''}`}
+//               ref={addressRef}
+//               required
+//             />
+//             {errors.address && <p className={styles.errorText}>Please enter your address</p>}
+//           </div>
+
+//           <div className={styles.locationRow}>
+//             <div className={styles.formGroup}>
+//               <input
+//                 type="text"
+//                 placeholder="City"
+//                 className={`${styles.textInput} ${errors.city ? styles.errorInput : ''}`}
+//                 ref={cityRef}
+//                 required
+//               />
+//               {errors.city && <p className={styles.errorText}>Please enter your city</p>}
+//             </div>
+//             <div className={styles.formGroup}>
+//               <input type="text" placeholder="Postal code (optional)" className={styles.textInput} />
+//             </div>
+//           </div>
+//         </section>
+
+//         {/* Shipping */}
+//         <section className={styles.section}>
+//           <h1 className={styles.sectionTitle}>Shipping method</h1>
+//           <label className={styles.radioOption}>
+//             <input type="radio" name="shipping" defaultChecked className={styles.radioInput} />
+//             <span className={styles.customRadio}></span>
+//             <div className={styles.optionContent}>
+//               <div className={styles.optionRow}>
+//                 <span className={styles.optionTitle}>Standard Shipping</span>
+//                 <span className={styles.shippingPrice}>$3.00</span>
+//               </div>
+//               <span className={styles.optionDescription}>Deliveries will take up to 5 working days</span>
+//             </div>
+//           </label>
+//         </section>
+
+//         {/* Payment */}
+//         <section className={styles.section}>
+//           <h1 className={styles.sectionTitle}>Payment</h1>
+//           <p className={styles.paymentNote}>All transactions are secure and encrypted.</p>
+//           <label className={styles.radioOption}>
+//             <input type="radio" name="payment" className={styles.radioInput} required defaultChecked />
+//             <span className={styles.customRadio}></span>
+//             <div className={styles.optionContent}>
+//               <span className={styles.optionTitle}>Cash on Delivery (COD)</span>
+//               <p className={styles.optionDescription}>
+//                 Pay in cash when your order is delivered. Available for orders within Lebanon.
+//               </p>
+//             </div>
+//           </label>
+//         </section>
+//       </div>
+
+//       {/* Right Column - Order Summary */}
+//       <div className={styles.rightColumn}>
+//         <div className={styles.summaryCard}>
+//           {offerEligible && (
+//             <div className={styles.promoNotice}>
+//               🎉 Promo applied: Buy 2×100ml → 1×50ml is FREE
+//             </div>
+//           )}
+
+//           <h2 className={styles.summaryTitle}>Order Summary</h2>
+//           <div className={styles.itemsCount}>
+//             {itemCount} {itemCount === 1 ? 'item' : 'items'}
+//           </div>
+
+//           <div className={styles.itemsList}>
+//             {itemsWithOffer.map((item) => (
+//               <div key={`${item.id}-${item.size}-${item.perfume || ''}`} className={styles.summaryItem}>
+//                 <div className={styles.itemImageContainer}>
+//                   <img
+//                     src={`${API_URL}/${item.image_path}`}
+//                     alt={item.name}
+//                     className={styles.itemImage}
+//                     onError={(e) => {
+//                       e.target.onerror = null;
+//                       e.target.src = '/placeholder-product.jpg';
+//                     }}
+//                   />
+//                   <span className={styles.itemQuantity}>{item.quantity}</span>
+//                 </div>
+
+//                 <div className={styles.itemDetails}>
+//                   <div className={styles.itemName}>{item.name}</div>
+//                   <div className={styles.itemSize}>{item.size}</div>
+//                   {item.perfume && (
+//                     <div className={styles.itemPerfume}>
+//                       Perfume: <strong>{item.perfume}</strong>
+//                     </div>
+//                   )}
+//                 </div>
+
+//                 <div className={styles.itemPrice}>
+//                   {item.offerApplied
+//                     ? (item.quantity === 1
+//                         ? `$0.00 (offer)`
+//                         : `$${item.lineTotal.toFixed(2)} (offer)`)
+//                     : `$${(item.price * item.quantity).toFixed(2)}`}
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+
+//           <div className={styles.discountSection}>
+//             <input type="text" placeholder="Discount code or gift card" className={styles.discountInput} />
+//             <button className={styles.applyButton}>Apply</button>
+//           </div>
+
+//           <div className={styles.priceBreakdown}>
+//             <div className={styles.priceRow}>
+//               <span>Subtotal</span>
+//               <span>${subtotal.toFixed(2)}</span>
+//             </div>
+//             <div className={styles.priceRow}>
+//               <span>Shipping</span>
+//               <span>${shipping.toFixed(2)}</span>
+//             </div>
+//             <div className={styles.totalRow}>
+//               <span>Total</span>
+//               <span>${total.toFixed(2)}</span>
+//             </div>
+//           </div>
+
+//           <button className={styles.completeButton} onClick={handleCompleteOrder}>
+//             Complete Order
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default CheckoutPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useRef, useState, useEffect } from 'react';
 import { useBasket } from '../context/BasketProvider';
 import { useNavigate } from 'react-router-dom';
@@ -4444,24 +4840,38 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
 
+  const emailRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const addressRef = useRef();
   const cityRef = useRef();
 
-  // ✅ New phone state
-  const [phone, setPhone] = useState("");
-
   const [showPopup, setShowPopup] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [phoneError, setPhoneError] = useState(false);
   const [errors, setErrors] = useState({
-    email: false,
     firstName: false,
     lastName: false,
     address: false,
     city: false,
   });
 
-  // ---------- PROMO ----------
+  // Format phone number as user types (XX-XXXXXX)
+  const handlePhoneChange = (e) => {
+    const value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+    let formattedValue = value;
+    
+    if (value.length > 2) {
+      formattedValue = `${value.slice(0, 2)}-${value.slice(2, 8)}`;
+    }
+    
+    if (value.length <= 8) {
+      setPhone(formattedValue);
+      setPhoneError(false);
+    }
+  };
+
+  // ---------- PROMO: Buy 2 x 100ml => 1 x 50ml FREE (only one 50ml is free) ----------
   const totalHundreds = basketItems.reduce(
     (sum, i) => sum + (i.size === '100ml' ? i.quantity : 0),
     0
@@ -4470,6 +4880,7 @@ const CheckoutPage = () => {
   const hasAnyFifty = basketItems.some((i) => i.size === '50ml' && i.quantity > 0);
   const offerEligible = hasTwoHundreds && hasAnyFifty;
 
+  // Apply offer to render-friendly list (do NOT mutate basketItems)
   let remainingFree50 = offerEligible ? 1 : 0;
   const itemsWithOffer = basketItems.map((item) => {
     const unitTotal = item.price * item.quantity;
@@ -4477,6 +4888,7 @@ const CheckoutPage = () => {
     let offerApplied = false;
 
     if (remainingFree50 && item.size === '50ml' && item.quantity > 0) {
+      // Discount ONE 50ml unit
       lineTotal = Math.max(0, unitTotal - item.price);
       offerApplied = true;
       remainingFree50 = 0;
@@ -4490,19 +4902,12 @@ const CheckoutPage = () => {
   const total = subtotal + shipping;
   const itemCount = basketItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  // ---------- Phone formatting ----------
-  const handlePhoneChange = (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // only digits
-    if (value.length > 2) {
-      value = value.slice(0, 2) + "-" + value.slice(2, 8); // max 8 digits
-    }
-    setPhone(value);
-  };
-
   // ---------- Validation ----------
   const validateInputs = () => {
+    const phoneValid = /^\d{2}-\d{6}$/.test(phone);
+    setPhoneError(!phoneValid);
+
     const newErrors = {
-      email: !/^\d{2}-\d{6}$/.test(phone), // must be 2 digits - 6 digits
       firstName: !firstNameRef.current?.value.trim(),
       lastName: !lastNameRef.current?.value.trim(),
       address: !addressRef.current?.value.trim(),
@@ -4510,7 +4915,8 @@ const CheckoutPage = () => {
     };
 
     setErrors(newErrors);
-    return !Object.values(newErrors).some(Boolean);
+    
+    return phoneValid && !Object.values(newErrors).some(Boolean);
   };
 
   // ---------- Complete Order ----------
@@ -4524,6 +4930,7 @@ const CheckoutPage = () => {
       return;
     }
 
+    // Build email rows from itemsWithOffer (so email matches what user sees)
     const orderDetails = itemsWithOffer
       .map((item, index) => {
         const priceCell = item.offerApplied
@@ -4545,7 +4952,7 @@ const CheckoutPage = () => {
       .join('');
 
     const templateParams = {
-      customer_email: phone,
+      customer_email: phone, // Using phone as the contact
       first_name: firstNameRef.current.value,
       last_name: lastNameRef.current.value,
       delivery_address: `${addressRef.current.value}, ${cityRef.current.value}`,
@@ -4571,7 +4978,7 @@ const CheckoutPage = () => {
       });
   };
 
-  // ---------- Redirect ----------
+  // ---------- Redirect after popup ----------
   useEffect(() => {
     if (showPopup) {
       const timer = setTimeout(() => {
@@ -4612,13 +5019,14 @@ const CheckoutPage = () => {
           <div className={styles.formGroup}>
             <input
               type="text"
+              placeholder="__ - ______"
               value={phone}
               onChange={handlePhoneChange}
-              placeholder="71-234567"
-              className={`${styles.textInput} ${errors.email ? styles.errorInput : ''}`}
+              className={`${styles.textInput} ${phoneError ? styles.errorInput : ''}`}
+              maxLength={9} // 2 digits + hyphen + 6 digits
               required
             />
-            {errors.email && (
+            {phoneError && (
               <p className={styles.errorText}>
                 Please enter a valid phone number (format: 71-234567, exactly 8 digits)
               </p>
@@ -4631,7 +5039,6 @@ const CheckoutPage = () => {
           </label>
         </section>
 
-        {/* Delivery */}
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Delivery</h1>
           <div className={styles.formSection}>
@@ -4695,7 +5102,6 @@ const CheckoutPage = () => {
           </div>
         </section>
 
-        {/* Shipping */}
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Shipping method</h1>
           <label className={styles.radioOption}>
@@ -4711,7 +5117,6 @@ const CheckoutPage = () => {
           </label>
         </section>
 
-        {/* Payment */}
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Payment</h1>
           <p className={styles.paymentNote}>All transactions are secure and encrypted.</p>
@@ -4728,7 +5133,6 @@ const CheckoutPage = () => {
         </section>
       </div>
 
-      {/* Right Column - Order Summary */}
       <div className={styles.rightColumn}>
         <div className={styles.summaryCard}>
           {offerEligible && (
@@ -4761,6 +5165,7 @@ const CheckoutPage = () => {
                 <div className={styles.itemDetails}>
                   <div className={styles.itemName}>{item.name}</div>
                   <div className={styles.itemSize}>{item.size}</div>
+                  
                   {item.perfume && (
                     <div className={styles.itemPerfume}>
                       Perfume: <strong>{item.perfume}</strong>
