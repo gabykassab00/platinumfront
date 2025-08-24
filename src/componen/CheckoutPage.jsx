@@ -5016,6 +5016,8 @@ const CheckoutPage = () => {
       <div className={styles.leftColumn}>
         <section className={styles.section}>
           <h1 className={styles.sectionTitle}>Contact</h1>
+            <h2 className={styles.subsectionTitle}>Phone Number</h2>
+
           <div className={styles.formGroup}>
             <input
               type="text"
